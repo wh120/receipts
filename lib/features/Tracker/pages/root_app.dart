@@ -17,7 +17,7 @@ class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   List<Widget> pages = [
     DailyPage(),
-    StatsPage(),
+    Container(),
     BudgetPage(),
     ProfilePage(),
     CreatBudgetPage()
