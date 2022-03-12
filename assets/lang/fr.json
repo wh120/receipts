@@ -1,0 +1,123 @@
+{
+
+  "Notifications Page": "............................................",
+  "Notifications": "Notifications",
+
+
+  "Intro Page": ".....................................",
+  "next" : "Next",
+  "skip" : "Skip",
+  "previous" : "Previous",
+  "ok" : "Ok",
+  "intro1" : "Get the Fast & Safe Delivery",
+  "intro2" : "Track all the parcel Post Shipment Easy & Simple!",
+
+  "Login Page": "......................................",
+  "Welcome": "Welcome",
+  "Sign in to your account":"Sign in to your account",
+  "username": "Username",
+  "password": "Password",
+  "sign_in": "Sign In",
+  "forgot_your_password": "Forgot your password?",
+  "Please_enter_a_longer_x": "Please enter a longer {}",
+  "x_must_not_be_longer_than_y_characters": "{} must not be longer than {} characters",
+  "Error occurred while login": "Error occurred while login",
+
+  "Page View": "..................................",
+  "Patient List": "Patient List",
+  "Patients": "Patients",
+  "Tasks": "Tasks",
+  "Home Page": "Home Page",
+  "Dashboard": "Dashboard",
+  "Home": "Home",
+  "Statistical Information": "Statistical Information",
+
+  "Log out": "Log out",
+  "Change Language": "Change Language",
+  "Close": "Close",
+  "Arabic": "Arabic",
+  "English": "English",
+  "ar": "Arabic",
+  "en": "English",
+
+  "Approval Request Page" : "....................",
+  "Approval Request": "Approval Request",
+  "Requested by": "Requested by",
+  "Reject": "Reject",
+  "Approve": "Approve",
+  "Confirm": "Confirm",
+  "Cancel": "Cancel",
+  "Rejection reason": "Rejection reason",
+  "You are about to approve this request, are you sure?": "You are about to approve this request, are you sure?",
+  "You are about to reject this request, are you sure?": "You are about to reject this request, are you sure?",
+
+  "Patient Page": ".........................................",
+  "Search by name": "Search by name",
+  "Patient Details": "Patient Details",
+
+  "Task Page": ".........................................",
+  "Check your tasks": "Check your tasks",
+  "No tasks": "No tasks",
+  "Finish": "Finish",
+  "Finish Task": "Finish Task",
+  "Finished": "Finished",
+  "Back": "Back",
+
+  "SmartRefresher": ".........................................",
+  "pull up load": "pull up load",
+  "Load Failed!": "Load Failed!",
+  "release to load more": "release to load more",
+  "No more Data": "No more Data",
+
+  "Errors": ".........................................",
+  "ConnectionError": "Connection Error",
+  "InternalServerError": "Error in server",
+  "TimeoutError": "Timeout Error",
+  "Tap to retry": "Tap to retry",
+  "No Data": "No Data",
+
+  "SnackBar": ".........................................",
+
+
+
+  "Gender": {
+    "male": "Male",
+    "female" : "Female",
+    "unspecified": "Unspecified"
+  },
+
+  "CurrentStage": {
+    "unknown": "Unknown",
+    "PreAcceptance": "Pre Acceptance",
+    "BeforeTransplantation":"Before Transplantation",
+    "DayOfTransplantation":"Day Of Transplantation",
+    "AfterTransplantation":"After Transplantation",
+    "PeriodicFollowUp":"Periodic Following"
+  },
+  "TaskStatus": {
+    "NULL": "NULL",
+    "New": "New",
+    "Done": "Done",
+    "Late": "Late",
+    "Undone": "Undone"
+  },
+  "RequestStatus": {
+    "Pending": "Pending",
+    "Approved": "Approved",
+    "Rejected": "Rejected"
+  },
+
+  "إعطاء دواء": "THERAPY INTAKE",
+  "تحليل": "ANALYSIS",
+  "تغيير ضماد": "BANDAGES",
+  "تغذية": "FEEDING",
+  "نقل دم": "TRANSFUSION",
+  "تقارير يومية": "DAILY REPORTS",
+  "عناية يومية": "DAILY CARE",
+  "مراقبة سوائل": "FLUID CONTROL",
+  "مراقبة علامات حيوية": "MEASUREMENTS",
+  "مراقبة حيوية": "VITAL OBSERVATIONS",
+  "صورة شعاعية": "RADIOGRAPH",
+  "فحص سريري": "EXAMINATION"
+
+}

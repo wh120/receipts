@@ -1,0 +1,239 @@
+{
+
+  "My Health": "صحتي",
+
+  "Notifications Page": "............................................",
+  "Notifications": "الإشعارات",
+  "No ِnotifications": "لا يوجد إشعارات",
+  
+  "Intro Page": ".....................................",
+  "next" : "التالي",
+  "skip" : "تخطى",
+  "Previous" : "السابق",
+  "ok" : "تم",
+  "A hospital alone shows what war is" : "المستشفى لوحده يرينا ما هي الحرب",
+  "Not All Angels Have wings Some Have Stethoscope" : "ليس كل الملائكة لديهم أجنحة ، البعض منهم لديه سماعة طبية",
+
+  "Login Page": "...............",
+  "Welcome": "مرحبا",
+  "Sign in to your account": "سجل الدخول إلى حسابك",
+  "username": "اسم المستخدم",
+  "Phone Number": "رقم الموبايل",
+  "password": "كلمة المرور",
+  "sign_in": "تسجيل الدخول",
+  "forgot_your_password": "هل نسيت كلمة المرور ؟",
+  "Next": "التالي",
+  "Enter 6 digits verification code sent to your number": "أدخل رمز التحقق المكون من 6 أرقام المرسل إلى رقمك",
+  "You can resend the code within X seconds": "يمكنك إعادة إرسال الرمز خلال {} ثوان",
+  "Need an account? Create one instead.": "تحتاج إلى حساب؟ أنشئ حسابًا بدلاً من ذلك.",
+  "We will send you an One Time Password on this mobile number": "سوف نرسل لك رمز تفعيل  على هذا الرقم",
+  "Resend activation code": "أعد إرسال رمز التفعيل",
+
+  "Validators": "..................................",
+  "Please_enter_a_longer_x": "الرجاء إدخال {} أطول",
+  "x_must_not_be_longer_than_y_characters": "يجب ألا تزيد {} عن {} حرفاً",
+  "Error occurred while login": "حدث خطأ أثناء تسجيل الدخول",
+  "The text is empty" : "النص فارغ",
+
+  "Form": "..................................",
+  "Long press to delete image": "اضغط مطولاً لحذف الصورة",
+
+
+  "Page View": "....................................",
+
+  "Home": "الرئيسية",
+  "Home Page": "الصفحة الرئيسية",
+  "Posts": "المشاركات",
+
+  "About Us Page": "..................................",
+  "About Us": "من نحن",
+  "Contact Us": "اتصل بنا",
+  "About App": "حول التطبيق",
+
+  "App":  "..................................",
+  "Log out": "تسجيل الخروج",
+  "Close": "إغلاق",
+  "Cancel": "إلغاء",
+  "Continue": "التالي",
+  "Clear": "مسح",
+  "Arabic": "العربية",
+  "English": "الإنجليزية",
+  "ar": "العربية",
+  "en": "الإنجليزية",
+  "Update": "تحديث",
+  "Update Application": "تحديث التطبيق",
+
+  "Search": "البحث",
+
+  "Settings Page": ".........................................",
+
+  "Change Language": "تغيير اللغة",
+  "Settings": "الإعدادات",
+  "General Settings": "الإعدادات العامة",
+  "Change Phone Number": "تغيير رقم الموبايل",
+  "New Phone Number": "رقم الموبايل الجديد",
+  "App Settings": "إعدادات التطبيق",
+
+  "ReadMore": ".........................................",
+  "Show more": "عرض المزيد",
+  "Show less": "عرض أقل",
+
+  "SmartRefresher": ".........................................",
+  "pull up load": "اسحب لتحميل المزيد",
+  "Load Failed!": "فشل التحميل",
+  "release to load more": "افلت لتحميل المزيد",
+  "No more Data": "لا مزيد من البيانات",
+
+
+  "Errors": ".........................................",
+  "ConnectionError": "خطأ بالاتصال",
+  "Unauthorized Error": "يجب تسجيل الدخول",
+  "InternalServerError": "يوجد خطأ في المخدم",
+  "TimeoutError": "انتهت مهلة الاتصال",
+  "NotFoundError": "الصفحة غير موجودة",
+  "Tap to retry": "انقر لإعادة المحاولة",
+  "No Data": "لايوجد بيانات",
+
+  "system": ".........................................",
+  "Stop Loading?": "هل تريد إيقاف التحميل؟",
+  "Stop": "إيقاف",
+  "Wait More": "انتظر أكثر",
+
+  "EAV": ".........................................",
+  "x_must_not_be_between_y_and_z": "{} يجب أن يكون بين {} و {}",
+  "The x field is required": "الحقل {} مطلوب" ,
+
+  "Profile Page": ".........................................",
+  "Profile": "الملف الشخصي",
+  "My profile": "حسابي الشخصي",
+  "Patient Name": "اسم المريض",
+
+  "Clinic Page": ".........................................",
+  "All Clinics": "العيادات",
+  "Clinics": "العيادات",
+  "Clinic Name": "اسم العيادة",
+  "City": "المدينة",
+  "Region" : "المنطقة",
+  "Address": "العنوان",
+
+  "Cardiology": "قلبية",
+  "Call": "اتصال",
+  "Location": "الموقع",
+  "Biography": "السيرة الذاتية",
+  "Clinic Information": "معلومات العيادة",
+  "Clinic Gallery": "صور العيادة",
+
+  "Doctor Page": ".........................................",
+  "Doctor Name": "اسم طبيب",
+  "Doctors": "الأطباء",
+  "About Doctor": "عن الطبيب",
+  "Certificate": "الشهادة",
+  "Speciality": "التخصص",
+  "Speciality Description": "وصف التخصص",
+
+
+  "Patient Profile Page": ".........................................",
+  "My cards": "بطاقاتي",
+  "First Name" : "الاسم الآول",
+  "Last Name": "الكتية",
+  "Father Name": "اسم الاب",
+  "Mother Name": "اسم الام",
+  "Birth Date": "تاريخ الولادة",
+  "Create Patient Card": "إنشاء بطاقة المريض",
+  "Blood Type": "زمرة الدم",
+  "Height": "الطول",
+  "Weight": "الوزن",
+  "Age": "العمر",
+  "Profile Image": "صورة الملف الشخصي",
+  "Health card": "بطاقة صحية",
+  "Occupation": "المهنة",
+
+  "new_patient":"مريض جديد",
+  "new_doctor":"طبيب جديد",
+  "avatar": "الصورة الشخصية",
+  "full_name": "الاسم الكامل",
+  "first_name":"الاسم الأول",
+  "second_name":"الاسم الثاني",
+  "birth_date":"تاريخ الميلاد",
+  "gender":"الجنس",
+  "male":"ذكر",
+  "female":"أنثى",
+  "blood_type":"زمرة الدم",
+  "family_status": "الحالة العائلية",
+  "jop_position":"العمل",
+  "phone_number":"رقم الهاتف",
+  "landline_number":"رقم الهاتف الأرضي",
+  "national_number":"الرقم الوطني",
+  "nationality": "الجنسية",
+  "place_of_birth": "مكان الولادة",
+  "body_surface_area": "سطح الجسم",
+  "drug_allergy": "التحسس الدوائي",
+  "medications": "الأدوية",
+  "family_history": "السوابق العائلية",
+  "medical_history": "السوابق المرضية",
+  "length":"الطول",
+  "weight":"الوزن",
+  "age": "العمر",
+  "note":"ملاحظة",
+  "verify":"تحقق",
+  "verify_information":"تحقق من معلوماتك !",
+  "last_visit": "آخر زيارة",
+  "visit": "زيارة",
+  "transference": "تحويل",
+  "id_file": "معرف الملف",
+  "see_all": "مشاهدة الكل",
+  "address": "العنوان",
+  "edit": "تعديل",
+  "add": "إضافة",
+
+  "Healthcare Center Page": ".........................................",
+  "Healthcare Centers": "المراكز الصحية",
+  "Healthcare Center name": "اسم المركز الصحي",
+  "Healthcare centers and clinics": "المراكز والعيادات الصحية",
+  "Healthcare Center Gallery": "صور المركز",
+  "Healthcare Center Information": "معلومات المركز",
+
+  "Appointments Page": ".........................................",
+  "Appointments": "المواعيد",
+  "My Appointments": "مواعيدي",
+  "Appointment": "الموعد",
+  "Cancel the appointment" : "إلغاء الموعد",
+  "Edit the appointment" : "تعديل الموعد",
+  "Reserve an appointment": "حجز موعد",
+
+  "Reservation Page": ".........................................",
+  "Select a patient": "اختر مريض",
+  "Select a doctor": "اختر الطبيب",
+  "Select a clinic": "اختر عيادة",
+  "Choose the time that suits you": "اختر الوقت المناسب لك",
+  "You don't have a patient card": "ليس لديك بطاقة مريض",
+  "There are no doctors in this clinic": "لا يوجد أطباء في هذه العيادة",
+  "Submit to reserve an appointment": "إضغط لحجز موعد",
+  "Appointment reserved successfully": "تم حجز الموعد بنجاح",
+
+
+
+  "Messages Page": ".........................................",
+  "Messages": "الرسائل",
+
+  "Gender": {
+    "male": "ذكر",
+    "female" : "أنثى",
+    "unspecified": "غير محدد"
+  },
+
+  "ContactType": {
+    "Landline": "الهاتف الثابت",
+    "PhoneNumber" : "رقم الجوال",
+    "Email": "البريد الإلكتروني",
+    "Website": "الموقع"
+  },
+
+
+  "unknown": "غير معروف"
+
+
+
+
+
+}
