@@ -71,6 +71,7 @@ dev_dependencies:
   animated_bottom_navigation_bar: ^0.3.2
   search_choices: ^2.0.19
   flutter_typeahead: ^3.2.4
+  dropdown_button2: ^1.2.2
 
   #utils
 

@@ -1,4 +1,5 @@
 import 'package:receipts/core/utils/Navigation/Navigation.dart';
+import 'package:receipts/core/widgets/forms/SelectDropDown.dart';
 
 import '../json/create_budget_json.dart';
 import '../theme/colors.dart';
@@ -176,16 +177,16 @@ class _CreatBudgetPageState extends State<CreatBudgetPage> {
                                 fontSize: 13,
                                 color: Color(0xff67727d)),
                           ),
-                          TextField(
-                            controller: _budgetPrice,
-                            cursorColor: black,
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: black),
-                            decoration: InputDecoration(
-                                hintText: "الوجهة",
-                                border: InputBorder.none),
+                          ObjectDropDown<ObjectDropDownItem>(
+                            selectedValue: ObjectDropDownItem(id :1 , name: "امين المستودع"),
+                            items: [
+                              ObjectDropDownItem(id :1 , name: "امين المستودع"),
+                              ObjectDropDownItem(id :2 , name: "رئيس القسم"),
+                              ObjectDropDownItem(id :3 , name: "مدير القسم"),
+      
+
+                            ],
+                            text: 'العميل',
                           ),
                         ],
                       ),

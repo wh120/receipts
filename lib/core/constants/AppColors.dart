@@ -31,23 +31,23 @@ class AppColors {
   static const MaterialColor primary = MaterialColor(0xFFED1C24, PrimarySwatch);
 
   static const Map<int, Color> SecondaryMaterial = {
-    1:Color(0xFFFCF4F1),
-    5:Color(0xFFFDF4EC),
-    10:Color(0xFFFCF2E6),
-    25:Color(0xFFFCEAC5),
-    50: Color(0xFFFCD38A),
-    100: Color(0xFFFCC954),
-    200: Color(0xFFFFC947),
-    300: Color(0xFFFFC947),
-    400: Color(0xFFFFC947),
-    500: Color(0xFFFFC947),
-    600: Color(0xFFE0A818),
-    700: Color(0xFFC48E0A),
-    800: Color(0xFF9A6C00),
-    900: Color(0xFF503904),
+    1:Color(0xFFF8FFF1),
+    5:Color(0xFFF3FFE4),
+    10:Color(0xFFECFDD6),
+    25:Color(0xFFE6FFCB),
+    50: Color(0xFFD7FDB3),
+    100: Color(0xFFC6F894),
+    200: Color(0xFFBBF582),
+    300: Color(0xFFAAE86C),
+    400: Color(0xFF91D453),
+    500: Color(0xFF7FC241),
+    600: Color(0xFF6FBA28),
+    700: Color(0xFF5DA719),
+    800: Color(0xFF4A8D0D),
+    900: Color(0xFF387106),
   };
 
-  static const MaterialColor secondary = MaterialColor(0xFFFFC947, SecondaryMaterial);
+  static const MaterialColor secondary = MaterialColor(0xFF7FC241, SecondaryMaterial);
 
   static const Color transparent = Color(0x00000000);
 
