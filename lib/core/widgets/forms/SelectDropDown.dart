@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constants/AppColors.dart';
 
 class ObjectDropDown<T extends dynamic> extends StatefulWidget {
@@ -8,7 +8,8 @@ class ObjectDropDown<T extends dynamic> extends StatefulWidget {
   final String text;
   final ValueChanged<T> onChanged;
   T selectedValue;
-  ObjectDropDown({Key key, this.items, this.text, this.selectedValue, this.onChanged}) : super(key: key);
+   double width;
+  ObjectDropDown({Key key, this.items, this.text, this.selectedValue, this.onChanged, this.width}) : super(key: key);
   @override
   State<ObjectDropDown<T>> createState() => _ObjectDropDownState<T>();
 }
@@ -18,6 +19,7 @@ class _ObjectDropDownState<T extends dynamic> extends State<ObjectDropDown<T>> {
 
   @override
   Widget build(BuildContext context) {
+    widget.width ??= 40.w;
 
     try {
       for(T element in widget.items){
@@ -61,14 +63,16 @@ class _ObjectDropDownState<T extends dynamic> extends State<ObjectDropDown<T>> {
         items: widget.items
             .map((item) => DropdownMenuItem<T>(
           value: item,
-          child: Text(
-            item?.name.toString(),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+          child: FittedBox(
+            child: Text(
+              item?.name.toString(),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
-            overflow: TextOverflow.ellipsis,
           ),
         ))
             .toList(),
@@ -86,7 +90,7 @@ class _ObjectDropDownState<T extends dynamic> extends State<ObjectDropDown<T>> {
         iconEnabledColor: AppColors.secondary,
         iconDisabledColor: Colors.grey,
         buttonHeight: 50,
-        buttonWidth: 160,
+        buttonWidth: widget.width,
         buttonPadding: const EdgeInsets.only(left: 14, right: 14),
         buttonDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
@@ -99,7 +103,7 @@ class _ObjectDropDownState<T extends dynamic> extends State<ObjectDropDown<T>> {
         itemHeight: 40,
         itemPadding: const EdgeInsets.only(left: 14, right: 14),
         dropdownMaxHeight: 200,
-        dropdownWidth: 200,
+       dropdownWidth: widget.width,
         dropdownPadding: null,
         dropdownDecoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),

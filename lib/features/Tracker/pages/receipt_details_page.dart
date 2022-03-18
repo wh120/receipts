@@ -6,6 +6,7 @@ import 'package:search_choices/search_choices.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import '../../../core/constants/AppColors.dart';
 import '../../../core/utils/Navigation/Navigation.dart';
+import '../../../core/widgets/data_table/data_table.dart';
 import '../../../core/widgets/forms/RoundedNumberField.dart';
 import '../theme/colors.dart';
 import 'create_budge_page.dart';
@@ -69,10 +70,16 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
           ),
 
           Expanded(
-              child: Padding(
-                child: buildItems(),
-                padding: const EdgeInsets.all(8.0),
-              )),
+              child: MyDataTable(
+                columns: [
+                  "الرقم",
+                  "الاسم",
+                  "الكمية",
+                  "الكمية 2",
+                ],
+                rows: List.generate(25, (index) => [index.toString(),"شراب عمار","12","12"]),
+              )
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -122,5 +129,4 @@ class _ReceiptDetailsPageState extends State<ReceiptDetailsPage> {
   }
 
 }
-
 

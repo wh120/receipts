@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:receipts/core/utils/Navigation/Navigation.dart';
 import 'package:receipts/core/widgets/forms/SelectDropDown.dart';
+import 'package:receipts/features/Tracker/json/department_json.dart';
+import 'package:receipts/features/Tracker/json/role_json.dart';
 
 import '../json/create_budget_json.dart';
 import '../theme/colors.dart';
@@ -96,8 +99,7 @@ class _CreatBudgetPageState extends State<CreatBudgetPage> {
                     margin: EdgeInsets.only(
                       left: 10,
                     ),
-                    width: 150,
-                    height: 170,
+
                     decoration: BoxDecoration(
                         color: white,
                         border: Border.all(
@@ -170,23 +172,19 @@ class _CreatBudgetPageState extends State<CreatBudgetPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "العميل",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13,
-                                color: Color(0xff67727d)),
-                          ),
-                          ObjectDropDown<ObjectDropDownItem>(
-                            selectedValue: ObjectDropDownItem(id :1 , name: "امين المستودع"),
-                            items: [
-                              ObjectDropDownItem(id :1 , name: "امين المستودع"),
-                              ObjectDropDownItem(id :2 , name: "رئيس القسم"),
-                              ObjectDropDownItem(id :3 , name: "مدير القسم"),
-      
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                "المستودع",
 
+                              ),
+                              ObjectDropDown<ObjectDropDownItem>(
+                     //       selectedValue: ObjectDropDownItem(id :0 , name: roles[0]["name"]),
+                                items: List.generate(departments.length, (index) => ObjectDropDownItem(id :index , name: departments[index]["name"])),
+                                text: 'العميل',
+                              ),
                             ],
-                            text: 'العميل',
                           ),
                         ],
                       ),
@@ -194,25 +192,56 @@ class _CreatBudgetPageState extends State<CreatBudgetPage> {
                     SizedBox(
                       width: 20,
                     ),
+
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: primary,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_forward),
-                        color: white,
-                        onPressed: (){
-                          Navigation.push(CreateReceiptPage());
-                        },
+                      width: (size.width - 140),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                "العميل",
+                           
+                              ),
+                              ObjectDropDown<ObjectDropDownItem>(
+                                //       selectedValue: ObjectDropDownItem(id :0 , name: roles[0]["name"]),
+                                items: List.generate(roles.length, (index) => ObjectDropDownItem(id :index , name: roles[index]["name"])),
+                                text: 'العميل',
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
+                    SizedBox(
+                      width: 20,
+                    ),
+
                   ],
                 )
               ],
             ),
-          )
+          ),
+          SizedBox(height: 25,),
+          Center(
+            child: TextButton(
+              child: Text('التالي'),
+
+              onPressed: (){
+                Navigation.push(CreateReceiptPage());
+              },
+            ),
+          ),
         ],
       ),
     );

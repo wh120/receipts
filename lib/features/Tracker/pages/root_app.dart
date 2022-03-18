@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
+import 'admin_page.dart';
+
 class RootApp extends StatefulWidget {
   @override
   _RootAppState createState() => _RootAppState();
@@ -17,7 +19,7 @@ class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   List<Widget> pages = [
     DailyPage(),
-    Container(),
+    AdminPage(),
     BudgetPage(),
     ProfilePage(),
     CreatBudgetPage()
