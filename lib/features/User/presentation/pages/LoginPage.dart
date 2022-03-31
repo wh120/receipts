@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import 'package:receipts/features/Tracker/pages/root_app.dart';
+import 'package:receipts/features/User/data/LoginResponseModel.dart';
+import 'package:receipts/features/User/domain/repo/UserRepository.dart';
 
+import '../../../../core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import '../../../../core/constants/AppColors.dart';
 import '../../../../core/utils/Navigation/Navigation.dart';
+import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
+import '../../data/LoginRequestModel.dart';
 
 // ------------------------------- 
 //  This project written by : Thalisonh on Github.com 
@@ -87,6 +93,7 @@ class ButtonLogin extends StatefulWidget {
 
 class _ButtonLoginState extends State<ButtonLogin> {
 
+  CreateModelCubit cubit ;
 
   @override
   Widget build(BuildContext context) {
@@ -119,26 +126,37 @@ class _ButtonLoginState extends State<ButtonLogin> {
         /// ------------------------------------------ 
         /// FlatButton with OK text and arrow icon 
         /// ------------------------------------------ 
-        child: FlatButton(
-          onPressed: () {
-            Navigation.push(RootApp());
+        child: CreateModel<LoginResponseModel>(
+          repositoryCallBack: (data) => UserRepository.login(data),
+          onCubitCreated: (c){
+            cubit=c;
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'تسجيل الدخول ',
-                style: TextStyle(
-                  color: Colors.deepOrange,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
+          onSuccess: (LoginResponseModel model){
+            AppSharedPreferences.accessToken=model.accessToken;
+            Navigation.pushReplacement(RootApp());
+          },
+          child: FlatButton(
+            onPressed: () {
+              if(cubit != null) cubit.createModel(LoginRequestModel(email: "admin@admin.com" , password: "120120"));
+
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'تسجيل الدخول ',
+                  style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.arrow_forward,
-                color: Colors.deepOrange,
-              ),
-            ],
+                Icon(
+                  Icons.arrow_forward,
+                  color: Colors.deepOrange,
+                ),
+              ],
+            ),
           ),
         ),
       ),

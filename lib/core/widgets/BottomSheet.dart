@@ -41,7 +41,7 @@ class MyBottomSheet{
                         },
                       ),
                       CustomButton(
-                        color: AppColors.gray,
+                        color: AppColors.grey,
                         text: 'Cancel'.tr(),
                         onPressed: () {
                           onClicked(false);

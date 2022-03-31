@@ -20,7 +20,7 @@ class CustomAvatar extends StatelessWidget {
       height: height ?? 10.w,
       width: width ?? 10.w,
       decoration: BoxDecoration(
-        border: Border.all(width: borderWidth, color: AppColors.gray),
+        border: Border.all(width: borderWidth, color: AppColors.grey),
         shape: BoxShape.circle,
         image: DecorationImage(
             fit: BoxFit.fill,

@@ -59,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
           borderRadius: BorderRadius.all(Radius.circular(50)),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: ListTile(
-            tileColor: AppColors.gray,
+            tileColor: AppColors.grey,
             leading: Icon(Icons.language),
             trailing: Icon(
                 Icons.arrow_forward_ios
@@ -90,7 +90,7 @@ class _SettingsPageState extends State<SettingsPage> {
       },
       children: [
         ExpansionPanel(
-          backgroundColor: AppColors.gray,
+          backgroundColor: AppColors.grey,
           headerBuilder: (BuildContext context, bool isExpanded1) {
             return ListTile(
                leading: Icon(Icons.phone ),
@@ -157,7 +157,7 @@ class _SettingsPageState extends State<SettingsPage> {
       borderRadius: BorderRadius.all(Radius.circular(50)),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: ListTile(
-        tileColor: AppColors.gray,
+        tileColor: AppColors.grey,
         leading: Icon(Icons.update),
         trailing: Icon(
             Icons.arrow_forward_ios

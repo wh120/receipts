@@ -86,7 +86,7 @@ class BaseTextField extends StatelessWidget {
   {
     return InputDecoration(
         enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: AppColors.gray)),
+            borderSide: BorderSide(color: AppColors.grey)),
         labelText: labelText,
         labelStyle: AppTheme.bodyText1,
         suffixIcon: suffixIcon,

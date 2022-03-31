@@ -21,7 +21,10 @@ class MyDataTable extends StatelessWidget {
             ),
           ),),
           rows: List.generate(rows.length, (index) => DataRow(
-            cells: List.generate(rows[index].length, (i) => DataCell(Text(rows[index][i]))),
+            cells: List.generate(columns.length, (i) {
+              String text = i >= rows[index].length ?'-': rows[index][i];
+              return DataCell(Text(text));
+            }),
           )),
         ),
       ),

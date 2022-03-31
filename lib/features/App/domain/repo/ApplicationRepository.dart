@@ -12,7 +12,7 @@ class ApplicationRepository{
     return await RemoteDataSource.request<LocalizationResponse>(
         converter: (json) => LocalizationResponse.fromJson(json),
         method: HttpMethod.GET,
-        url: ApiURLs.GET_LOCALIZATION,
+       // url: ApiURLs.GET_LOCALIZATION,
         isLongTime: true
     );
   }

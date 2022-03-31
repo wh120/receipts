@@ -38,16 +38,7 @@ import '../errors/forbidden_error.dart';
     assert(method != null);
     assert(url != null);
 
-    var baseOptions =  BaseOptions(
-        connectTimeout: isLongTime? 60 *1000 : 15 *1000,
-    );
 
-    Options options =Options(
-      headers: headers,
-      method: method ,
-      contentType: Headers.jsonContentType,
-      sendTimeout: 4000,
-    );
 
 
     if(files != null)
@@ -66,18 +57,35 @@ import '../errors/forbidden_error.dart';
     }
     try {
 
+      var baseOptions =  BaseOptions(
+        connectTimeout: isLongTime? 60 *1000 : 15 *1000,
+      );
+
+      Options requestOptions =Options(
+        headers: headers,
+        method: method ,
+        contentType: Headers.jsonContentType,
+        sendTimeout: 4000,
+      );
+
       Dio dio = new Dio(baseOptions);
   //    dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
 
-      dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
+      var options;
+      if(Platform.operatingSystem != 'windows'){
+        dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
 
+        options=buildCacheOptions(Duration(days: 7),maxStale: Duration(days: 14),options: requestOptions,forceRefresh: true);
+
+      }
+      else options = requestOptions;
 
 
       Response response;
       response = await dio.request(
            url,
         queryParameters: queryParameters,
-        options: buildCacheOptions(Duration(days: 7),maxStale: Duration(days: 14),options: options,forceRefresh: true),
+        options: options,
      //   cancelToken: cancelToken,
         data: files!= null? FormData.fromMap(data):data
       );

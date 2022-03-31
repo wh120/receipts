@@ -16,7 +16,8 @@ class RoundedTextField extends StatefulWidget {
   final Widget  prefix;
   final List<TextInputFormatter>  inputFormatters;
   final int maxLength;
-  const RoundedTextField({Key key, this.hintText, this.initialValue, this.onTap, this.readOnly=false, this.controller, this.labelText, this.keyboardType,  this.validator, this.prefix, this.helperText, this.inputFormatters, this.maxLength}) : super(key: key);
+  final ValueChanged<String> onChanged;
+  const RoundedTextField({Key key, this.hintText, this.initialValue, this.onTap, this.readOnly=false, this.controller, this.labelText, this.keyboardType,  this.validator, this.prefix, this.helperText, this.inputFormatters, this.maxLength, this.onChanged}) : super(key: key);
 
   @override
   _RoundedTextFieldState createState() => _RoundedTextFieldState();
@@ -32,6 +33,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
         bottom: 20.0,
       ),
       child: TextFormField(
+        onChanged: widget.onChanged,
         maxLength: widget.maxLength,
 
         inputFormatters: widget.inputFormatters,

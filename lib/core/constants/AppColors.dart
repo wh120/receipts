@@ -6,7 +6,7 @@ class AppColors {
 
 
   static const Color white1 = Color(0xffF0F9FE);
-  static const Color gray = Color(0xffEDEDED);
+  static const Color grey = Color(0xffEDEDED);
 
 
   static const Map<int, Color> PrimarySwatch = {
@@ -52,7 +52,8 @@ class AppColors {
   static const Color transparent = Color(0x00000000);
 
 
-  static const Color white = Color(0xFFE5E5E5);
+  static const Color white = Colors.white;
+  static const Color black = Colors.black;
 
  // static const Color gray = Color(0xFFBDBDBD);
   static const Color gray1 = Color(0xFFA4A4A4);

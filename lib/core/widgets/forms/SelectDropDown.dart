@@ -19,7 +19,7 @@ class _ObjectDropDownState<T extends dynamic> extends State<ObjectDropDown<T>> {
 
   @override
   Widget build(BuildContext context) {
-    widget.width ??= 40.w;
+    widget.width ??= 50.w;
 
     try {
       for(T element in widget.items){

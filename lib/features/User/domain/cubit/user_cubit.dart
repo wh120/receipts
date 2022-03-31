@@ -22,11 +22,11 @@ part 'user_state.dart';
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitial());
 
-  Future<void> otpLogin(String phoneNumber )async
+  Future<void> login(String email , String password )async
   {
     emit(LoginLoading());
 
-    var response= await UserRepository.otpLogin(phoneNumber);
+    var response= await UserRepository.login(  null);
 
     if(response is OtpLoginResponseModel){
       emit(OtpSuccessfully(response.code));
@@ -41,37 +41,7 @@ class UserCubit extends Cubit<UserState> {
       emit(LoginError(response.message));
     }
   }
-  Future<void> verifyLogin(String phoneNumber , String verificationCode)async
-  {
-    emit(LoginLoading());
 
-    var response= await UserRepository.verifyLogin(
-        LoginRequestModel(
-            phoneNumber:phoneNumber ,
-            verificationCode: verificationCode,
-            rememberClient: true
-        )
-    );
-
-        if(response is LoginResponseModel){
-
-          AppSharedPreferences.accessToken = response.accessToken;
-          bool result =await afterLogin();
-          if(result)
-           emit(LoginSuccessfully());
-          else
-            emit(LoginError('Error occurred while login'.tr()));
-        }
-
-        else if(response is BaseError){
-          print(response.message);
-          emit(LoginError(response.message));
-        }
-
-        else if (response is ServerError){
-          emit(LoginError(response.message));
-        }
-  }
 
   Future<void> loginWithToken( )async
   {

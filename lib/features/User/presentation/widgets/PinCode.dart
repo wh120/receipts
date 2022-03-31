@@ -205,7 +205,7 @@ class PinCodeState extends State<PinCode> {
         eachFieldHeight: 7.0.h,
         eachFieldPadding: EdgeInsets.all(0),
         onSubmit: (s)async{
-          context.read<UserCubit>().verifyLogin(widget.phone,s);
+       //   context.read<UserCubit>().verifyLogin(widget.phone,s);
        //   await Future.delayed(Duration(milliseconds: 90), () => false);
           _pinPutController.clear();
         },

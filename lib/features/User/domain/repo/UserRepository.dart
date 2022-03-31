@@ -8,7 +8,7 @@ import '/features/User/data/LoginResponseModel.dart';
 import '/features/User/data/PermissionListResponseModel.dart';
 
 class UserRepository {
-  static Future<BaseResultModel> verifyLogin(LoginRequestModel loginModel) async {
+  static Future<BaseResultModel> login(LoginRequestModel loginModel) async {
 
 
     return await RemoteDataSource.request<LoginResponseModel>(
@@ -16,19 +16,9 @@ class UserRepository {
         method: HttpMethod.POST,
         data: loginModel.toJson(),
         withAuthentication: false,
-        url: ApiURLs.VERIFY_LOGIN);
+        url: ApiURLs.LOGIN);
   }
-  static Future<BaseResultModel> otpLogin(String phone) async {
 
-
-    var res =  await RemoteDataSource.request<OtpLoginResponseModel>(
-        converter: (json) => OtpLoginResponseModel.fromJson(json),
-        method: HttpMethod.POST,
-        data: {'phoneNumber':phone},
-        withAuthentication: false,
-        url: ApiURLs.OTP_AUTH_LOGIN);
-    return res;
-  }
   static Future<BaseResultModel> getPermissions( ) async {
     return await RemoteDataSource.request<PermissionListResponse>(
         converter: (json) => PermissionListResponse.fromJson(json),
@@ -45,6 +35,7 @@ class UserRepository {
         data: {
           "languageName": lang
         },
-        url: ApiURLs.CHANGE_LANGUAGE);
+    //    url: ApiURLs.CHANGE_LANGUAGE
+    );
   }
 }

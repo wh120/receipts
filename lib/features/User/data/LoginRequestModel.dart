@@ -1,25 +1,18 @@
 class LoginRequestModel {
-  String userNameOrEmailAddress;
+  String email;
   String password;
-  bool rememberClient;
-  String phoneNumber;
-  String verificationCode;
 
-  LoginRequestModel(
-      {this.userNameOrEmailAddress,
-        this.password,
-        this.rememberClient,
-        this.phoneNumber,
-        this.verificationCode});
+  LoginRequestModel({this.email, this.password});
+
+  LoginRequestModel.fromJson(Map<String, dynamic> json) {
+    email = json['email'];
+    password = json['password'];
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userNameOrEmailAddress'] = this.userNameOrEmailAddress;
+    data['email'] = this.email;
     data['password'] = this.password;
-    data['rememberClient'] = this.rememberClient;
-    data['phoneNumber'] = this.phoneNumber;
-    data['verificationCode'] = this.verificationCode;
     return data;
   }
-
 }

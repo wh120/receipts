@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
       return LoginPage();
     } else if(AppSharedPreferences.hasAccessToken) {
 
-      return HomeApp();
+      return RootApp();
     }
     else{
       return  LoginPage();
