@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
+import 'package:receipts/features/receipt/data/create_receipt_request.dart';
 import 'package:receipts/features/receipt/data/item_list_response.dart';
+import 'package:receipts/features/receipt/data/receipt_type_json.dart';
 import 'package:receipts/features/receipt/repository/ReceiptRepository.dart';
 import 'package:search_choices/search_choices.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
+import '../../../../core/API/CoreModels/empty_model.dart';
+import '../../../../core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
 import '../../../../core/widgets/data_table/data_table.dart';
 import '/core/constants/AppColors.dart';
@@ -57,13 +62,22 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "إنشاء إيصال",
+                        "إنشاء إيصال :",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
+                            color: AppColors.black),
+                      ),
+
+                      SizedBox(width: 5,),
+                      Text(
+                        receipt_type[widget.receiptType]["name"],
+                        style: TextStyle(
+                            fontSize: 20,
+
                             color: AppColors.black),
                       ),
                     ],
@@ -73,7 +87,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'إلى',
+                        'إلى :',
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -84,7 +98,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                         widget.department.name,
                         style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.bold,
+
                             color: AppColors.black),
                       ),
                       SizedBox(width: 5,),
@@ -92,7 +106,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                         widget.role.name,
                         style: TextStyle(
                             fontSize: 15,
-                            fontWeight: FontWeight.bold,
+
                             color: AppColors.black),
                       ),
                     ],
@@ -111,11 +125,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigation.pop();
-                    },
-                    child: Text('إرسال')),
+                buildCreateButton(),
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -153,6 +163,38 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
       ),
     );
   }
+
+  CreateModelCubit cubit;
+   buildCreateButton() {
+
+    return CreateModel<EmptyModel>(
+      repositoryCallBack: (data) => ReceiptRepository.createReceipt(data),
+      onSuccess: (model){
+        Navigation.pop();
+      },
+      onCubitCreated: (c){
+        cubit=c;
+      },
+
+      child: ElevatedButton(
+                    onPressed: () {
+                       if(cubit != null){
+                         cubit.createModel(CreateReceiptRequest(
+                           mustApprovedByRoleId: widget.role.id,
+                           receiptTypeId: widget.receiptType+1,
+                           items: List.generate(records.length, (index) {
+                             return ReceiptItem(
+                               id: records[index].id,
+                               value: records[index].unitValue
+
+                             );
+                           })
+                         ));
+                       }
+                    },
+                    child: Text('إرسال')),
+    );
+  }
   loadTable(){
     return GetModel<ItemListResponseModel>(
       repositoryCallBack: (data) => ReceiptRepository.getItems(),
@@ -188,10 +230,10 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
         List<String> list = [
           (index+1).toString(),
           records[index].name ,
-          records[index].unitValue.toString(),
+          records[index].unitValue.toString() + records[index].unit,
         ];
         records[index].units.forEach((element) {
-          list.add(element.value.toString());
+          list.add(element.value.toString() + element.name) ;
         });
         return list;
       }),
@@ -237,11 +279,16 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
             ),
             if(item != null  )
               RoundedNumberField(
-                controller: TextEditingController(text: item.unitValue.toString()),
+
+
+                controller: TextEditingController(text: item.unitValue==0 ? '':item.unitValue.toString()),
                 onChanged: (value) {
-                  item.unitValue = int.parse(value);
+                  print(value);
+                  item.unitValue = int.tryParse(value)??0;
+
+                  print(item.unitValue);
                   item.units.forEach((element) { 
-                    element.value = int.parse(value)/element.conversionFactor;
+                    element.value = item.unitValue/element.conversionFactor;
                   });
                   setState(() {
 
@@ -257,10 +304,14 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                     item.units.length,
                         (i) {
                       return RoundedNumberField(
-                        controller: TextEditingController(text: item.units[i].value.toString()),
-                        // onChanged: (value) {
-                        //   records[index].count1 = int.parse(value);
-                        // },
+                        controller: TextEditingController(text: ( item.unitValue ==0? '':item.unitValue ~/ item.units[i].conversionFactor ).toString() ),
+                        onChanged: (value) {
+                          item.units[i].value = double.tryParse(value)??0.0;
+                          item.unitValue = item.units[i].value.toInt() * item.units[i].conversionFactor;
+                          setState(() {
+
+                          });
+                        },
 
                         hintText: item.units[i].name,
 

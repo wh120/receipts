@@ -59,13 +59,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   getBody() {
-    return GetModel<MyProfile>(
+    return GetModel<User>(
       repositoryCallBack: (data) => ProfileRepository.getProfile(),
-      modelBuilder: (MyProfile model) => buildBody(model),
+      modelBuilder: (User model) => buildBody(model),
     );
   }
 
-  Widget buildBody(MyProfile model) {
+  Widget buildBody(User model) {
     var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(

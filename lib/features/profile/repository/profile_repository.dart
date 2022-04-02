@@ -10,8 +10,8 @@ import '/features/Homepage/data/SliderListModel.dart';
 class ProfileRepository{
 
   static Future<BaseResultModel> getProfile( ) async {
-    return await RemoteDataSource.request<MyProfile>(
-        converter: (json) => MyProfile.fromJson(json),
+    return await RemoteDataSource.request<User>(
+        converter: (json) => User.fromJson(json),
         method: HttpMethod.GET,
         withAuthentication: true,
 

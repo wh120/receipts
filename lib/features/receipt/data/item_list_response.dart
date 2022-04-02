@@ -36,6 +36,7 @@ class Item {
   String updatedAt;
   List<Unit> units;
 
+
   Item(
       {this.id,
         this.code,
@@ -59,6 +60,7 @@ class Item {
     itemCategoryId = json['item_category_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    unitValue = json['value'] != null ? new Value.fromJson(json['value']).value : 0;
     if (json['units'] != null) {
       units = new List<Unit>();
       json['units'].forEach((v) {
@@ -109,7 +111,8 @@ class Unit {
   Unit.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    conversionFactor = json['conversion_factor'];
+    value=0;
+    conversionFactor = json['conversion_factor']??1;
     isDefault = json['is_default'];
     itemId = json['item_id'];
     createdAt = json['created_at'];
@@ -125,6 +128,28 @@ class Unit {
     data['item_id'] = this.itemId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class Value {
+  int receiptId;
+  int itemId;
+  int value;
+
+  Value({this.receiptId, this.itemId, this.value});
+
+  Value.fromJson(Map<String, dynamic> json) {
+    receiptId = json['receipt_id'];
+    itemId = json['item_id'];
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['receipt_id'] = this.receiptId;
+    data['item_id'] = this.itemId;
+    data['value'] = this.value;
     return data;
   }
 }

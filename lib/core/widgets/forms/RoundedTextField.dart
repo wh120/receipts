@@ -33,6 +33,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
         bottom: 20.0,
       ),
       child: TextFormField(
+     //   textAlign: TextAlign.left ,
         onChanged: widget.onChanged,
         maxLength: widget.maxLength,
 

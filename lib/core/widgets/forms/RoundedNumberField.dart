@@ -16,6 +16,17 @@ class RoundedNumberField extends StatelessWidget {
   Widget build(BuildContext context) {
     return  RoundedTextField(
 
+
+      // onTap: (){
+      //   if(controller != null){
+      //     if(double.tryParse(controller.text) != null){
+      //       if(double.tryParse(controller.text) == 0.0){
+      //         controller.text='';
+      //       }
+      //     }
+      //   }
+      // },
+
       onChanged: onChanged,
       controller: controller,
       hintText: hintText,

@@ -1,5 +1,6 @@
 
- import 'package:receipts/features/receipt/data/item_list_response.dart';
+ import 'package:receipts/core/API/CoreModels/empty_model.dart';
+import 'package:receipts/features/receipt/data/item_list_response.dart';
 
 import '/core/API/CoreModels/base_result_model.dart';
 import '/core/API/data_source/remote_data_source.dart';
@@ -17,6 +18,16 @@ class ReceiptRepository{
         withAuthentication: true,
 
         url: ApiURLs.GET_ITEMS);
+
+  }
+
+  static Future<BaseResultModel> createReceipt(data ) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        data: data.toJson(),
+        url: ApiURLs.CREATE_RECEIPT);
 
   }
 
