@@ -12,6 +12,8 @@ class ApiURLs {
    static const String GET_DEPARTMENTS = BASE_URL +'/api/Department';
    static const String GET_ITEMS = BASE_URL +'/api/Item';
    static const String CREATE_RECEIPT = BASE_URL +'/api/Receipt';
+   static const String GET_MY_APPROVAL_RECEIPTS = BASE_URL +'/api/Receipt/MyApprovalReceipts';
+   static const String APPROVE_RECEIPT = BASE_URL +'/api/Receipt/{id}/approveReceipt';
 
    static const String VERIFY_LOGIN = BASE_URL +'/api/TokenAuth/VerifyLoginFromPatiantApp';
    static const String OTP_AUTH_LOGIN = BASE_URL +'/api/services/app/Account/LoginFromPatientApp';

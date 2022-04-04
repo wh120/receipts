@@ -68,8 +68,10 @@ class _GetModelState<Model> extends State<CreateModel<Model>> {
           return  widget.child;
       },
       listener: (context, state) {
-        if(state is CreateModelSuccessfully)
+        if(state is CreateModelSuccessfully) {
+          showSnackBar(state.message );
           widget.onSuccess(state.model);
+        }
         if(state is Error){
             showSnackBar(state.message.toString());
           //  ScaffoldMessenger.of(context).showSnackBar(snackBar(state.message));

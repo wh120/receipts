@@ -15,7 +15,7 @@ class GeneralCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 0.7.h),
+        padding: EdgeInsets.only(bottom: 0.5.h),
         child: InkWell(
           onTap: onTap ,
           customBorder: RoundedRectangleBorder(
@@ -29,7 +29,7 @@ class GeneralCard extends StatelessWidget {
 
             ),
             child: Padding(
-              padding: EdgeInsets.all(5.0.r),
+              padding: EdgeInsets.all(3.0.r),
               child:  child,
             ),
           ),

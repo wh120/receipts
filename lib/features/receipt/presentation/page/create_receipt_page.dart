@@ -8,9 +8,11 @@ import 'package:receipts/features/Tracker/json/role_json.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
+import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
 import '../../../Tracker/json/create_budget_json.dart';
+import '../../../admin/data/role_list_response.dart';
 import '../../../admin/repository/admin_repository.dart';
 import '../../data/receipt_type_json.dart';
 import 'fill_receipt_page.dart';
@@ -165,12 +167,16 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
               child: Text('التالي'),
 
               onPressed: (){
-                if(selectedRole != null && selectedDepartment != null)
+                if(selectedRole != null && selectedDepartment != null) {
+                  selectedRole.department = selectedDepartment;
                   Navigation.push(FillReceiptPage(
-                    department: selectedDepartment,
-                    role: selectedRole,
-                    receiptType: selectedReceiptType,
+                    receipt: Receipt(
+                      items: [],
+                      mustApprovedByRole: selectedRole,
+                      receiptTypeId: selectedReceiptType+1,
+                    ),
                   ));
+                }
               },
             ),
           ),
@@ -187,7 +193,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
   }
 
   Department selectedDepartment;
-  Roles selectedRole;
+  Role selectedRole;
    buildDepartmentsAndRoles(DepartmentListResponse model ) {
 
     return Padding(
@@ -254,7 +260,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                               "العميل",
 
                             ),
-                            ObjectDropDown<Roles>(
+                            ObjectDropDown<Role>(
                               selectedValue: selectedRole,
                               items: selectedDepartment?.roles??[],
                               onChanged: (role){

@@ -1,3 +1,5 @@
+import 'package:receipts/features/receipt/presentation/page/my_approval_receipts_page.dart';
+
 import '../../admin/presentation/pages/admin_page.dart';
 import '../../profile/presentation/page/profile_page.dart';
 import '../../receipt/presentation/page/create_receipt_page.dart';
@@ -23,7 +25,7 @@ class _RootAppState extends State<RootApp> {
   List<Widget> pages = [
     DailyPage(),
     AdminPage(),
-    BudgetPage(),
+    MyApprovalReceiptsPage(),
     ProfilePage(),
     CreateReceiptPage()
   ];

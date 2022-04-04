@@ -5,6 +5,7 @@ import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/receipt/data/create_receipt_request.dart';
 import 'package:receipts/features/receipt/data/item_list_response.dart';
+import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_type_json.dart';
 import 'package:receipts/features/receipt/repository/ReceiptRepository.dart';
 import 'package:search_choices/search_choices.dart';
@@ -22,22 +23,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class FillReceiptPage extends StatefulWidget {
-  final Department department;
-  final Roles role;
-  final int receiptType;
 
-  const FillReceiptPage({Key key, this.department, this.role, this.receiptType}) : super(key: key);
+  final Receipt receipt;
+
+  const FillReceiptPage({Key key,   this.receipt}) : super(key: key);
   @override
   _CreateReceiptPageState createState() => _CreateReceiptPageState();
 }
 
 class _CreateReceiptPageState extends State<FillReceiptPage> {
-  List<Item> records = [];
-  List<DropdownMenuItem<Item>> items = [];
-  String selectedValueSingleDialog;
-
+   List<DropdownMenuItem<Item>> items = [];
+    bool isNew;
   @override
   void initState() {
+    isNew = widget.receipt.id ==null;
     super.initState();
   }
 
@@ -65,7 +64,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                   //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "إنشاء إيصال :",
+                        isNew? "إنشاء إيصال :": "تعديل إيصال :",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -74,7 +73,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
 
                       SizedBox(width: 5,),
                       Text(
-                        receipt_type[widget.receiptType]["name"],
+                        receipt_type[widget.receipt.receiptTypeId]["name"],
                         style: TextStyle(
                             fontSize: 20,
 
@@ -95,7 +94,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                       ),
                       SizedBox(width: 5,),
                       Text(
-                        widget.department.name,
+                        widget.receipt.mustApprovedByRole.department.name,
                         style: TextStyle(
                             fontSize: 15,
 
@@ -103,7 +102,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                       ),
                       SizedBox(width: 5,),
                       Text(
-                        widget.role.name,
+                        widget.receipt.mustApprovedByRole.name,
                         style: TextStyle(
                             fontSize: 15,
 
@@ -125,11 +124,12 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildCreateButton(),
+                isNew? buildCreateButton():buildApproveButton(),
+                if(isNew)
                 ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        // records.add(Item());
+
                         showDialog(
                           context: context,
                           useRootNavigator: true,
@@ -137,11 +137,10 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                           builder: (_){
                             return Center(
                               child: Container(
-
                                   child: SelectItemWidget(
                                     items: items,
                                     onDone: (Item item){
-                                      records.add(item);
+                                      widget.receipt.items.add(item);
                                       setState(() {
 
                                       });
@@ -180,21 +179,41 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                     onPressed: () {
                        if(cubit != null){
                          cubit.createModel(CreateReceiptRequest(
-                           mustApprovedByRoleId: widget.role.id,
-                           receiptTypeId: widget.receiptType+1,
-                           items: List.generate(records.length, (index) {
+                           mustApprovedByRoleId: widget.receipt.mustApprovedByRole.id,
+                           receiptTypeId: widget.receipt.receiptTypeId,
+                           items: List.generate(widget.receipt.items.length, (index) {
                              return ReceiptItem(
-                               id: records[index].id,
-                               value: records[index].unitValue
+                               id: widget.receipt.items[index].id,
+                               value: widget.receipt.items[index].unitValue
 
                              );
                            })
                          ));
                        }
                     },
-                    child: Text('إرسال')),
+                    child: Text( 'إرسال' )),
     );
   }
+   buildApproveButton() {
+
+     return CreateModel<EmptyModel>(
+       repositoryCallBack: (data) => ReceiptRepository.approveReceipt(data),
+       onSuccess: (model){
+         Navigation.pop();
+       },
+       onCubitCreated: (c){
+         cubit=c;
+       },
+
+       child: ElevatedButton(
+           onPressed: () {
+             if(cubit != null){
+               cubit.createModel(widget.receipt.id);
+             }
+           },
+           child: Text(isNew?'إرسال':'موافقة')),
+     );
+   }
   loadTable(){
     return GetModel<ItemListResponseModel>(
       repositoryCallBack: (data) => ReceiptRepository.getItems(),
@@ -217,8 +236,14 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
 
     ];
     int maxUnitCount=0;
-    records.forEach((element) {
-      if(element.units.length >maxUnitCount) maxUnitCount = element.units.length;
+    widget.receipt.items.forEach((element) {
+      if(element.units.length >maxUnitCount) {
+        maxUnitCount = element.units.length;
+      }
+      element.units.forEach((u) {
+        u.value = (u.conversionFactor/ element.unitValue   ).toDouble();
+      });
+
     });
     for(int i = 0 ;i < maxUnitCount ; i++){
       col.add('الكمية ${i+2}');
@@ -226,13 +251,13 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
 
     return MyDataTable(
       columns: col,
-      rows: List.generate(records.length, (index) {
+      rows: List.generate(widget.receipt.items.length, (index) {
         List<String> list = [
           (index+1).toString(),
-          records[index].name ,
-          records[index].unitValue.toString() + records[index].unit,
+          widget.receipt.items[index].name ,
+          widget.receipt.items[index].unitValue.toString() + widget.receipt.items[index].unit,
         ];
-        records[index].units.forEach((element) {
+        widget.receipt.items[index].units.forEach((element) {
           list.add(element.value.toString() + element.name) ;
         });
         return list;

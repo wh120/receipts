@@ -74,7 +74,7 @@ class ServerError extends BaseResultModel{
   ServerError.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     message = json['message'];
-    details = json['details'];
+    details = json['details'].toString();
     if (json['validationErrors'] != null) {
       validationErrors = new List<ValidationErrors>();
       json['validationErrors'].forEach((v) {

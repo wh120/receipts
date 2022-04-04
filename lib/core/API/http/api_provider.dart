@@ -107,6 +107,7 @@ import '../errors/forbidden_error.dart';
       else
         decodedJson = response.data;
 
+      print(decodedJson);
 
 
       return BaseResponseModel.fromJson(json: decodedJson,fromJson: converter);
@@ -126,7 +127,9 @@ import '../errors/forbidden_error.dart';
         if(e.response.data!=null)
           if(!(e.response.data is String))
            {
+
              json =e.response.data;
+             print(json);
            }
 
       return BaseResponseModel.fromJson(json: json,error: error);

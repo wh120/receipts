@@ -19,7 +19,7 @@ class CreateModelCubit<Model> extends Cubit<CreateModelState> {
     var response = await getData(requestData);
     if(response is Model)
     {
-      emit(CreateModelSuccessfully (response ));
+      emit(CreateModelSuccessfully (response ,'تم'));
     }
     else if(response is BaseError)  emit(Error( response.message));
     else if (response is ServerError) emit(Error(response.message ));

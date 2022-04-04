@@ -1,26 +1,27 @@
+import 'package:receipts/core/API/CoreModels/base_result_model.dart';
 import 'package:receipts/features/profile/data/profile_response.dart';
 
 import '../../admin/data/role_list_response.dart';
 import 'item_list_response.dart';
 
-class ReceiptListResponse {
-  List<Receipt> items;
+class ReceiptListResponse extends ListResultModel<Receipt>{
+  List<Receipt> list;
 
-  ReceiptListResponse({this.items});
+  ReceiptListResponse({this.list});
 
   ReceiptListResponse.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = new List<Receipt>();
+      list = new List<Receipt>();
       json['items'].forEach((v) {
-        items.add(new Receipt.fromJson(v));
+        list.add(new Receipt.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.items != null) {
-      data['items'] = this.items.map((v) => v.toJson()).toList();
+    if (this.list != null) {
+      data['items'] = this.list.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -35,8 +36,8 @@ class Receipt {
   int receiptTypeId;
   String description;
   String acceptedAt;
-  String createdAt;
-  String updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
   List<Item> items;
   Role mustApprovedByRole;
   User createdByUser;
@@ -52,7 +53,7 @@ class Receipt {
         this.acceptedAt,
         this.createdAt,
         this.updatedAt,
-        this.items,
+        this.items ,
         this.mustApprovedByRole,
         this.createdByUser});
 
@@ -65,8 +66,8 @@ class Receipt {
     receiptTypeId = json['receipt_type_id'];
     description = json['description'];
     acceptedAt = json['accepted_at'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    createdAt = DateTime.parse(json['created_at']);
+    updatedAt = DateTime.parse(json['updated_at']);
     if (json['items'] != null) {
       items = new List<Item>();
       json['items'].forEach((v) {

@@ -81,7 +81,7 @@ dev_dependencies:
   shared_preferences: ^2.0.8
   intl: ^0.17.0
   #  r_upgrade: ^0.3.5
-#  flutter_fcm: ^0.0.13
+  flutter_fcm: ^0.0.13
 
   url_launcher: ^6.0.3
   image_picker: ^0.8.4+2

@@ -9,7 +9,8 @@ class Loading extends CreateModelState  {}
 
 class CreateModelSuccessfully extends CreateModelState  {
   final model;
-  CreateModelSuccessfully(this.model);
+  final message;
+  CreateModelSuccessfully(this.model, this.message);
 }
 
 class Error  extends CreateModelState  {
