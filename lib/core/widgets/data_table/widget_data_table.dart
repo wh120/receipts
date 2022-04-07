@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class MyDataTable extends StatelessWidget {
+class WidgetDataTable extends StatelessWidget {
 
-  final List<String> columns;
-  final List<List<String>> rows;
+  final List<Widget> columns;
+  final List<List<Widget>> rows;
 
 
-  const MyDataTable({Key key, this.columns, this.rows}) : super(key: key);
+  const WidgetDataTable({Key key, this.columns, this.rows}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +16,12 @@ class MyDataTable extends StatelessWidget {
         child: DataTable(
 
           columns: List.generate(columns.length, (index) => DataColumn(
-            label: Text(
-              columns[index],
-            ),
+            label: columns[index],
           ),),
           rows: List.generate(rows.length, (index) => DataRow(
             cells: List.generate(columns.length, (i) {
-              String text = i >= rows[index].length ?'-': rows[index][i];
-              return DataCell(Text(text),onLongPress:  (){print('$index');});
+              Widget text = i >= rows[index].length ?Text('-'): rows[index][i];
+              return DataCell(text);
             }),
           )),
         ),

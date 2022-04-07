@@ -1,4 +1,6 @@
 
+import 'package:receipts/core/API/CoreModels/empty_model.dart';
+
 import '../data/department_list_response.dart';
 import '/core/API/CoreModels/base_result_model.dart';
 import '/core/API/data_source/remote_data_source.dart';
@@ -27,6 +29,15 @@ class AdminRepository{
         data: department.toJson(),
 
         url: ApiURLs.GET_DEPARTMENTS);
+
+  }
+
+  static Future<BaseResultModel> deleteDepartment(int id) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.DELETE,
+        withAuthentication: true,
+        url: ApiURLs.GET_DEPARTMENT.replaceFirst('{id}', id.toString()));
 
   }
 

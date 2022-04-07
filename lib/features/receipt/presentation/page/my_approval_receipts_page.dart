@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:receipts/core/Boilerplate/Pagination/cubits/pagination_cubit.dart';
 import 'package:receipts/core/constants/AppColors.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/receipt/data/receipt_type_json.dart';
@@ -20,6 +21,8 @@ class MyApprovalReceiptsPage extends StatefulWidget {
 
 class _BudgetPageState extends State<MyApprovalReceiptsPage> {
   int activeDay = 3;
+
+  PaginationCubit cubit;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +89,9 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: PaginationList<Receipt>(
+        onCubitCreated: (c){
+          cubit=c;
+        },
         repositoryCallBack: (data) => ReceiptRepository.getMyApprovalReceipts(data),
         listBuilder: (List<Receipt> list)=>buildList(list),
       ),
@@ -106,7 +112,11 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
    GeneralCard buildReceiptCard(Receipt receipt, int index) {
      return GeneralCard(
        onTap: (){
-         Navigation.push(FillReceiptPage(receipt: receipt,));
+         Navigation.push(FillReceiptPage(receipt: receipt,)).then((value) {
+           print('www');
+           cubit?.getList();
+         });
+
        },
        child: Container(
          width: double.infinity,

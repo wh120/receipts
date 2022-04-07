@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
+import 'package:receipts/core/Boilerplate/GetModel/cubits/get_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
+import 'package:receipts/core/widgets/BottomSheet.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/admin/repository/admin_repository.dart';
 import 'package:search_choices/search_choices.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
+import '../../../../core/widgets/data_table/widget_data_table.dart';
 import '../../../Tracker/json/department_json.dart';
 import '/core/constants/AppColors.dart';
 import '/core/utils/Navigation/Navigation.dart';
@@ -25,6 +28,8 @@ class DepartmentPage extends StatefulWidget {
 }
 
 class _DepartmentPageState extends State<DepartmentPage> {
+  GetModelCubit cubit;
+
 
 
   @override
@@ -78,7 +83,13 @@ class _DepartmentPageState extends State<DepartmentPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).restorablePush(_dialogBuilder);
+                  showDialog(
+                      context: context,
+                      builder: (_)=>Dialog(child: Container(height:50.h ,child: CreateDepartmentWidget(
+                        onCreated: (_){
+                          cubit.getModel();
+                        },
+                      )) ));
                 },
                 child: Text('إضافة قسم جديد')
             ),
@@ -90,6 +101,9 @@ class _DepartmentPageState extends State<DepartmentPage> {
 
   getBody(){
     return GetModel<DepartmentListResponse>(
+      onCubitCreated: (c) {
+        cubit=c;
+      },
       repositoryCallBack: (data) => AdminRepository.getDepartments(),
       modelBuilder: (DepartmentListResponse model)=>buildbody(model),
 
@@ -98,31 +112,40 @@ class _DepartmentPageState extends State<DepartmentPage> {
     buildbody(DepartmentListResponse model) {
     return SingleChildScrollView(
       physics: AlwaysScrollableScrollPhysics(),
-      child: MyDataTable(
+      child: WidgetDataTable(
         columns: [
-          "الرقم",
-          "الاسم",
+          Text("الرقم"),
+          Text("الاسم"),
+          Text("الأوامر"),
 
         ],
-        rows: List.generate(model.items.length, (index) => [model.items[index].id.toString(),model.items[index].name]),
+        rows: List.generate(model.items.length, (index) => [
+          Text(model.items[index].id.toString()),
+          Text(model.items[index].name) ,
+          IconButton(onPressed: (){
+            MyBottomSheet.showConfirmBottomSheet(
+                context: context,
+                text: 'هل تريد الحذف' ,
+                onClicked: (b){
+                 if(b)cubit?.getModel();
+                },repositoryCallBack: (data)=>AdminRepository.deleteDepartment(model.items[index].id),
+
+            );
+          }, icon: Icon(Icons.delete))]),
       ),
     );
   }
   
-  static Route<Object> _dialogBuilder(
-      BuildContext context, Object arguments) {
-    return DialogRoute<void>(
-      context: context,
-      builder: (BuildContext context) =>
-          Dialog(child: Container(height:50.h ,child: CreateDepartmentWidget()) ),
-    );
-  }
+
 
 
 
 }
 
 class CreateDepartmentWidget extends StatefulWidget {
+  final ValueChanged onCreated;
+
+  const CreateDepartmentWidget({Key key, this.onCreated}) : super(key: key);
   @override
   _CreateDepartmentWidgetState createState() => _CreateDepartmentWidgetState();
 }
@@ -157,7 +180,10 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
                   cubit=c;
                 },
                 onSuccess: (m){
+
                   Navigation.pop();
+                  widget.onCreated(m);
+
                 },
                 child: ElevatedButton(
                     onPressed: () {

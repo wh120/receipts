@@ -18,7 +18,7 @@ class CustomButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 15.0.sp,
+
             //  fontFamily: 'SFUIDisplay',
             //   fontWeight: FontWeight.bold,
           ),

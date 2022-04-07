@@ -241,7 +241,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
         maxUnitCount = element.units.length;
       }
       element.units.forEach((u) {
-        u.value = (u.conversionFactor/ element.unitValue   ).toDouble();
+        u.value = ( element.unitValue / u.conversionFactor  ).toDouble().roundToDouble();
       });
 
     });

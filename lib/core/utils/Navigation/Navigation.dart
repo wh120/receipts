@@ -11,8 +11,8 @@ class Navigation{
     Navigation.push(page);
   }
 
-  static push(Widget page){
-    Navigator.push(
+  static Future push(Widget page)async{
+    return await Navigator.push(
       Keys.navigatorKey.currentContext,
       CupertinoPageRoute(
 
