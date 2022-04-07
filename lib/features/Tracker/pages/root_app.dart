@@ -24,8 +24,9 @@ class RootApp extends StatefulWidget {
 class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   List<Widget> pages = [
-    DailyReceiptsPage(),
+
     AdminPage(),
+    DailyReceiptsPage(),
     MyApprovalReceiptsPage(),
     ProfilePage(),
     CreateReceiptPage()
@@ -71,7 +72,7 @@ class _RootAppState extends State<RootApp> {
 
   Widget getFooter() {
     List<IconData> iconItems = [
-      Ionicons.md_calendar,
+      Ionicons.ios_settings,
       Ionicons.md_stats,
       Ionicons.md_wallet,
       Ionicons.ios_person,

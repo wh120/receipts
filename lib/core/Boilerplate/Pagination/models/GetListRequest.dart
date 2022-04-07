@@ -17,7 +17,7 @@ class GetListRequest{
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if(this.skipCount !=null) data['SkipCount'] = this.skipCount;
+    if(this.skipCount !=null) data['page'] = this.skipCount;
     if(this.maxResultCount !=null) data['MaxResultCount'] = this.maxResultCount;
     if(this.sorting !=null) data['Sorting'] = this.sorting;
     if(this.keyword !=null) data['Keyword'] = this.keyword;

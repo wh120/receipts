@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:receipts/features/receipt/presentation/page/receipts_list_page.dart';
 
 import '../../../../core/constants/AppColors.dart';
 import 'departments_page.dart';
@@ -78,6 +79,16 @@ class _AdminPageState extends State<AdminPage> {
             child: ListTile(
               tileColor: Colors.white,
               onTap: (){
+                Navigation.push(ReceiptsListPage());
+              },
+              leading: Icon(Icons.settings),
+              title: Text("الإيصالات"),),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: ListTile(
+              tileColor: Colors.white,
+              onTap: (){
                 Navigation.push(DepartmentPage());
               },
               leading: Icon(Icons.settings),
@@ -109,6 +120,7 @@ class _AdminPageState extends State<AdminPage> {
               leading: Icon(Icons.settings),
               title: Text("التصنيفات الفرعية"),),
           ),
+
 
 
 

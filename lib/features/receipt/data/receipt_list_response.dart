@@ -10,9 +10,9 @@ class ReceiptListResponse extends ListResultModel<Receipt>{
   ReceiptListResponse({this.list});
 
   ReceiptListResponse.fromJson(Map<String, dynamic> json) {
-    if (json['items'] != null) {
+    if (json['data'] != null) {
       list = new List<Receipt>();
-      json['items'].forEach((v) {
+      json['data'].forEach((v) {
         list.add(new Receipt.fromJson(v));
       });
     }

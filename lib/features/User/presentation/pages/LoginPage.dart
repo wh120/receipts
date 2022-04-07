@@ -10,11 +10,11 @@ import '../../../../core/utils/Navigation/Navigation.dart';
 import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
 import '../../data/LoginRequestModel.dart';
 
-// ------------------------------- 
-//  This project written by : Thalisonh on Github.com 
-//  You can find this class and all its components 
-//  on this Repo  : https://github.com/Thalisonh/minimalist-flutter 
-// ------------------------------- 
+// -------------------------------
+//  This project written by : Thalisonh on Github.com
+//  You can find this class and all its components
+//  on this Repo  : https://github.com/Thalisonh/minimalist-flutter
+// -------------------------------
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/LoginPage1';
@@ -23,6 +23,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,45 +38,52 @@ class _LoginPageState extends State<LoginPage> {
               colors: [AppColors.primary, AppColors.primary[100]]),
         ),
 
-        /// ------------------------------- 
-        /// Building main content with list view 
-        /// ------------------------------- 
+        /// -------------------------------
+        /// Building main content with list view
+        /// -------------------------------
 
         child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
                 Row(children: <Widget>[
-                  /// --------------------------------------------------------------------------- 
-                  /// Vertical Text widget that is build with RotatedBox widget  build in flutter 
-                  /// --------------------------------------------------------------------------- 
+                  /// ---------------------------------------------------------------------------
+                  /// Vertical Text widget that is build with RotatedBox widget  build in flutter
+                  /// ---------------------------------------------------------------------------
                   VerticalText(),
 
-                  /// --------------------------------------------------------------------------- 
-                  /// TextLogin widget that is build with Container widget  build in flutter 
-                  /// --------------------------------------------------------------------------- 
+                  /// ---------------------------------------------------------------------------
+                  /// TextLogin widget that is build with Container widget  build in flutter
+                  /// ---------------------------------------------------------------------------
                   TextLogin(),
                 ]),
 
-                /// --------------------------------------------------------------------------- 
-                /// InputEmail widget that is build with TextField widget  build in flutter and response size 
-                /// --------------------------------------------------------------------------- 
-                InputEmail(),
+                /// ---------------------------------------------------------------------------
+                /// InputEmail widget that is build with TextField widget  build in flutter and response size
+                /// ---------------------------------------------------------------------------
+                InputEmail(
+                  controller: emailController,
+                ),
 
-                /// --------------------------------------------------------------------------- 
-                /// PasswordInput widget that is build with TextField widget  build in flutter and response size 
-                /// --------------------------------------------------------------------------- 
-                PasswordInput(),
+                /// ---------------------------------------------------------------------------
+                /// PasswordInput widget that is build with TextField widget  build in flutter and response size
+                /// ---------------------------------------------------------------------------
+                PasswordInput(
+                  controller: passwordController
+                  ,
+                ),
 
-                /// --------------------------------------------------------------------------- 
-                /// ButtonLogin widget that is build with StatefulWidget and FlatButton widget build in flutter and response size 
-                /// --------------------------------------------------------------------------- 
-                ButtonLogin(),
+                /// ---------------------------------------------------------------------------
+                /// ButtonLogin widget that is build with StatefulWidget and FlatButton widget build in flutter and response size
+                /// ---------------------------------------------------------------------------
+                ButtonLogin(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                ),
 
-                /// --------------------------------------------------------------------------- 
-                /// FirstTime widget that is build with StatefulWidget, Text and FlatButton widget build in flutter and response size 
-                /// --------------------------------------------------------------------------- 
-
+                /// ---------------------------------------------------------------------------
+                /// FirstTime widget that is build with StatefulWidget, Text and FlatButton widget build in flutter and response size
+                /// ---------------------------------------------------------------------------
               ],
             ),
           ],
@@ -82,18 +93,21 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-/// --------------------------------------------------------------------------- 
-/// ButtonLogin widget that is build with StatefulWidget and FlatButton widget build in flutter and response size 
-/// --------------------------------------------------------------------------- 
+/// ---------------------------------------------------------------------------
+/// ButtonLogin widget that is build with StatefulWidget and FlatButton widget build in flutter and response size
+/// ---------------------------------------------------------------------------
 
 class ButtonLogin extends StatefulWidget {
+  final TextEditingController emailController  ;
+  final TextEditingController passwordController  ;
+
+  const ButtonLogin({Key key, this.emailController, this.passwordController}) : super(key: key);
   @override
   _ButtonLoginState createState() => _ButtonLoginState();
 }
 
 class _ButtonLoginState extends State<ButtonLogin> {
-
-  CreateModelCubit cubit ;
+  CreateModelCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +118,9 @@ class _ButtonLoginState extends State<ButtonLogin> {
         height: 50,
         width: MediaQuery.of(context).size.width,
 
-        /// ------------------------------------------ 
-        /// BoxDecoration for style the button 
-        /// ------------------------------------------ 
+        /// ------------------------------------------
+        /// BoxDecoration for style the button
+        /// ------------------------------------------
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -123,22 +137,23 @@ class _ButtonLoginState extends State<ButtonLogin> {
           borderRadius: BorderRadius.circular(30),
         ),
 
-        /// ------------------------------------------ 
-        /// FlatButton with OK text and arrow icon 
-        /// ------------------------------------------ 
+        /// ------------------------------------------
+        /// FlatButton with OK text and arrow icon
+        /// ------------------------------------------
         child: CreateModel<LoginResponseModel>(
           repositoryCallBack: (data) => UserRepository.login(data),
-          onCubitCreated: (c){
-            cubit=c;
+          onCubitCreated: (c) {
+            cubit = c;
           },
-          onSuccess: (LoginResponseModel model){
-            AppSharedPreferences.accessToken=model.accessToken;
+          onSuccess: (LoginResponseModel model) {
+            AppSharedPreferences.accessToken = model.accessToken;
             Navigation.pushReplacement(RootApp());
           },
           child: FlatButton(
             onPressed: () {
-              if(cubit != null) cubit.createModel(LoginRequestModel(email: "admin@admin.com" , password: "120120"));
-
+              if (cubit != null)
+                cubit.createModel(LoginRequestModel(
+                    email: widget.emailController.text, password: widget.passwordController.text));
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -164,12 +179,14 @@ class _ButtonLoginState extends State<ButtonLogin> {
   }
 }
 
-
-/// --------------------------------------------------------------------------- 
-/// InputEmail widget that is build with TextField widget  build in flutter and response size 
-/// --------------------------------------------------------------------------- 
+/// ---------------------------------------------------------------------------
+/// InputEmail widget that is build with TextField widget  build in flutter and response size
+/// ---------------------------------------------------------------------------
 
 class InputEmail extends StatefulWidget {
+  final TextEditingController controller;
+
+  const InputEmail({Key key, this.controller}) : super(key: key);
   @override
   _InputEmailState createState() => _InputEmailState();
 }
@@ -178,34 +195,37 @@ class _InputEmailState extends State<InputEmail> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
-
-    child: Container(
-    height: 60,
-    width: MediaQuery.of(context).size.width,
-    child: TextField(
-    style: TextStyle(
-    color: Colors.white,
-    ),
-    decoration: InputDecoration(
-    border: InputBorder.none,
-    fillColor: Colors.lightBlueAccent,
-    labelText: 'اسم المستخدم',
-    labelStyle: TextStyle(
-    color: Colors.white70,
-    ),
-    ),
-    ),
-    ),
+      padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        child: TextField(
+          controller: widget.controller,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            fillColor: Colors.lightBlueAccent,
+            labelText: 'اسم المستخدم',
+            labelStyle: TextStyle(
+              color: Colors.white70,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
 
-/// --------------------------------------------------------------------------- 
-/// PasswordInput widget that is build with TextField widget  build in flutter and response size 
-/// --------------------------------------------------------------------------- 
+/// ---------------------------------------------------------------------------
+/// PasswordInput widget that is build with TextField widget  build in flutter and response size
+/// ---------------------------------------------------------------------------
 
 class PasswordInput extends StatefulWidget {
+  final TextEditingController controller;
+
+  const PasswordInput({Key key, this.controller}) : super(key: key);
   @override
   _PasswordInputState createState() => _PasswordInputState();
 }
@@ -219,6 +239,7 @@ class _PasswordInputState extends State<PasswordInput> {
         height: 60,
         width: MediaQuery.of(context).size.width,
         child: TextField(
+          controller: widget.controller,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -236,9 +257,9 @@ class _PasswordInputState extends State<PasswordInput> {
   }
 }
 
-/// --------------------------------------------------------------------------- 
-/// TextLogin widget that is build with Container widget  build in flutter 
-/// --------------------------------------------------------------------------- 
+/// ---------------------------------------------------------------------------
+/// TextLogin widget that is build with Container widget  build in flutter
+/// ---------------------------------------------------------------------------
 
 class TextLogin extends StatefulWidget {
   @override
@@ -251,7 +272,7 @@ class _TextLoginState extends State<TextLogin> {
     return Padding(
       padding: const EdgeInsets.only(top: 30.0, left: 10.0),
       child: Container(
-        //color: Colors.green, 
+        //color: Colors.green,
         height: 200,
         width: 200,
         child: Column(
@@ -275,9 +296,9 @@ class _TextLoginState extends State<TextLogin> {
   }
 }
 
-/// --------------------------------------------------------------------------- 
-/// Vertical Text widget that is build with RotatedBox widget  build in flutter 
-/// --------------------------------------------------------------------------- 
+/// ---------------------------------------------------------------------------
+/// Vertical Text widget that is build with RotatedBox widget  build in flutter
+/// ---------------------------------------------------------------------------
 
 class VerticalText extends StatefulWidget {
   @override

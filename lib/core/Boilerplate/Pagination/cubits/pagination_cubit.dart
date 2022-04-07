@@ -19,7 +19,7 @@ class PaginationCubit<ListModel> extends Cubit<PaginationState> {
   List<ListModel>  list;
   Map<String,dynamic> params={};
   int maxResultCount = 20;
-  int skipCount = 0;
+  int skipCount = 1;
   String keyword;
 
   getList({  bool loadMore = false  , Map<String,dynamic> param ,String keyword  })async{
@@ -27,12 +27,12 @@ class PaginationCubit<ListModel> extends Cubit<PaginationState> {
 
     if(!loadMore)
     {
-      skipCount = 0;
+      skipCount = 1;
      // if(list.isEmpty)
        emit(Loading ());
     }
     else
-      skipCount += maxResultCount;
+      skipCount ++;
 
     if(param!= null)
       params.addAll(param);

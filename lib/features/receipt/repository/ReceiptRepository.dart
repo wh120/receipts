@@ -25,8 +25,6 @@ class ReceiptRepository{
 
   static Future<BaseResultModel> getReceiptTypes({DateTime dateTime = null}) async {
 
-
-
     var url =ApiURLs.CREATE_RECEIPT_TYPE;
     if(dateTime!= null ) {
       DateTime date = new DateTime(dateTime.year, dateTime.month, dateTime.day);
@@ -39,6 +37,16 @@ class ReceiptRepository{
         withAuthentication: true,
 
         url: url =url);
+
+  }
+
+  static Future<BaseResultModel> geReceipts( data) async {
+    return await RemoteDataSource.request<ReceiptListResponse>(
+        converter: (json) => ReceiptListResponse.fromJson(json),
+        method: HttpMethod.GET,
+        queryParameters: data.toJson(),
+        withAuthentication: true,
+        url: ApiURLs.GET_RECEIPTS);
 
   }
 

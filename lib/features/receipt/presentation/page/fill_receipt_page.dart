@@ -91,7 +91,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                         width: 5,
                       ),
                       Text(
-                        widget.receipt.mustApprovedByRole.department.name,
+                        widget.receipt.mustApprovedByRole.department?.name??'',
                         style: TextStyle(fontSize: 15, color: AppColors.black),
                       ),
                       SizedBox(

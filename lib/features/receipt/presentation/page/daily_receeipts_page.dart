@@ -96,84 +96,89 @@ class _DailyPageState extends State<DailyReceiptsPage> {
     return ListView.builder(
           itemCount: model.items.length,
           itemBuilder:(c,index){
-            return Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: (100.w - 40) * 0.7,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.grey.withOpacity(0.1),
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                receipt_type[index]['icon'],
-                                width: 30,
-                                height: 30,
+            return InkWell(
+              onTap: (){
+
+              },
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: (100.w - 40) * 0.7,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.grey.withOpacity(0.1),
+                              ),
+                              child: Center(
+                                child: Image.asset(
+                                  receipt_type[index]['icon'],
+                                  width: 30,
+                                  height: 30,
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 15),
-                          Container(
-                            width: (100.w  - 90) * 0.5,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  receipt_type[index]['name'],
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w500),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  ' ',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: AppColors.black.withOpacity(0.5),
-                                      fontWeight: FontWeight.w400),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                            SizedBox(width: 15),
+                            Container(
+                              width: (100.w  - 90) * 0.5,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    receipt_type[index]['name'],
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w500),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'ww ',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: AppColors.black.withOpacity(0.5),
+                                        fontWeight: FontWeight.w400),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: (100.w  - 40) * 0.3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              model.items[index].receiptsCount.toString() + ' عملية',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: AppColors.secondary),
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: (100.w  - 40) * 0.3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            model.items[index].receiptsCount.toString() + ' عملية',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 15,
-                                color: Colors.green),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 65, top: 8),
-                  child: Divider(
-                    thickness: 0.8,
+                          ],
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 65, top: 8),
+                    child: Divider(
+                      thickness: 0.8,
+                    ),
+                  )
+                ],
+              ),
             );
           }
     );
