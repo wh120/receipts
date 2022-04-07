@@ -113,7 +113,6 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
      return GeneralCard(
        onTap: (){
          Navigation.push(FillReceiptPage(receipt: receipt,)).then((value) {
-           print('www');
            cubit?.getList();
          });
 
@@ -176,7 +175,7 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                    Padding(
                      padding: const EdgeInsets.only(top: 3),
                      child: Text(
-                       receipt.mustApprovedByRole.department.name,
+                       receipt.mustApprovedByRole.department?.name??'',
                        style: TextStyle(
                            fontWeight: FontWeight.w500,
                            fontSize: 13,

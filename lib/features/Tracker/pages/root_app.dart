@@ -3,6 +3,7 @@ import 'package:receipts/features/receipt/presentation/page/my_approval_receipts
 import '../../admin/presentation/pages/admin_page.dart';
 import '../../profile/presentation/page/profile_page.dart';
 import '../../receipt/presentation/page/create_receipt_page.dart';
+import '../../receipt/presentation/page/daily_receeipts_page.dart';
 import '../pages/budget_page.dart';
 import '../pages/create_budge_page.dart';
 import '../pages/daily_page.dart';
@@ -23,7 +24,7 @@ class RootApp extends StatefulWidget {
 class _RootAppState extends State<RootApp> {
   int pageIndex = 0;
   List<Widget> pages = [
-    DailyPage(),
+    DailyReceiptsPage(),
     AdminPage(),
     MyApprovalReceiptsPage(),
     ProfilePage(),

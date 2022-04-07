@@ -12,7 +12,7 @@ class GetModelCubit<Model> extends Cubit<GetModelState> {
   final RepositoryCallBack getData;
   GetModelCubit(this.getData) : super(GetModelInitial());
 
-  getModel({ Map<String,dynamic> params   })async{
+  getModel({  params   })async{
     emit(Loading ());
     var response = await getData(params);
     if(response is Model)

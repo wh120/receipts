@@ -3,6 +3,7 @@
 import 'package:receipts/features/receipt/data/item_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 
+import '../data/receipt_type_response.dart';
 import '/core/API/CoreModels/base_result_model.dart';
 import '/core/API/data_source/remote_data_source.dart';
 import '/core/API/http/api_urls.dart';
@@ -19,6 +20,25 @@ class ReceiptRepository{
         withAuthentication: true,
 
         url: ApiURLs.GET_ITEMS);
+
+  }
+
+  static Future<BaseResultModel> getReceiptTypes({DateTime dateTime = null}) async {
+
+
+
+    var url =ApiURLs.CREATE_RECEIPT_TYPE;
+    if(dateTime!= null ) {
+      DateTime date = new DateTime(dateTime.year, dateTime.month, dateTime.day);
+      url=url.replaceFirst('{date}', date.toString());
+    } else url=url.replaceFirst('/{date}', 'date.toString()');
+
+    return await RemoteDataSource.request<ReceiptTypeResponse>(
+        converter: (json) => ReceiptTypeResponse.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+
+        url: url =url);
 
   }
 

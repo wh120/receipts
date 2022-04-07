@@ -21,23 +21,20 @@ import '/core/utils/Navigation/Navigation.dart';
 import '/core/widgets/forms/RoundedNumberField.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
-
 class FillReceiptPage extends StatefulWidget {
-
   final Receipt receipt;
 
-  const FillReceiptPage({Key key,   this.receipt}) : super(key: key);
+  const FillReceiptPage({Key key, this.receipt}) : super(key: key);
   @override
   _CreateReceiptPageState createState() => _CreateReceiptPageState();
 }
 
 class _CreateReceiptPageState extends State<FillReceiptPage> {
-   List<DropdownMenuItem<Item>> items = [];
-    bool isNew;
+  List<DropdownMenuItem<Item>> items = [];
+  bool isNew;
   @override
   void initState() {
-    isNew = widget.receipt.id ==null;
+    isNew = widget.receipt.id == null;
     super.initState();
   }
 
@@ -62,29 +59,26 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
               child: Column(
                 children: [
                   Row(
-                  //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        isNew? "إنشاء إيصال :": "تعديل إيصال :",
+                        isNew ? "إنشاء إيصال :" : "تعديل إيصال :",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: AppColors.black),
                       ),
-
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text(
-                        receipt_type[widget.receipt.receiptTypeId]["name"],
-                        style: TextStyle(
-                            fontSize: 20,
-
-                            color: AppColors.black),
+                        receipt_type[widget.receipt.receiptTypeId-1]["name"],
+                        style: TextStyle(fontSize: 20, color: AppColors.black),
                       ),
                     ],
                   ),
-
                   Row(
-                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
                         'إلى :',
@@ -93,21 +87,19 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                             fontWeight: FontWeight.bold,
                             color: AppColors.black),
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text(
                         widget.receipt.mustApprovedByRole.department.name,
-                        style: TextStyle(
-                            fontSize: 15,
-
-                            color: AppColors.black),
+                        style: TextStyle(fontSize: 15, color: AppColors.black),
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text(
                         widget.receipt.mustApprovedByRole.name,
-                        style: TextStyle(
-                            fontSize: 15,
-
-                            color: AppColors.black),
+                        style: TextStyle(fontSize: 15, color: AppColors.black),
                       ),
                     ],
                   ),
@@ -125,37 +117,30 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                isNew? buildCreateButton():buildApproveButton(),
-                if(isNew)
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-
-                        showDialog(
-                          context: context,
-                          useRootNavigator: true,
-
-                          builder: (_){
-                            return Center(
-                              child: Container(
-                                  child: SelectItemWidget(
+                isNew ? buildCreateButton() : buildApproveButton(),
+                if (isNew)
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          showDialog(
+                              context: context,
+                              useRootNavigator: true,
+                              builder: (_) {
+                                return Center(
+                                  child: Container(
+                                      child: SelectItemWidget(
                                     items: items,
-                                    onDone: (Item item){
+                                    onDone: (Item item) {
                                       widget.receipt.items.add(item);
-                                      setState(() {
-
-                                      });
+                                      setState(() {});
                                     },
                                   )),
-                            );
-                          }
-                        );
-                     //  Navigator.of(context).restorablePush(_dialogBuilder);
-
-                      });
-                    },
-                    child: Text('إضافة مادة أخرى')),
-
+                                );
+                              });
+                          //  Navigator.of(context).restorablePush(_dialogBuilder);
+                        });
+                      },
+                      child: Text('إضافة مادة أخرى')),
               ],
             ),
           )
@@ -165,61 +150,56 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
   }
 
   CreateModelCubit cubit;
-   buildCreateButton() {
-
+  buildCreateButton() {
     return CreateModel<EmptyModel>(
       repositoryCallBack: (data) => ReceiptRepository.createReceipt(data),
-      onSuccess: (model){
+      onSuccess: (model) {
         Navigation.pop();
       },
-      onCubitCreated: (c){
-        cubit=c;
+      onCubitCreated: (c) {
+        cubit = c;
       },
-
       child: ElevatedButton(
-                    onPressed: () {
-                       if(cubit != null){
-                         cubit.createModel(CreateReceiptRequest(
-                           mustApprovedByRoleId: widget.receipt.mustApprovedByRole.id,
-                           receiptTypeId: widget.receipt.receiptTypeId,
-                           items: List.generate(widget.receipt.items.length, (index) {
-                             return ReceiptItem(
-                               id: widget.receipt.items[index].id,
-                               value: widget.receipt.items[index].unitValue
-
-                             );
-                           })
-                         ));
-                       }
-                    },
-                    child: Text( 'إرسال' )),
+          onPressed: () {
+            if (cubit != null) {
+              cubit.createModel(CreateReceiptRequest(
+                  mustApprovedByRoleId: widget.receipt.mustApprovedByRole.id,
+                  receiptTypeId: widget.receipt.receiptTypeId,
+                  items: List.generate(widget.receipt.items.length, (index) {
+                    return ReceiptItem(
+                        id: widget.receipt.items[index].id,
+                        value: widget.receipt.items[index].unitValue);
+                  })));
+            }
+          },
+          child: Text('إرسال')),
     );
   }
-   buildApproveButton() {
 
-     return CreateModel<EmptyModel>(
-       repositoryCallBack: (data) => ReceiptRepository.approveReceipt(data),
-       onSuccess: (model){
-         Navigation.pop();
-       },
-       onCubitCreated: (c){
-         cubit=c;
-       },
+  buildApproveButton() {
+    return CreateModel<EmptyModel>(
+      repositoryCallBack: (data) => ReceiptRepository.approveReceipt(data),
+      onSuccess: (model) {
+        Navigation.pop();
+      },
+      onCubitCreated: (c) {
+        cubit = c;
+      },
+      child: ElevatedButton(
+          onPressed: () {
+            if (cubit != null) {
+              cubit.createModel(widget.receipt.id);
+            }
+          },
+          child: Text(isNew ? 'إرسال' : 'موافقة')),
+    );
+  }
 
-       child: ElevatedButton(
-           onPressed: () {
-             if(cubit != null){
-               cubit.createModel(widget.receipt.id);
-             }
-           },
-           child: Text(isNew?'إرسال':'موافقة')),
-     );
-   }
-  loadTable(){
+  loadTable() {
     return GetModel<ItemListResponseModel>(
       repositoryCallBack: (data) => ReceiptRepository.getItems(),
-      modelBuilder: (ItemListResponseModel model)=>buildTable(),
-      onSuccess: (model){
+      modelBuilder: (ItemListResponseModel model) => buildTable(),
+      onSuccess: (model) {
         model.items.forEach((element) {
           items.add(DropdownMenuItem<Item>(
             child: Text(element.name),
@@ -229,25 +209,29 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
       },
     );
   }
-  buildTable(){
-    List<Widget> col =[
-      Text("الرقم",),
-      Text("الاسم",),
-      Text("الكمية 1"),
 
+  buildTable() {
+    List<Widget> col = [
+      Text(
+        "الرقم",
+      ),
+      Text(
+        "الاسم",
+      ),
+      Text("الكمية 1"),
     ];
-    int maxUnitCount=0;
+    int maxUnitCount = 0;
     widget.receipt.items.forEach((element) {
-      if(element.units.length >maxUnitCount) {
+      if (element.units.length > maxUnitCount) {
         maxUnitCount = element.units.length;
       }
       element.units.forEach((u) {
-        u.value = ( element.unitValue / u.conversionFactor  ).toDouble().roundToDouble();
+        u.value =
+            (element.unitValue / u.conversionFactor).toDouble().roundToDouble();
       });
-
     });
-    for(int i = 0 ;i < maxUnitCount ; i++){
-      col.add(Text('الكمية ${i+2}'));
+    for (int i = 0; i < maxUnitCount; i++) {
+      col.add(Text('الكمية ${i + 2}'));
     }
     col.add(Text('الأوامر'));
 
@@ -255,30 +239,29 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
       columns: col,
       rows: List.generate(widget.receipt.items.length, (index) {
         List<Widget> list = [
-          Text((index+1).toString()),
-          Text(widget.receipt.items[index].name) ,
-          Text(widget.receipt.items[index].unitValue.toString() + widget.receipt.items[index].unit),
+          Text((index + 1).toString()),
+          Text(widget.receipt.items[index].name),
+          Text(widget.receipt.items[index].unitValue.toString() +
+              widget.receipt.items[index].unit),
         ];
         widget.receipt.items[index].units.forEach((element) {
-          list.add(Text(element.value.toString() + element.name)) ;
+          list.add(Text(element.value.toString() + element.name));
         });
-        if(isNew)
-          list.add(IconButton(onPressed: (){
-            widget.receipt.items.removeAt(index);
-            setState(() {
-
-            });
-        }, icon: Icon(Icons.delete)));
+        if (isNew)
+          list.add(IconButton(
+              onPressed: () {
+                widget.receipt.items.removeAt(index);
+                setState(() {});
+              },
+              icon: Icon(Icons.delete)));
         return list;
       }),
     );
   }
-
 }
 
-
 class SelectItemWidget extends StatefulWidget {
-  final List<DropdownMenuItem<Item>> items ;
+  final List<DropdownMenuItem<Item>> items;
   final ModelReceived<Item> onDone;
 
   const SelectItemWidget({Key key, this.items, this.onDone}) : super(key: key);
@@ -291,7 +274,6 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: GeneralCard(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -303,56 +285,47 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 searchHint: "إختر عنصر",
                 onChanged: (value) {
                   setState(() {
-                    item  = value;
+                    item = value;
                   });
                 },
                 isExpanded: true,
-                searchFn: searchForItem
-
-
-            ),
-            if(item != null  )
+                searchFn: searchForItem),
+            if (item != null)
               RoundedNumberField(
-
-
-                controller: TextEditingController(text: item.unitValue==0 ? '':item.unitValue.toString()),
+                controller: TextEditingController(
+                    text: item.unitValue == 0 ? '' : item.unitValue.toString()),
                 onChanged: (value) {
                   print(value);
-                  item.unitValue = int.tryParse(value)??0;
+                  item.unitValue = int.tryParse(value) ?? 0;
 
                   print(item.unitValue);
-                  item.units.forEach((element) { 
-                    element.value = item.unitValue/element.conversionFactor;
+                  item.units.forEach((element) {
+                    element.value = item.unitValue / element.conversionFactor;
                   });
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
-
                 hintText: item?.unit.toString(),
-
               ),
-            if(item != null && item.units != null)
+            if (item != null && item.units != null)
               Wrap(
-                children: List.generate(
-                    item.units.length,
-                        (i) {
-                      return RoundedNumberField(
-                        controller: TextEditingController(text: ( item.unitValue ==0? '':item.unitValue ~/ item.units[i].conversionFactor ).toString() ),
-                        onChanged: (value) {
-                          item.units[i].value = double.tryParse(value)??0.0;
-                          item.unitValue = item.units[i].value.toInt() * item.units[i].conversionFactor;
-                          setState(() {
-
-                          });
-                        },
-
-                        hintText: item.units[i].name,
-
-                      );
-                    }),
+                children: List.generate(item.units.length, (i) {
+                  return RoundedNumberField(
+                    controller: TextEditingController(
+                        text: (item.unitValue == 0
+                                ? ''
+                                : item.unitValue ~/
+                                    item.units[i].conversionFactor)
+                            .toString()),
+                    onChanged: (value) {
+                      item.units[i].value = double.tryParse(value) ?? 0.0;
+                      item.unitValue = item.units[i].value.toInt() *
+                          item.units[i].conversionFactor;
+                      setState(() {});
+                    },
+                    hintText: item.units[i].name,
+                  );
+                }),
               ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -362,7 +335,6 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                       onPressed: () {
                         Navigation.pop();
                         widget.onDone(item);
-
                       },
                       child: Text('موافق')),
                   ElevatedButton(
@@ -370,7 +342,6 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                         Navigation.pop();
                       },
                       child: Text('إغلاق')),
-
                 ],
               ),
             )
@@ -381,28 +352,26 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
   }
 
   searchForItem(String keyword, items) {
-                List<int> ret = [];
-                if (items != null && keyword.isNotEmpty) {
-                  [keyword].forEach((k) {
-                    int i = 0;
-                    items.forEach((item) {
-                      if (!ret.contains(i) &&
-                          k.isNotEmpty &&
-                          (item.value.name
-                              .toString()
-                              .toLowerCase()
-                              .contains(k.toLowerCase()))) {
-                        ret.add(i);
-                      }
-                      i++;
-                    });
-                  });
-                }
-                if (keyword.isEmpty) {
-                  ret = Iterable<int>.generate(items.length).toList();
-                }
-                return (ret);
-              }
+    List<int> ret = [];
+    if (items != null && keyword.isNotEmpty) {
+      [keyword].forEach((k) {
+        int i = 0;
+        items.forEach((item) {
+          if (!ret.contains(i) &&
+              k.isNotEmpty &&
+              (item.value.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(k.toLowerCase()))) {
+            ret.add(i);
+          }
+          i++;
+        });
+      });
+    }
+    if (keyword.isEmpty) {
+      ret = Iterable<int>.generate(items.length).toList();
+    }
+    return (ret);
+  }
 }
-
-
