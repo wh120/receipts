@@ -15,6 +15,7 @@ import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
 import '../../../../core/widgets/data_table/data_table.dart';
+import '../../../../core/widgets/data_table/widget_data_table.dart';
 import '/core/constants/AppColors.dart';
 import '/core/utils/Navigation/Navigation.dart';
 import '/core/widgets/forms/RoundedNumberField.dart';
@@ -229,10 +230,10 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
     );
   }
   buildTable(){
-    List<String> col =[
-      "الرقم",
-      "الاسم",
-      "الكمية 1",
+    List<Widget> col =[
+      Text("الرقم",),
+      Text("الاسم",),
+      Text("الكمية 1"),
 
     ];
     int maxUnitCount=0;
@@ -246,20 +247,28 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
 
     });
     for(int i = 0 ;i < maxUnitCount ; i++){
-      col.add('الكمية ${i+2}');
+      col.add(Text('الكمية ${i+2}'));
     }
+    col.add(Text('الأوامر'));
 
-    return MyDataTable(
+    return WidgetDataTable(
       columns: col,
       rows: List.generate(widget.receipt.items.length, (index) {
-        List<String> list = [
-          (index+1).toString(),
-          widget.receipt.items[index].name ,
-          widget.receipt.items[index].unitValue.toString() + widget.receipt.items[index].unit,
+        List<Widget> list = [
+          Text((index+1).toString()),
+          Text(widget.receipt.items[index].name) ,
+          Text(widget.receipt.items[index].unitValue.toString() + widget.receipt.items[index].unit),
         ];
         widget.receipt.items[index].units.forEach((element) {
-          list.add(element.value.toString() + element.name) ;
+          list.add(Text(element.value.toString() + element.name)) ;
         });
+        if(isNew)
+          list.add(IconButton(onPressed: (){
+            widget.receipt.items.removeAt(index);
+            setState(() {
+
+            });
+        }, icon: Icon(Icons.delete)));
         return list;
       }),
     );
