@@ -12,7 +12,7 @@ import 'package:search_choices/search_choices.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
 import '../../../../core/widgets/data_table/widget_data_table.dart';
-import '../../../Tracker/json/department_json.dart';
+import '../../../RootApp/json/department_json.dart';
 import '/core/constants/AppColors.dart';
 import '/core/utils/Navigation/Navigation.dart';
 import '/core/widgets/data_table/data_table.dart';

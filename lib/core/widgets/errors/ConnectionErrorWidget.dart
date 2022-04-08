@@ -20,9 +20,9 @@ class ConnectionErrorWidget extends StatelessWidget {
       title: message,
       subtitle: 'Tap to retry'.tr(),
       icon: Image.asset(
-        AppAssets.error2,
+        AppAssets.cloud_refresh,
       //  width: 20.0.w,
-        height: 15.0.h,
+        height: 18.0.h,
       )
 
     );

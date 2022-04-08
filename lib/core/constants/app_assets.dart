@@ -7,6 +7,7 @@ class AppAssets {
   static const heartStethoscope = 'assets/images/heart_stethoscope.svg';
   static const medicalCollections = 'assets/images/medical_collections.svg';
 
+
   //     Splash
   static const splash1 = 'assets/images/splash/splash1.svg';
   static const splash1_png = 'assets/images/splash/splash1.png';
@@ -21,9 +22,12 @@ class AppAssets {
 
   //cloud
   static const error = 'assets/images/icons/error.png';
+  static const no_data = 'assets/images/icons/no-data.png';
+  static const refresh = 'assets/images/icons/refresh.png';
+  static const cloud_refresh = 'assets/images/icons/cloud-refresh.png';
   static const error2 = 'assets/images/icons/error-2.png';
   static const search = 'assets/images/icons/search.svg';
-  static const refresh = 'assets/images/icons/refresh.svg';
+  static const refreshSVG = 'assets/images/icons/refresh.svg';
   static const not_found = 'assets/images/icons/page-not-found.png';
   static const search_heart = 'assets/images/icons/search_heart.png';
 

@@ -50,7 +50,7 @@ class _DailyPageState extends State<DailyReceiptsPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "العمليات اليومية",
+                      "الإحصائيات اليومية",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

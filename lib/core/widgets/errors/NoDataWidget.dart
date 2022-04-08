@@ -18,7 +18,7 @@ class NoDataWidget extends StatelessWidget {
       title: message??'No Data'.tr(),
       subtitle: '',
       icon: Image.asset(
-        AppAssets.search_heart,
+        AppAssets.no_data,
         height: 15.0.h,
       ),
 

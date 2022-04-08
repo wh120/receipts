@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:receipts/features/Tracker/pages/root_app.dart';
+import 'package:receipts/features/RootApp/pages/root_app.dart';
 
 
 import 'StartUp.dart';

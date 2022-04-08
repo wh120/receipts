@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
-import 'package:receipts/features/Tracker/pages/root_app.dart';
+import 'package:receipts/features/RootApp/pages/root_app.dart';
 import 'package:receipts/features/User/data/LoginResponseModel.dart';
 import 'package:receipts/features/User/domain/repo/UserRepository.dart';
 

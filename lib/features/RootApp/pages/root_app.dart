@@ -4,17 +4,13 @@ import '../../admin/presentation/pages/admin_page.dart';
 import '../../profile/presentation/page/profile_page.dart';
 import '../../receipt/presentation/page/create_receipt_page.dart';
 import '../../receipt/presentation/page/daily_receeipts_page.dart';
-import '../pages/budget_page.dart';
-import '../pages/create_budge_page.dart';
-import '../pages/daily_page.dart';
-import '../pages/profile_page.dart';
-import '../pages/stats_page.dart';
+
+
 import '../theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
-import 'admin_page.dart';
 
 class RootApp extends StatefulWidget {
   @override
@@ -22,7 +18,7 @@ class RootApp extends StatefulWidget {
 }
 
 class _RootAppState extends State<RootApp> {
-  int pageIndex = 0;
+  int pageIndex = 4;
   List<Widget> pages = [
 
     AdminPage(),
