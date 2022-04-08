@@ -35,12 +35,13 @@ class Receipt {
   int mustApprovedByRoleId;
   int receiptTypeId;
   String description;
-  String acceptedAt;
+  DateTime acceptedAt;
   DateTime createdAt;
   DateTime updatedAt;
   List<Item> items;
   Role mustApprovedByRole;
   User createdByUser;
+  User acceptedByUser;
 
   Receipt(
       {this.id,
@@ -55,6 +56,7 @@ class Receipt {
         this.updatedAt,
         this.items ,
         this.mustApprovedByRole,
+        this.acceptedByUser,
         this.createdByUser});
 
   Receipt.fromJson(Map<String, dynamic> json) {
@@ -65,7 +67,7 @@ class Receipt {
     mustApprovedByRoleId = json['must_approved_by_role_id'];
     receiptTypeId = json['receipt_type_id'];
     description = json['description'];
-    acceptedAt = json['accepted_at'];
+    acceptedAt = DateTime.tryParse(json['accepted_at']??'');
     createdAt = DateTime.parse(json['created_at']);
     updatedAt = DateTime.parse(json['updated_at']);
     if (json['items'] != null) {
@@ -79,6 +81,10 @@ class Receipt {
         : null;
     createdByUser = json['created_by_user'] != null
         ? new User.fromJson(json['created_by_user'])
+        : null;
+
+    acceptedByUser = json['accepted_by_user'] != null
+        ? new User.fromJson(json['accepted_by_user'])
         : null;
   }
 
@@ -102,6 +108,10 @@ class Receipt {
     }
     if (this.createdByUser != null) {
       data['created_by_user'] = this.createdByUser.toJson();
+    }
+
+    if (this.acceptedByUser != null) {
+      data['accepted_by_user'] = this.createdByUser.toJson();
     }
     return data;
   }

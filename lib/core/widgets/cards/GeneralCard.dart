@@ -29,7 +29,7 @@ class GeneralCard extends StatelessWidget {
 
             ),
             child: Padding(
-              padding: EdgeInsets.all(3.0.r),
+              padding: EdgeInsets.all(2.0.r),
               child:  child,
             ),
           ),

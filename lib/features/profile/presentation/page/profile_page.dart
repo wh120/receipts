@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 10,
                           ),
                           Text(
-                              model.roles.first.name,
+                              model.roles.first.department?.name??'',
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -206,6 +206,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   decoration: InputDecoration(
                       hintText: "0933333333", border: InputBorder.none),
                 ),
+
+                Text(
+                  "الأدوار",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: Color(0xff67727d)),
+                ),
+                 Text(List.generate(model.roles.length, (index) => model.roles[index].name).toString()),
                 SizedBox(
                   height: 20,
                 ),

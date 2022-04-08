@@ -119,17 +119,7 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
        },
        child: Container(
          width: double.infinity,
-         decoration: BoxDecoration(
-             color: AppColors.white,
-             borderRadius: BorderRadius.circular(12),
-             boxShadow: [
-               BoxShadow(
-                 color: AppColors.grey.withOpacity(0.01),
-                 spreadRadius: 10,
-                 blurRadius: 3,
-                 // changes position of shadow
-               ),
-             ]),
+
          child: Padding(
            padding: EdgeInsets.only(
                left: 25, right: 25, bottom: 25, top: 25),

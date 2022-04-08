@@ -102,8 +102,6 @@ class _BudgetPageState extends State<ReceiptsListPage> {
     return ListView.builder(
       itemCount: list.length,
       itemBuilder: (context, index) {
-
-
         return buildReceiptCard(list[index], index);
       },
     );
@@ -119,29 +117,34 @@ class _BudgetPageState extends State<ReceiptsListPage> {
       },
       child: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.grey.withOpacity(0.01),
-                spreadRadius: 10,
-                blurRadius: 3,
-                // changes position of shadow
-              ),
-            ]),
+
         child: Padding(
           padding: EdgeInsets.only(
               left: 25, right: 25, bottom: 25, top: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "عملية "+receipt_type[receipt.receiptTypeId-1]["name"],
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
-                    color: Color(0xff67727d).withOpacity(0.6)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "عملية "+receipt_type[receipt.receiptTypeId-1]["name"],
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Color(0xff67727d) ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Text(
+                      MyConverter.timeToTimeAgo(receipt.createdAt),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: Color(0xff67727d).withOpacity(0.6)),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 10,
@@ -175,7 +178,7 @@ class _BudgetPageState extends State<ReceiptsListPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: Text(
-                      receipt.mustApprovedByRole.department?.name??'',
+                      receipt.createdByUser.roles.first.name,
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 13,
@@ -216,7 +219,8 @@ class _BudgetPageState extends State<ReceiptsListPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: Text(
-                      MyConverter.timeToTimeAgo(receipt.createdAt),
+                        receipt.mustApprovedByRole.department?.name??'',
+                     // MyConverter.timeToTimeAgo(receipt.createdAt),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 13,
@@ -230,6 +234,54 @@ class _BudgetPageState extends State<ReceiptsListPage> {
               SizedBox(
                 height: 15,
               ),
+
+              if(receipt.acceptedByUser!= null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "قُبِلت من قِبل: ",
+                        style: TextStyle(
+                          color: AppColors.secondary,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        receipt.acceptedByUser?.name??'',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+
+                    ],
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Text(
+                      MyConverter.timeToTimeAgo(receipt.acceptedAt)??'',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: Color(0xff67727d).withOpacity(0.6)),
+                    ),
+                  ),
+                ],
+              )
+              else
+              Text(
+              "لم تُقبل بعد",
+              style: TextStyle(
+              color: AppColors.red,
+              fontSize: 15,
+          ),
+          ),
 
             ],
           ),

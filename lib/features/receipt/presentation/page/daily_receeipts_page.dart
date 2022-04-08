@@ -141,7 +141,7 @@ class _DailyPageState extends State<DailyReceiptsPage> {
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    'ww ',
+                                    ' ',
                                     style: TextStyle(
                                         fontSize: 12,
                                         color: AppColors.black.withOpacity(0.5),
