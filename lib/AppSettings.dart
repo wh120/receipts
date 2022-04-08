@@ -9,8 +9,8 @@ class AppSettings {
 
 
 
-  static const String BASE_URL = 'http://127.0.0.1:80';
-  static const String EAV_BASE_URL = 'http://213.178.225.146:83';
+  static const String BASE_URL = 'https://alumaracoffe.com/receipts/public';
+
   static const String APK_URL = 'http://greentreasure.co/clinic.apk';
   static const String VERSION = '1.0.0:3';
 
