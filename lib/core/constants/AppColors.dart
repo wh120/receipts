@@ -70,9 +70,8 @@ class AppColors {
 
   //Text Theme
   static const Color lightText = Color(0xFF979797);
-  static const Color darkText = Color(0xFF4A4A4A);
-  static const Color darkerText = Color(0xFF17262A);
-  static const Color blackText = Color(0xFF022424);
+  static const Color greyText = Color(0xFF626263);
+  static const Color blackText = Color(0xFF081C15);
 
   static List<Color> randomColor = [
     Color(0xFF87D1C6),

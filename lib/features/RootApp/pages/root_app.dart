@@ -1,5 +1,6 @@
 import 'package:receipts/features/receipt/presentation/page/my_approval_receipts_page.dart';
 
+import '../../../core/constants/AppColors.dart';
 import '../../admin/presentation/pages/admin_page.dart';
 import '../../profile/presentation/page/profile_page.dart';
 import '../../receipt/presentation/page/create_receipt_page.dart';
@@ -49,10 +50,11 @@ class _RootAppState extends State<RootApp> {
               selectedTab(4);
             },
             child: Icon(
-              Icons.add,
+              Ionicons.md_create,
               size: 25,
+              color: Colors.white,
             ),
-            backgroundColor: primary
+            backgroundColor: AppColors.primary
             //params
             ),
         floatingActionButtonLocation:
@@ -75,8 +77,8 @@ class _RootAppState extends State<RootApp> {
     ];
 
     return AnimatedBottomNavigationBar(
-      activeColor: primary,
-      splashColor: secondary,
+      activeColor: AppColors.primary,
+      splashColor: AppColors.secondary,
       inactiveColor: Colors.black.withOpacity(0.5),
       icons: iconItems,
       activeIndex: pageIndex,

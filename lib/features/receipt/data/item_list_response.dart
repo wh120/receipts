@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:receipts/core/API/CoreModels/base_result_model.dart';
 
 class ItemListResponseModel extends BaseResultModel{
@@ -30,6 +31,7 @@ class Item {
   String description;
   String unit;
   int unitValue;
+  TextEditingController controller = TextEditingController();
   String isDefaultUnit;
   int itemCategoryId;
   String createdAt;
@@ -93,6 +95,7 @@ class Unit {
   int id;
   String name;
   double value;
+  TextEditingController controller = TextEditingController();
   int conversionFactor;
   int isDefault;
   int itemId;

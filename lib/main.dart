@@ -1,4 +1,7 @@
 
+
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -111,6 +114,7 @@ class MyApp extends StatelessWidget {
   }
 
   Widget _buildHome(BuildContext context){
+    HttpOverrides.global = MyHttpOverrides();
     if (AppSharedPreferences.firstTime) {
       AppSharedPreferences.firstTime= false;
       return LoginPage();
@@ -132,4 +136,11 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
     PointerDeviceKind.mouse,
     // etc.
   };
+}
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
 }

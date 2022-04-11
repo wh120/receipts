@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey.withOpacity(0.05),
+
       body: Container(
         decoration: BoxDecoration(color: AppColors.white, boxShadow: [
           BoxShadow(
@@ -68,161 +68,123 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildBody(User model) {
     var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
+      child: Container(
 
-            child: Column(
-              children: [
+        child: Column(
+          children: [
 
-                SizedBox(
-                  height: 25,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 120,
-                      height: 100,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  "http://www.sh-kd.co/hasna.png"),
-                              fit: BoxFit.contain)),
+            SizedBox(
+              height: 25,
+            ),
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          "http://www.sh-kd.co/shammout.png"),
+                      fit: BoxFit.contain)),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.01),
+                      spreadRadius: 10,
+                      blurRadius: 3,
+                      // changes position of shadow
                     ),
-
-                    Container(
-                      width: (size.width - 40) * 0.6,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            model.name,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                              model.roles.first.department?.name??'',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.black.withOpacity(0.4)),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withOpacity(0.01),
-                          spreadRadius: 10,
-                          blurRadius: 3,
-                          // changes position of shadow
-                        ),
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 25, bottom: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 25, bottom: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "الأيميل",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  color: AppColors.white),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              model.email,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: AppColors.white),
-                            ),
-                          ],
+
+
+                        Text(
+                          "الأسم",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: AppColors.white),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.white)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(13.0),
-                            child: Text(
-                              "تعديل",
-                              style: TextStyle(color: AppColors.white),
-                            ),
-                          ),
-                        )
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          model.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: AppColors.white),
+                        ),
+
+                        SizedBox(
+                          height: 30,
+                        ),
+
+                        Text(
+                          "الأيميل",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: AppColors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          model.email,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                              color: AppColors.white),
+                        ),
+
+                        SizedBox(
+                          height: 30,
+                        ),
+
+                        Text(
+                          "الأدوار",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: AppColors.white),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        Text(List.generate(model.roles.length, (index) => model.roles[index].name).toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15  ,
+                              color: AppColors.white),
+                        ),
+
+
                       ],
                     ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
 
-                Text(
-                  "رقم الموبايل",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Color(0xff67727d)),
+                  ],
                 ),
-                TextField(
-                  controller: dateOfBirth,
-                  cursorColor: AppColors.blackText,
-                  style: TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.bold, color: AppColors.blackText),
-                  decoration: InputDecoration(
-                      hintText: "0933333333", border: InputBorder.none),
-                ),
-
-                Text(
-                  "الأدوار",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 13,
-                      color: Color(0xff67727d)),
-                ),
-                 Text(List.generate(model.roles.length, (index) => model.roles[index].name).toString()),
-                SizedBox(
-                  height: 20,
-                ),
-
-              ],
-            ),
-          )
-        ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

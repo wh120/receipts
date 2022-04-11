@@ -22,7 +22,7 @@ class GeneralCard extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(5.0.r)),
           ),
           child: Card(
-              color:selected? AppColors.secondary[50 ]:null,
+              color:selected? AppColors.secondary[50 ]:AppColors.primary[1],
             elevation: 1,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5.0.r),

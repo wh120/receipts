@@ -126,15 +126,19 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                               context: context,
                               useRootNavigator: true,
                               builder: (_) {
-                                return Center(
-                                  child: Container(
-                                      child: SelectItemWidget(
-                                    items: items,
-                                    onDone: (Item item) {
-                                      widget.receipt.items.add(item);
-                                      setState(() {});
-                                    },
-                                  )),
+                                return Align(
+                                  alignment: Alignment.center,
+                                  child: SingleChildScrollView(
+                                    child: Container(
+                                        child: SelectItemWidget(
+                                      items: items,
+                                      onDone: (Item item) {
+                                        if(item!= null)
+                                           widget.receipt.items.add(item);
+                                        setState(() {});
+                                      },
+                                    )),
+                                  ),
                                 );
                               });
                           //  Navigator.of(context).restorablePush(_dialogBuilder);
@@ -227,7 +231,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
       }
       element.units.forEach((u) {
         u.value =
-            (element.unitValue / u.conversionFactor).toDouble().roundToDouble();
+            (element.unitValue  / u.conversionFactor).toDouble().roundToDouble();
       });
     });
     for (int i = 0; i < maxUnitCount; i++) {
@@ -271,6 +275,7 @@ class SelectItemWidget extends StatefulWidget {
 
 class _SelectItemWidgetState extends State<SelectItemWidget> {
   Item item;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -292,15 +297,18 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 searchFn: searchForItem),
             if (item != null)
               RoundedNumberField(
-                controller: TextEditingController(
-                    text: item.unitValue == 0 ? '' : item.unitValue.toString()),
+                controller: item.controller,
+                // controller: TextEditingController(
+                //     text: item.unitValue == 0 ? '' : item.unitValue.toString()),
                 onChanged: (value) {
-                  print(value);
+
                   item.unitValue = int.tryParse(value) ?? 0;
 
-                  print(item.unitValue);
+
                   item.units.forEach((element) {
                     element.value = item.unitValue / element.conversionFactor;
+                    element.controller.text = element.value==0?'':element.value.toString();
+
                   });
                   setState(() {});
                 },
@@ -310,16 +318,26 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
               Wrap(
                 children: List.generate(item.units.length, (i) {
                   return RoundedNumberField(
-                    controller: TextEditingController(
-                        text: (item.unitValue == 0
-                                ? ''
-                                : item.unitValue ~/
-                                    item.units[i].conversionFactor)
-                            .toString()),
+                    controller: item.units[i].controller,
+                    // controller: TextEditingController(
+                    //     text: (item.unitValue == 0
+                    //             ? ''
+                    //             : item.unitValue ~/
+                    //                 item.units[i].conversionFactor)
+                    //         .toString()),
                     onChanged: (value) {
                       item.units[i].value = double.tryParse(value) ?? 0.0;
                       item.unitValue = item.units[i].value.toInt() *
                           item.units[i].conversionFactor;
+                      item.controller.text = item.unitValue == 0?'':item.unitValue.toString();
+                      item.units.forEach((element) {
+                        print(item.units[i].id !=element.id);
+                        if(item.units[i].id !=element.id) {
+                          var r = (item.unitValue / element.conversionFactor).roundToDouble();
+
+                          element.controller.text = r==0?'':r.toString();
+                        }
+                      });
                       setState(() {});
                     },
                     hintText: item.units[i].name,

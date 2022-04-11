@@ -1,8 +1,9 @@
+import '../../../core/constants/AppColors.dart';
 import '../theme/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-List<Color> gradientColors = [primary];
+List<Color> gradientColors = [AppColors.primary];
 
 LineChartData mainData() {
   return LineChartData(

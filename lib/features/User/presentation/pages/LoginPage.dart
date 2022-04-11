@@ -9,7 +9,7 @@ import '../../../../core/constants/AppColors.dart';
 import '../../../../core/utils/Navigation/Navigation.dart';
 import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
 import '../../data/LoginRequestModel.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // -------------------------------
 //  This project written by : Thalisonh on Github.com
 //  You can find this class and all its components
@@ -112,66 +112,41 @@ class _ButtonLoginState extends State<ButtonLogin> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 40, right: 50, left: 200),
-      child: Container(
-        alignment: Alignment.bottomRight,
-        height: 50,
-        width: MediaQuery.of(context).size.width,
-
-        /// ------------------------------------------
-        /// BoxDecoration for style the button
-        /// ------------------------------------------
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary[900],
-              blurRadius: 10.0, // has the effect of softening the shadow
-              spreadRadius: 1.0, // has the effect of extending the shadow
-              offset: Offset(
-                5.0, // horizontal, move right 10
-                5.0, // vertical, move down 10
+      padding:   EdgeInsets.all(5.r),
+      child: CreateModel<LoginResponseModel>(
+        repositoryCallBack: (data) => UserRepository.login(data),
+        onCubitCreated: (c) {
+          cubit = c;
+        },
+        onSuccess: (LoginResponseModel model) {
+          AppSharedPreferences.accessToken = model.accessToken;
+          Navigation.pushReplacement(RootApp());
+        },
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: AppColors.white
+          ),
+          onPressed: () {
+            if (cubit != null)
+              cubit.createModel(LoginRequestModel(
+                  email: widget.emailController.text, password: widget.passwordController.text));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'تسجيل الدخول ',
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-
-        /// ------------------------------------------
-        /// FlatButton with OK text and arrow icon
-        /// ------------------------------------------
-        child: CreateModel<LoginResponseModel>(
-          repositoryCallBack: (data) => UserRepository.login(data),
-          onCubitCreated: (c) {
-            cubit = c;
-          },
-          onSuccess: (LoginResponseModel model) {
-            AppSharedPreferences.accessToken = model.accessToken;
-            Navigation.pushReplacement(RootApp());
-          },
-          child: FlatButton(
-            onPressed: () {
-              if (cubit != null)
-                cubit.createModel(LoginRequestModel(
-                    email: widget.emailController.text, password: widget.passwordController.text));
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'تسجيل الدخول ',
-                  style: TextStyle(
-                    color: Colors.deepOrange,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_forward,
-                  color: Colors.deepOrange,
-                ),
-              ],
-            ),
+              Icon(
+                Icons.arrow_forward,
+                color: AppColors.primary,
+              ),
+            ],
           ),
         ),
       ),
