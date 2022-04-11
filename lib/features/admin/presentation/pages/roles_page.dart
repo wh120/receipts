@@ -1,26 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
+import 'package:receipts/core/Boilerplate/GetModel/cubits/get_model_cubit.dart';
+import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
+import 'package:receipts/core/widgets/BottomSheet.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
-import 'package:receipts/core/widgets/forms/SelectDropDown.dart';
+import 'package:receipts/features/admin/data/department_list_response.dart';
+import 'package:receipts/features/admin/repository/admin_repository.dart';
 import 'package:search_choices/search_choices.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:flutter_icons/flutter_icons.dart';
+import '../../../../core/widgets/data_table/widget_data_table.dart';
 import '../../../RootApp/json/department_json.dart';
-import '../../../RootApp/json/role_json.dart';
+import '../../data/role_list_response.dart';
 import '/core/constants/AppColors.dart';
 import '/core/utils/Navigation/Navigation.dart';
 import '/core/widgets/data_table/data_table.dart';
 import '/core/widgets/forms/RoundedNumberField.dart';
 import '/core/widgets/forms/RoundedTextField.dart';
+import '/core/widgets/forms/SelectDropDown.dart';
 
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RolePage extends StatefulWidget {
   @override
-  _RolePageState createState() => _RolePageState();
+  _DepartmentPageState createState() => _DepartmentPageState();
 }
 
-class _RolePageState extends State<RolePage> {
+class _DepartmentPageState extends State<RolePage> {
+  GetModelCubit cubit;
+
 
 
   @override
@@ -69,22 +79,26 @@ class _RolePageState extends State<RolePage> {
           ),
 
 
-          Expanded(
-              child: MyDataTable(
-                columns: [
-                  "الرقم",
-                  "الاسم",
-                  "القسم"
-
-                ],
-                rows: List.generate(roles.length, (index) => [index.toString(),roles[index]["name"] ,roles[index]["department"] ]),
-              )
-          ),
+          Expanded(child: getBody()),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).restorablePush(_dialogBuilder);
+                  showDialog(
+                      context: context,
+                      builder: (_)=>SingleChildScrollView(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Dialog(
+                              child: Container(
+                                  height:50.h ,
+                                  child: CreateDepartmentWidget(
+                                    onCreated: (_){
+                                      cubit.getModel();
+                                    },
+                                  )) ),
+                        ),
+                      ));
                 },
                 child: Text('إضافة دور جديد')
             ),
@@ -94,29 +108,67 @@ class _RolePageState extends State<RolePage> {
     );
   }
 
-  static Route<Object> _dialogBuilder(
-      BuildContext context, Object arguments) {
-    return DialogRoute<void>(
-      context: context,
-      builder: (BuildContext context) =>
-          Dialog(child: Container(height:50.h ,child: CreateRoleWidget()) )
+  getBody(){
+    return GetModel<RoleListResponse>(
+      onCubitCreated: (c) {
+        cubit=c;
+      },
+      repositoryCallBack: (data) => AdminRepository.getRoles(),
+      modelBuilder: (RoleListResponse model)=>buildbody(model),
+
+    );
+  }
+  buildbody(RoleListResponse model) {
+    return SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: WidgetDataTable(
+        columns: [
+          Text("الرقم"),
+          Text("الاسم"),
+          Text("القسم"),
+          Text("الأوامر"),
+
+        ],
+        rows: List.generate(model.items.length, (index) => [
+          Text(model.items[index].id.toString()),
+          Text(model.items[index].name) ,
+          Text(model.items[index].department?.name??'-') ,
+          IconButton(onPressed: (){
+            MyBottomSheet.showConfirmBottomSheet(
+              context: context,
+              text: 'هل تريد الحذف' ,
+              onClicked: (b){
+                if(b)cubit?.getModel();
+              },repositoryCallBack: (data)=>AdminRepository.deleteRole(model.items[index].id),
+
+            );
+          }, icon: Icon(Icons.delete))]),
+      ),
     );
   }
 
+
+
+
+
 }
 
+class CreateDepartmentWidget extends StatefulWidget {
+  final ValueChanged onCreated;
 
-
-class CreateRoleWidget extends StatefulWidget {
+  const CreateDepartmentWidget({Key key, this.onCreated}) : super(key: key);
   @override
-  _CreateRoleWidgetState createState() => _CreateRoleWidgetState();
+  _CreateDepartmentWidgetState createState() => _CreateDepartmentWidgetState();
 }
 
-class _CreateRoleWidgetState extends State<CreateRoleWidget> {
+class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
+
+  CreateModelCubit cubit;
+  TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("إضافة دور"),),
+      appBar: AppBar(title: Text("إضافة دور جديد"),),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -126,23 +178,34 @@ class _CreateRoleWidgetState extends State<CreateRoleWidget> {
             SizedBox(height: 25,),
             RoundedTextField(
               hintText: "اسم الدور",
+              controller: nameController,
             ),
-            ObjectDropDown<ObjectDropDownItem>(
-              width: 100.w,
-              //       selectedValue: ObjectDropDownItem(id :0 , name: roles[0]["name"]),
-              items: List.generate(departments.length, (index) => ObjectDropDownItem(id :index , name: departments[index]["name"])),
-              text: 'العميل',
-            ),
+
+            getDepartmentsAndRoles(),
+
             Expanded(child: Container()),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigation.pop();
+              child: CreateModel<Role>(
+                repositoryCallBack: (data) => AdminRepository.createRole(data),
+                onCubitCreated: (c){
+                  cubit=c;
+                },
+                onSuccess: (m){
 
-                  },
-                  child: Text('إضافة دور جديد')
+                  Navigation.pop();
+                  widget.onCreated(m);
+
+                },
+                child: ElevatedButton(
+                    onPressed: () {
+                      if(cubit!=null && nameController.text.length>0 &&selectedDepartment!= null)
+                        cubit.createModel(Role(name: nameController.text,departmentId: selectedDepartment.id));
+
+                    },
+                    child: Text('إضافة دور جديد')
+                ),
               ),
             )
 
@@ -151,6 +214,39 @@ class _CreateRoleWidgetState extends State<CreateRoleWidget> {
       ),
     );
   }
+  getDepartmentsAndRoles(){
+    return GetModel<DepartmentListResponse>(
+      repositoryCallBack: (data) => AdminRepository.getDepartments(),
+      modelBuilder: (DepartmentListResponse model)=>buildDepartments(model),
+
+    );
+  }
+  Department selectedDepartment;
+
+  buildDepartments(DepartmentListResponse model) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Text(
+          "المستودع",
+        ),
+        ObjectDropDown<Department>(
+          selectedValue: selectedDepartment,
+          items: model.items,
+          text: 'المستودع',
+          onChanged: (Department department){
+            selectedDepartment = department;
+
+            setState(() {
+
+            });
+          },
+        ),
+      ],
+    );
+  }
+
 }
+
 
 

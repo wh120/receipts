@@ -1,10 +1,8 @@
 import 'package:receipts/core/utils/Navigation/Navigation.dart';
 
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:receipts/features/receipt/presentation/page/receipts_list_page.dart';
 
 import '../../../../core/constants/AppColors.dart';

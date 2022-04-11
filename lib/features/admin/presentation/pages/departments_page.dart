@@ -85,11 +85,19 @@ class _DepartmentPageState extends State<DepartmentPage> {
                 onPressed: () {
                   showDialog(
                       context: context,
-                      builder: (_)=>Dialog(child: Container(height:50.h ,child: CreateDepartmentWidget(
-                        onCreated: (_){
-                          cubit.getModel();
-                        },
-                      )) ));
+                      builder: (_)=>SingleChildScrollView(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Dialog(
+                              child: Container(
+                                  height:50.h ,
+                                  child: CreateDepartmentWidget(
+                              onCreated: (_){
+                                cubit.getModel();
+                              },
+                          )) ),
+                        ),
+                      ));
                 },
                 child: Text('إضافة قسم جديد')
             ),

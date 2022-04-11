@@ -13,15 +13,19 @@ class CreateModel<Model> extends StatefulWidget {
 
   final ModelCreated<Model> onSuccess;
 
+
   final RepositoryCallBack repositoryCallBack;
   final CreatedCallback onCubitCreated;
+  final VoidCallback onError;
   final Widget child;
 
 
   const CreateModel({Key key,
     this.repositoryCallBack,
     this.onCubitCreated,
-    this.child, this.onSuccess }) : super(key: key);
+    this.child,
+    this.onSuccess,
+    this.onError }) : super(key: key);
 
   @override
   State<CreateModel<Model>> createState() => _GetModelState<Model>();
@@ -69,10 +73,12 @@ class _GetModelState<Model> extends State<CreateModel<Model>> {
       },
       listener: (context, state) {
         if(state is CreateModelSuccessfully) {
-          showSnackBar(state.message );
+
           widget.onSuccess(state.model);
+          showSnackBar(state.message );
         }
         if(state is Error){
+              if(widget.onError != null )widget.onError();
             showSnackBar(state.message.toString());
           //  ScaffoldMessenger.of(context).showSnackBar(snackBar(state.message));
         }

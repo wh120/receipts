@@ -1,7 +1,9 @@
+import 'package:receipts/core/API/CoreModels/base_result_model.dart';
+
 import '../../receipt/data/receipt_list_response.dart';
 import 'department_list_response.dart';
 
-class RoleListResponse {
+class RoleListResponse extends BaseResultModel{
   List<Role> items;
 
   RoleListResponse({this.items});
@@ -24,7 +26,7 @@ class RoleListResponse {
   }
 }
 
-class Role {
+class Role extends BaseResultModel{
   int id;
   String name;
   String guardName;

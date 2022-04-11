@@ -40,6 +40,7 @@ class MyBottomSheet{
                     children: <Widget>[
                       CreateModel<EmptyModel>(
 
+
                         child: CustomButton(
                           text: 'تأكيد' ,
                           onPressed: () {
@@ -56,6 +57,10 @@ class MyBottomSheet{
                         },
                         onSuccess: (m){
                           onClicked(true);
+                          Navigator.pop(context);
+                        },
+                        onError: (){
+                          onClicked(false);
                           Navigator.pop(context);
                         },
                       ),

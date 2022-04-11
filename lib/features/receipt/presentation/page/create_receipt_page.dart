@@ -222,7 +222,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                             ObjectDropDown<Department>(
                               selectedValue: selectedDepartment,
                               items: model.items,
-                              text: 'العميل',
+                              text: 'المستودع',
                               onChanged: (Department department){
                                 selectedDepartment = department;
                                 selectedRole =null;
