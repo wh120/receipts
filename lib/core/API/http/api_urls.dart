@@ -15,6 +15,9 @@ class ApiURLs {
    static const String GET_ROLES = BASE_URL +'/api/Role';
    static const String GET_ROLE = BASE_URL +'/api/Role/{id}';
 
+   static const String GET_ITEM_MAIN_CATEGORIES = BASE_URL +'/api/ItemMainCategory';
+   static const String GET_ITEM_MAIN_CATEGORY = BASE_URL +'/api/ItemMainCategory/{id}';
+
 
    static const String GET_ITEMS = BASE_URL +'/api/Item';
    static const String CREATE_RECEIPT = BASE_URL +'/api/Receipt';

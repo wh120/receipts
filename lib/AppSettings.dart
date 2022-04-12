@@ -10,7 +10,7 @@ class AppSettings {
 
 
  // static const String BASE_URL = 'https://alumaracoffe.com/receipts/public';
-  static const String BASE_URL = 'http://localhost';
+  static const String BASE_URL =  'http://localhost';
 
   static const String APK_URL = 'http://greentreasure.co/clinic.apk';
   static const String VERSION = '1.0.0:3';
