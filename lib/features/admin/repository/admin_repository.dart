@@ -2,6 +2,7 @@
 import 'package:receipts/core/API/CoreModels/empty_model.dart';
 
 import '../data/department_list_response.dart';
+import '../data/item_category_list_response.dart';
 import '../data/item_main_category_list_response.dart';
 import '../data/role_list_response.dart';
 import '/core/API/CoreModels/base_result_model.dart';
@@ -12,6 +13,36 @@ import '/features/AboutUs/data/AboutUsResponse.dart';
 import '/features/Homepage/data/SliderListModel.dart';
 
 class AdminRepository{
+
+
+  static Future<BaseResultModel> getItemCategories( ) async {
+    return await RemoteDataSource.request<ItemCategoryListResponse>(
+        converter: (json) => ItemCategoryListResponse.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        url: ApiURLs.GET_ITEM_CATEGORIES);
+
+  }
+  static Future<BaseResultModel> createItemCategory(ItemCategory category ) async {
+    return await RemoteDataSource.request<ItemCategory>(
+        converter: (json) => ItemCategory.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        data: category.toJson(),
+
+        url: ApiURLs.GET_ITEM_CATEGORIES);
+
+  }
+
+  static Future<BaseResultModel> deleteItemCategory(int id) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.DELETE,
+        withAuthentication: true,
+        url: ApiURLs.GET_ITEM_CATEGORY.replaceFirst('{id}', id.toString()));
+
+  }
+
 
   static Future<BaseResultModel> getItemMainCategories( ) async {
     return await RemoteDataSource.request<ItemMainCategoryListResponse>(
