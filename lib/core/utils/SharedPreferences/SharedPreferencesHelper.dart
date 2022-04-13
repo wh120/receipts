@@ -11,6 +11,7 @@ class AppSharedPreferences {
   static const KEY_FIRST_TIME = "PREF_KEY_FIRST_TIME";
   static const KEY_PERMISSIONS = "PREF_KEY_PERMISSIONS";
   static const KEY_LOCALIZATION = "PREF_KEY_LOCALIZATION";
+  static const KEY_IS_ADMIN= "PREF_KEY_IS_ADMIN";
 
   static bool initialized;
   static SharedPreferencesProvider _pref;
@@ -22,6 +23,7 @@ class AppSharedPreferences {
   }
   static clearForLogOut() {
     removeAccessToken();
+    isAdmin=false;
   }
 
   //accessToken
@@ -30,6 +32,9 @@ class AppSharedPreferences {
   static bool get hasAccessToken => _pref.contains(KEY_ACCESS_TOKEN);
   static removeAccessToken() => _pref.remove(KEY_ACCESS_TOKEN);
 
+  //isAdmin
+  static bool get isAdmin => _pref.read(KEY_IS_ADMIN);
+  static set isAdmin(bool admin) => _pref.save(KEY_IS_ADMIN, admin);
 
 
   //language

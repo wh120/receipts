@@ -65,7 +65,17 @@ class ReceiptRepository{
         converter: (json) => ReceiptListResponse.fromJson(json),
         method: HttpMethod.GET,
         withAuthentication: true,
+        queryParameters: data.toJson(),
         url: ApiURLs.GET_MY_APPROVAL_RECEIPTS);
+
+  }
+  static Future<BaseResultModel> getMyReceipts( data) async {
+    return await RemoteDataSource.request<ReceiptListResponse>(
+        converter: (json) => ReceiptListResponse.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        queryParameters: data.toJson(),
+        url: ApiURLs.GET_MY_RECEIPTS);
 
   }
 

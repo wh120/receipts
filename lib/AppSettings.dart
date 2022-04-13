@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'core/constants/Keys.dart';
@@ -9,8 +10,8 @@ class AppSettings {
 
 
 
- // static const String BASE_URL = 'https://alumaracoffe.com/receipts/public';
-  static const String BASE_URL =  'http://localhost';
+  static const String BASE_URL = kDebugMode? 'http://localhost':'https://alumaracoffe.com/receipts/public';
+  // static const String BASE_URL =  'http://localhost';
 
   static const String APK_URL = 'http://greentreasure.co/clinic.apk';
   static const String VERSION = '1.0.0:3';

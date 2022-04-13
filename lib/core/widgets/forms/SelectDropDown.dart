@@ -49,7 +49,7 @@ class _ObjectDropDownState<T extends dynamic> extends State<ObjectDropDown<T>> {
             ),
             Expanded(
               child: Text(
-                'اخنر',
+                'أختر',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

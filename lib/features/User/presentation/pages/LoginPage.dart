@@ -120,6 +120,7 @@ class _ButtonLoginState extends State<ButtonLogin> {
         },
         onSuccess: (LoginResponseModel model) {
           AppSharedPreferences.accessToken = model.accessToken;
+          AppSharedPreferences.isAdmin = model.isAdmin;
           Navigation.pushReplacement(RootApp());
         },
         child: ElevatedButton(

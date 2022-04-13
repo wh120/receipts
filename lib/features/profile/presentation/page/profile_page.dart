@@ -7,6 +7,8 @@ import '../../../../core/constants/AppColors.dart';
 import '../../../App/presentation/widgets/PopupMenu.dart';
 import '../../data/profile_response.dart';
 import '../../repository/profile_repository.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 // import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -82,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   image: DecorationImage(
-                      image: NetworkImage(
+                      image: CachedNetworkImageProvider(
                           "http://www.sh-kd.co/shammout.png"),
                       fit: BoxFit.contain)),
             ),

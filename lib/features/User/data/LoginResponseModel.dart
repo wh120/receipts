@@ -8,7 +8,8 @@ class LoginResponseModel extends BaseResultModel{
   int userId;
   String language;
   String userName;
-  String roleName;
+  bool isAdmin;
+
 
   LoginResponseModel(
       {this.accessToken,
@@ -17,7 +18,7 @@ class LoginResponseModel extends BaseResultModel{
         this.userId,
         this.language,
         this.userName,
-        this.roleName});
+        this.isAdmin});
 
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['accessToken'];
@@ -26,7 +27,7 @@ class LoginResponseModel extends BaseResultModel{
     userId = json['userId'];
     language = json['language'];
     userName = json['userName'];
-    roleName = json['roleName'];
+    isAdmin = json['isAdmin'];
   }
 
 }

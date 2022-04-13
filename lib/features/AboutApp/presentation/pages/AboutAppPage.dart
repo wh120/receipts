@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart' as t;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AboutAppPage extends StatefulWidget {
   @override
@@ -16,43 +17,68 @@ class _AboutAppPageState extends State<AboutAppPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        title: Text('About App'.tr()),
+
+      body: Container(
+        decoration: BoxDecoration(color: AppColors.white, boxShadow: [
+          BoxShadow(
+            color: AppColors.grey.withOpacity(0.01),
+            spreadRadius: 10,
+            blurRadius: 3,
+            // changes position of shadow
+          ),
+        ]),
+        child: Padding(
+          padding: const EdgeInsets.only(
+              top: 60, right: 20, left: 20, bottom: 25),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "عن التطبيق",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.black),
+                  ),
+
+
+                ],
+              ),
+              _buildBody()
+            ],
+          ),
+        ),
       ),
-      body: _buildBody(),
     );
   }
 
   _buildBody() {
-    return ListView(
-      children: [
-       buildLogo(),
-        header(context),
+    return Expanded(
+      child: Column(
+        children: [
+         buildLogo(),
+          header(context),
 
 
-      ],
+        ],
+      ),
     );
   }
 
    buildLogo() {
-    return Padding(
+    return Expanded(
+      child: Padding(
 
-      padding:   EdgeInsets.all(3.0.r),
-      child: CircleAvatar(
+        padding:   EdgeInsets.all(3.0.r),
+        child:CachedNetworkImage(
+          imageUrl: 'http://www.sh-kd.co/shammout.png',
+          placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
 
-         backgroundColor:  Colors.white,
-         radius: 100,
-         child: ClipRRect(
-           borderRadius:BorderRadius.circular(100),
-           child: Image.network('https://www.gravatar.com/avatar/bbdab18bb5caee5f127f7780da0b5623?s=800&d=identicon'),
-         ),
-         // foregroundImage: NetworkImage(
-         //     'http://itland-sy.com/wp-content/uploads/2020/07/IT-Land-PNG.png',
-         //   scale: 0.1
-         //
-         // ),
-       ),
+      ),
     );
   }
 
@@ -61,12 +87,12 @@ class _AboutAppPageState extends State<AboutAppPage> {
       padding:   EdgeInsets.all(3.0.r),
       child: Column(
         children: [
-          Text('My Health'.tr(),
+          Text('إيصالات',
             style: AppTheme.headline3,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("Clinic App",
+            child: Text("Receipts",
               style: AppTheme.headline5,
               textDirection: TextDirection.ltr,
             ),

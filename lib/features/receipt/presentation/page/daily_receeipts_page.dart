@@ -23,7 +23,7 @@ class _DailyPageState extends State<DailyReceiptsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey.withOpacity(0.05),
+
       body: getBody(),
     );
   }

@@ -27,6 +27,7 @@ class ApiURLs {
    static const String CREATE_RECEIPT_TYPE = BASE_URL +'/api/ReceiptType/count/{date}';
    static const String GET_RECEIPTS = BASE_URL +'/api/Receipt';
    static const String GET_MY_APPROVAL_RECEIPTS = BASE_URL +'/api/Receipt/MyApprovalReceipts';
+   static const String GET_MY_RECEIPTS = BASE_URL +'/api/Receipt/MyReceipts';
    static const String APPROVE_RECEIPT = BASE_URL +'/api/Receipt/{id}/approveReceipt';
 
    static const String VERIFY_LOGIN = BASE_URL +'/api/TokenAuth/VerifyLoginFromPatiantApp';

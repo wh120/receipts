@@ -233,7 +233,8 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
   }
   ItemMainCategory selectedMainCategory;
 
-  buildItemMainCategories(ItemMainCategoryListResponse model) {
+   buildItemMainCategories(ItemMainCategoryListResponse model) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [

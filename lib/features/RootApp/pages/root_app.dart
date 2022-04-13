@@ -1,6 +1,8 @@
+import 'package:receipts/core/utils/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:receipts/features/receipt/presentation/page/my_approval_receipts_page.dart';
 
 import '../../../core/constants/AppColors.dart';
+import '../../AboutApp/presentation/pages/AboutAppPage.dart';
 import '../../admin/presentation/pages/admin_page.dart';
 import '../../profile/presentation/page/profile_page.dart';
 import '../../receipt/presentation/page/create_receipt_page.dart';
@@ -19,10 +21,10 @@ class RootApp extends StatefulWidget {
 }
 
 class _RootAppState extends State<RootApp> {
-  int pageIndex = 4;
+  int pageIndex  ;
   List<Widget> pages = [
 
-    AdminPage(),
+    AppSharedPreferences.isAdmin? AdminPage():AboutAppPage(),
     DailyReceiptsPage(),
     MyApprovalReceiptsPage(),
     ProfilePage(),
@@ -61,10 +63,18 @@ class _RootAppState extends State<RootApp> {
             FloatingActionButtonLocation.centerDocked);
   }
 
+  PageController controller = new PageController(initialPage: 4);
   Widget getBody() {
-    return IndexedStack(
-      index: pageIndex,
+    return PageView(
+      physics: NeverScrollableScrollPhysics(),
+
+
+
+      controller: controller,
+
+    //  index: pageIndex,
       children: pages,
+
     );
   }
 
@@ -95,6 +105,7 @@ class _RootAppState extends State<RootApp> {
   }
 
   selectedTab(index) {
+    controller.animateToPage(index ,duration: Duration(milliseconds: 100), curve: Curves.linear, );
     setState(() {
       pageIndex = index;
     });
