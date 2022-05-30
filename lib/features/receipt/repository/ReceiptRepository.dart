@@ -1,6 +1,6 @@
 
  import 'package:receipts/core/API/CoreModels/empty_model.dart';
-import 'package:receipts/features/receipt/data/item_list_response.dart';
+import '../../admin/data/item_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 
 import '../data/receipt_type_response.dart';

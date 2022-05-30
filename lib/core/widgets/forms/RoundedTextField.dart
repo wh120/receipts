@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 class RoundedTextField extends StatefulWidget {
 
 
+
   final String helperText;
   final FormFieldValidator<String>  validator;
   final String hintText;
@@ -16,8 +17,9 @@ class RoundedTextField extends StatefulWidget {
   final Widget  prefix;
   final List<TextInputFormatter>  inputFormatters;
   final int maxLength;
+  final int maxLines;
   final ValueChanged<String> onChanged;
-  const RoundedTextField({Key key, this.hintText, this.initialValue, this.onTap, this.readOnly=false, this.controller, this.labelText, this.keyboardType,  this.validator, this.prefix, this.helperText, this.inputFormatters, this.maxLength, this.onChanged}) : super(key: key);
+  const RoundedTextField({Key key, this.hintText, this.initialValue, this.onTap, this.readOnly=false, this.controller, this.labelText, this.keyboardType,  this.validator, this.prefix, this.helperText, this.inputFormatters, this.maxLength, this.onChanged, this.maxLines=1}) : super(key: key);
 
   @override
   _RoundedTextFieldState createState() => _RoundedTextFieldState();
@@ -36,6 +38,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
      //   textAlign: TextAlign.left ,
         onChanged: widget.onChanged,
 
+        maxLines: widget.maxLines,
         maxLength: widget.maxLength,
 
         inputFormatters: widget.inputFormatters,
@@ -55,10 +58,10 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
           ),
           enabledBorder: OutlineInputBorder(
             // width: 0.0 produces a thin "hairline" border
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: BorderRadius.circular(15.0),
             borderSide: const BorderSide(color: Colors.grey, width: 0.0),
           ),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
           hintText: widget.hintText,
           labelText: widget.hintText,
           isDense:true,

@@ -1,3 +1,4 @@
+import 'package:receipts/core/utils/Navigation/Navigation.dart';
 import 'package:receipts/core/utils/SharedPreferences/SharedPreferencesHelper.dart';
 import 'package:receipts/features/receipt/presentation/page/my_approval_receipts_page.dart';
 
@@ -28,11 +29,13 @@ class _RootAppState extends State<RootApp> {
     DailyReceiptsPage(),
     MyApprovalReceiptsPage(),
     ProfilePage(),
-    CreateReceiptPage()
+
   ];
 
   @override
   void initState() {
+    pageIndex = 3;
+   controller = new PageController(initialPage: pageIndex);
     // TODO: implement initState
     super.initState();
   }
@@ -49,10 +52,11 @@ class _RootAppState extends State<RootApp> {
         bottomNavigationBar: getFooter(),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              selectedTab(4);
+              Navigation.push(CreateReceiptPage());
+              //selectedTab(4);
             },
             child: Icon(
-              Ionicons.md_create,
+              Ionicons.md_add,
               size: 25,
               color: Colors.white,
             ),
@@ -63,7 +67,7 @@ class _RootAppState extends State<RootApp> {
             FloatingActionButtonLocation.centerDocked);
   }
 
-  PageController controller = new PageController(initialPage: 4);
+  PageController controller;
   Widget getBody() {
     return PageView(
       physics: NeverScrollableScrollPhysics(),

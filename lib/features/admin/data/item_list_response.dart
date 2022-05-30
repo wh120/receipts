@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:receipts/core/API/CoreModels/base_result_model.dart';
 
+import 'item_category_list_response.dart';
+
 class ItemListResponseModel extends BaseResultModel{
   List<Item> items;
 
@@ -24,7 +26,7 @@ class ItemListResponseModel extends BaseResultModel{
   }
 }
 
-class Item {
+class Item extends BaseResultModel{
   int id;
   String code;
   String name;
@@ -32,11 +34,12 @@ class Item {
   String unit;
   int unitValue;
   TextEditingController controller = TextEditingController();
-  String isDefaultUnit;
+  bool isDefaultUnit;
   int itemCategoryId;
   String createdAt;
   String updatedAt;
   List<Unit> units;
+  ItemCategory itemCategory;
 
 
   Item(
@@ -49,7 +52,8 @@ class Item {
         this.itemCategoryId,
         this.createdAt,
         this.updatedAt,
-        this.units});
+        this.units,
+        this.itemCategory});
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -58,7 +62,7 @@ class Item {
     description = json['description'];
     unit = json['unit'];
     unitValue = 0;
-    isDefaultUnit = json['is_default_unit'];
+    //isDefaultUnit = json['is_default_unit'];
     itemCategoryId = json['item_category_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -69,6 +73,9 @@ class Item {
         units.add(new Unit.fromJson(v));
       });
     }
+    itemCategory = json['item_category'] != null
+        ? new ItemCategory.fromJson(json['item_category'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -84,6 +91,9 @@ class Item {
     data['updated_at'] = this.updatedAt;
     if (this.units != null) {
       data['units'] = this.units.map((v) => v.toJson()).toList();
+    }
+    if (this.itemCategory != null) {
+      data['item_category'] = this.itemCategory.toJson();
     }
     return data;
   }

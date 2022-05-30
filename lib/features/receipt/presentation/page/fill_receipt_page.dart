@@ -4,7 +4,7 @@ import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/receipt/data/create_receipt_request.dart';
-import 'package:receipts/features/receipt/data/item_list_response.dart';
+import '../../../admin/data/item_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_type_json.dart';
 import 'package:receipts/features/receipt/repository/ReceiptRepository.dart';
@@ -169,6 +169,8 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
               cubit.createModel(CreateReceiptRequest(
                   mustApprovedByRoleId: widget.receipt.mustApprovedByRole.id,
                   receiptTypeId: widget.receipt.receiptTypeId,
+                  fromDepartmentId: widget.receipt.fromDepartmentId,
+                  toDepartmentId: widget.receipt.toDepartmentId,
                   items: List.generate(widget.receipt.items.length, (index) {
                     return ReceiptItem(
                         id: widget.receipt.items[index].id,

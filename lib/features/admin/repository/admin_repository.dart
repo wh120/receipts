@@ -3,8 +3,10 @@ import 'package:receipts/core/API/CoreModels/empty_model.dart';
 
 import '../data/department_list_response.dart';
 import '../data/item_category_list_response.dart';
+import '../data/item_list_response.dart';
 import '../data/item_main_category_list_response.dart';
 import '../data/role_list_response.dart';
+import '../data/transformation_list_response.dart';
 import '/core/API/CoreModels/base_result_model.dart';
 import '/core/API/data_source/remote_data_source.dart';
 import '/core/API/http/api_urls.dart';
@@ -14,6 +16,44 @@ import '/features/Homepage/data/SliderListModel.dart';
 
 class AdminRepository{
 
+
+  static Future<BaseResultModel> getItems( ) async {
+    return await RemoteDataSource.request<ItemListResponseModel>(
+        converter: (json) => ItemListResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        url: ApiURLs.GET_ITEMS);
+
+  }
+  static Future<BaseResultModel> createItem(Item item ) async {
+    return await RemoteDataSource.request<Item>(
+        converter: (json) => Item.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        data: item.toJson(),
+
+        url: ApiURLs.GET_ITEMS);
+
+  }
+
+  static Future<BaseResultModel> deleteItem(int id) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.DELETE,
+        withAuthentication: true,
+        url: ApiURLs.GET_ITEM.replaceFirst('{id}', id.toString()));
+
+  }
+
+
+  static Future<BaseResultModel> getTransformations( ) async {
+    return await RemoteDataSource.request<TransformationList>(
+        converter: (json) => TransformationList.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        url: ApiURLs.GET_TRANSFORMATIONS);
+
+  }
 
   static Future<BaseResultModel> getItemCategories( ) async {
     return await RemoteDataSource.request<ItemCategoryListResponse>(
@@ -101,12 +141,24 @@ class AdminRepository{
   }
 
   static Future<BaseResultModel> getDepartments( ) async {
+
     return await RemoteDataSource.request<DepartmentListResponse>(
         converter: (json) => DepartmentListResponse.fromJson(json),
         method: HttpMethod.GET,
         withAuthentication: true,
 
         url: ApiURLs.GET_DEPARTMENTS);
+
+  }
+
+  static Future<BaseResultModel> getMyDepartments( ) async {
+
+    return await RemoteDataSource.request<DepartmentListResponse>(
+        converter: (json) => DepartmentListResponse.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+
+        url: ApiURLs.GET_MY_DEPARTMENTS);
 
   }
   static Future<BaseResultModel> createDepartment(Department department ) async {

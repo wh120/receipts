@@ -10,6 +10,7 @@ class ApiURLs {
 
 
    static const String GET_DEPARTMENTS = BASE_URL +'/api/Department';
+   static const String GET_MY_DEPARTMENTS = BASE_URL +'/api/Department/my';
    static const String GET_DEPARTMENT = BASE_URL +'/api/Department/{id}';
 
    static const String GET_ROLES = BASE_URL +'/api/Role';
@@ -21,8 +22,13 @@ class ApiURLs {
    static const String GET_ITEM_CATEGORIES = BASE_URL +'/api/ItemCategory';
    static const String GET_ITEM_CATEGORY = BASE_URL +'/api/ItemCategory/{id}';
 
-
    static const String GET_ITEMS = BASE_URL +'/api/Item';
+   static const String GET_ITEM = BASE_URL +'/api/Item/{id}';
+
+   static const String GET_TRANSFORMATIONS = BASE_URL +'/api/Transformation';
+
+
+
    static const String CREATE_RECEIPT = BASE_URL +'/api/Receipt';
    static const String CREATE_RECEIPT_TYPE = BASE_URL +'/api/ReceiptType/count/{date}';
    static const String GET_RECEIPTS = BASE_URL +'/api/Receipt';

@@ -1,5 +1,7 @@
 class CreateReceiptRequest {
   String receiptNumber;
+  int fromDepartmentId;
+  int toDepartmentId;
   int mustApprovedByRoleId;
   int receiptTypeId;
   String description;
@@ -7,6 +9,8 @@ class CreateReceiptRequest {
 
   CreateReceiptRequest(
       {this.receiptNumber,
+        this.fromDepartmentId,
+        this.toDepartmentId,
         this.mustApprovedByRoleId,
         this.receiptTypeId,
         this.description,
@@ -14,6 +18,8 @@ class CreateReceiptRequest {
 
   CreateReceiptRequest.fromJson(Map<String, dynamic> json) {
     receiptNumber = json['receipt_number'];
+    fromDepartmentId = json['from_department_id'];
+    toDepartmentId = json['to_department_id'];
     mustApprovedByRoleId = json['must_approved_by_role_id'];
     receiptTypeId = json['receipt_type_id'];
     description = json['description'];
@@ -28,6 +34,8 @@ class CreateReceiptRequest {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['receipt_number'] = this.receiptNumber;
+    data['from_department_id'] = this.fromDepartmentId;
+    data['to_department_id'] = this.toDepartmentId;
     data['must_approved_by_role_id'] = this.mustApprovedByRoleId;
     data['receipt_type_id'] = this.receiptTypeId;
     data['description'] = this.description;

@@ -18,7 +18,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  TextEditingController dateOfBirth = TextEditingController(text: "0935555555");
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:receipts/core/API/CoreModels/base_result_model.dart';
 import 'package:receipts/features/profile/data/profile_response.dart';
 
 import '../../admin/data/role_list_response.dart';
-import 'item_list_response.dart';
+import '../../admin/data/item_list_response.dart';
 
 class ReceiptListResponse extends ListResultModel<Receipt>{
   List<Receipt> list;
@@ -33,6 +33,8 @@ class Receipt {
   int createdByUserId;
   int acceptedByUserId;
   int mustApprovedByRoleId;
+  int fromDepartmentId;
+  int toDepartmentId;
   int receiptTypeId;
   String description;
   DateTime acceptedAt;
@@ -49,6 +51,8 @@ class Receipt {
         this.createdByUserId,
         this.acceptedByUserId,
         this.mustApprovedByRoleId,
+        this.fromDepartmentId,
+        this.toDepartmentId,
         this.receiptTypeId,
         this.description,
         this.acceptedAt,
@@ -65,6 +69,8 @@ class Receipt {
     createdByUserId = json['created_by_user_id'];
     acceptedByUserId = json['accepted_by_user_id'];
     mustApprovedByRoleId = json['must_approved_by_role_id'];
+    fromDepartmentId = json['from_department_id'];
+    toDepartmentId = json['to_department_id'];
     receiptTypeId = json['receipt_type_id'];
     description = json['description'];
     acceptedAt = DateTime.tryParse(json['accepted_at']??'');
@@ -95,6 +101,8 @@ class Receipt {
     data['created_by_user_id'] = this.createdByUserId;
     data['accepted_by_user_id'] = this.acceptedByUserId;
     data['must_approved_by_role_id'] = this.mustApprovedByRoleId;
+    data['from_department_id'] = this.fromDepartmentId;
+    data['to_department_id'] = this.toDepartmentId;
     data['receipt_type_id'] = this.receiptTypeId;
     data['description'] = this.description;
     data['accepted_at'] = this.acceptedAt;

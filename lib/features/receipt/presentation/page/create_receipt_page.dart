@@ -11,6 +11,7 @@ import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
+import '../../../../core/widgets/forms/RoundedTextField.dart';
 import '../../../RootApp/json/create_budget_json.dart';
 import '../../../admin/data/role_list_response.dart';
 import '../../../admin/repository/admin_repository.dart';
@@ -29,8 +30,31 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
    @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey.withOpacity(0.05),
+
       body: getBody(),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          child: Text('التالي'),
+
+          onPressed: (){
+            if(selectedRole != null && selectedDepartment != null) {
+              selectedRole.department = selectedDepartment;
+              Navigation.push(FillReceiptPage(
+                receipt: Receipt(
+                  items: [],
+                  fromDepartmentId: selectedMyDepartment.id,
+                  toDepartmentId: selectedDepartment.id,
+                  mustApprovedByRole: selectedRole,
+                  receiptTypeId: selectedReceiptType+1,
+                ),
+              ));
+            }
+          },
+        ),
+      ),
+        floatingActionButtonLocation:
+        FloatingActionButtonLocation.centerDocked
     );
   }
 
@@ -161,40 +185,37 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
             height: 50,
           ),
           getDepartmentsAndRoles( ),
-          SizedBox(height: 25,),
-          Center(
-            child: TextButton(
-              child: Text('التالي'),
 
-              onPressed: (){
-                if(selectedRole != null && selectedDepartment != null) {
-                  selectedRole.department = selectedDepartment;
-                  Navigation.push(FillReceiptPage(
-                    receipt: Receipt(
-                      items: [],
-                      mustApprovedByRole: selectedRole,
-                      receiptTypeId: selectedReceiptType+1,
-                    ),
-                  ));
-                }
-              },
-            ),
-          ),
+          SizedBox(height: 50,),
+
         ],
       ),
     );
   }
+
+
   getDepartmentsAndRoles(){
      return GetModel<DepartmentListResponse>(
        repositoryCallBack: (data) => AdminRepository.getDepartments(),
-       modelBuilder: (DepartmentListResponse model)=>buildDepartmentsAndRoles(model),
+       modelBuilder: (DepartmentListResponse departmentsModel)=>GetModel<DepartmentListResponse>(
+         repositoryCallBack: (data) => AdminRepository.getMyDepartments(),
+         modelBuilder: (DepartmentListResponse model) {
+           departmentsModel.myDepartment = [];
+           departmentsModel.myDepartment.addAll(model.items);
+           departmentsModel.myDepartment.insert(0, Department(name: 'غير محدد'));
+           return buildDepartmentsAndRoles(departmentsModel);
+         },
+       ),
 
      );
   }
 
+
   Department selectedDepartment;
+  Department selectedMyDepartment;
   Role selectedRole;
    buildDepartmentsAndRoles(DepartmentListResponse model ) {
+
 
     return Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -217,7 +238,48 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              "المستودع",
+                              "من المستودع",
+                            ),
+                            ObjectDropDown<Department>(
+                              selectedValue: selectedMyDepartment,
+                              items: model.myDepartment,
+                              text: 'المستودع',
+                              onChanged: (Department department){
+                                selectedMyDepartment = department;
+
+                                setState(() {
+
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: (100.w - 140),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              "إلى المستودع",
                             ),
                             ObjectDropDown<Department>(
                               selectedValue: selectedDepartment,
@@ -245,6 +307,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
               SizedBox(
                 height: 20,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -281,7 +344,21 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                   ),
 
                 ],
-              )
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+
+                child: RoundedTextField(
+                  maxLines: 2,
+                  hintText: 'ملاحظات',
+                ),
+              ),
+
+
+
+
             ],
           ),
         );

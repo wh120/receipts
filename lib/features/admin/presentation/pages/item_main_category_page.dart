@@ -91,7 +91,7 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
                           alignment: Alignment.center,
                           child: Dialog(
                               child: Container(
-                                  height:50.h ,
+                                  height:60.h ,
                                   child: CreateDepartmentWidget(
                                     onCreated: (_){
                                       cubit.getModel();
@@ -126,6 +126,7 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
           Text("الرقم"),
           Text("الاسم"),
           Text("الكود"),
+          Text("القسم"),
           Text("الأوامر"),
 
         ],
@@ -133,6 +134,7 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
           Text(model.items[index].id.toString()),
           Text(model.items[index].name) ,
           Text(model.items[index].code) ,
+          Text(model.items[index].department?.name??'جميع الأقسام') ,
           IconButton(onPressed: (){
             MyBottomSheet.showConfirmBottomSheet(
               context: context,
@@ -178,13 +180,14 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
 
             SizedBox(height: 25,),
             RoundedTextField(
-              hintText: "اسم القسم",
+              hintText: "اسم الصنف",
               controller: nameController,
             ),
             RoundedTextField(
               hintText: "الكود",
               controller: codeController,
             ),
+            getDepartmentsAndRoles(),
 
             Expanded(child: Container()),
 
@@ -204,7 +207,7 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
                 child: ElevatedButton(
                     onPressed: () {
                       if(cubit!=null && nameController.text.isNotEmpty && codeController.text.isNotEmpty)
-                        cubit.createModel(ItemMainCategory(name: nameController.text,code: codeController.text));
+                        cubit.createModel(ItemMainCategory(name: nameController.text,code: codeController.text , departmentId: selectedDepartment?.id));
 
                     },
                     child: Text('إضافة صنف جديد')
@@ -215,6 +218,44 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
           ],
         ),
       ),
+    );
+  }
+  Department selectedDepartment;
+
+  getDepartmentsAndRoles(){
+    return GetModel<DepartmentListResponse>(
+      repositoryCallBack: (data) => AdminRepository.getDepartments(),
+      modelBuilder: (DepartmentListResponse model) {
+
+        List<Department> items = [];
+        items.addAll(model.items);
+        items.insert(0, Department(name: "جميع الأقسام"  ));
+        return buildDepartments(items);
+      },
+
+    );
+  }
+  buildDepartments(List<Department> items) {
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Text(
+          "القسم",
+        ),
+        ObjectDropDown<Department>(
+          selectedValue: selectedDepartment,
+          items:  items,
+          text: 'المستودع',
+          onChanged: (Department department){
+            selectedDepartment = department;
+
+            setState(() {
+
+            });
+          },
+        ),
+      ],
     );
   }
 }
