@@ -353,8 +353,11 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        Navigation.pop();
-                        widget.onDone(item);
+                        if(item!= null &&item.unitValue>0){
+                          Navigation.pop();
+                          widget.onDone(item);
+                        }
+
                       },
                       child: Text('موافق')),
                   ElevatedButton(

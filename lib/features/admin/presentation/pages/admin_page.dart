@@ -7,6 +7,7 @@ import 'package:receipts/features/admin/presentation/pages/transformations_page.
 import 'package:receipts/features/receipt/presentation/page/receipts_list_page.dart';
 
 import '../../../../core/constants/AppColors.dart';
+import '../../../receipt/presentation/page/daily_receeipts_page.dart';
 import 'departments_page.dart';
 import 'item_category_page.dart';
 import 'item_main_category_page.dart';
@@ -85,6 +86,17 @@ class _AdminPageState extends State<AdminPage> {
               },
               leading: Icon(Icons.settings),
               title: Text("الإيصالات"),),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: ListTile(
+              tileColor: Colors.white,
+              onTap: (){
+                Navigation.push(DailyReceiptsPage());
+              },
+              leading: Icon(Ionicons.md_stats),
+              title: Text("الإحصائيات اليومية"),),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),

@@ -40,7 +40,6 @@ class _TransformationPageState extends State<TransformationPage> {
               child: Column(
                 children: [
                   Row(
-
                     children: [
                       Text(
                         "إدارة الاقسام",
@@ -49,7 +48,6 @@ class _TransformationPageState extends State<TransformationPage> {
                             fontWeight: FontWeight.bold,
                             color: AppColors.black),
                       ),
-
                     ],
                   ),
                 ],
@@ -63,78 +61,71 @@ class _TransformationPageState extends State<TransformationPage> {
                 onPressed: () {
                   Navigation.push(AddTransformationPage());
                 },
-                child: Text('إضافة عملية جديدة')
-            ),
+                child: Text('إضافة عملية جديدة')),
           )
         ],
       ),
-
     );
   }
 
   getBody() {
     return GetModel<TransformationList>(
       repositoryCallBack: (data) => AdminRepository.getTransformations(),
-      modelBuilder: (TransformationList model)=>buildBody(model),
+      modelBuilder: (TransformationList model) => buildBody(model),
     );
   }
 
   buildBody(TransformationList model) {
     return ListView.builder(
-      itemCount: model.items.length,
-        itemBuilder: (c,index){
-        return GeneralCard(
-          child: Column(
-            children: [
-              Center(
-                child: Text(model.items[index].name),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround  ,
-                children: [
-
-                  Expanded(
-                      child: ColumnBuilder(
-                        itemCount: model.items[index].inputs.length,
-                        itemBuilder: (c,i){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround  ,
-                            children: [
-                              Text(model.items[index].inputs[i].unitValue.toString()),
-
-                              Text(model.items[index].inputs[i].name),
-
-                            ],
-                          );
-                        },
-                      )
-                  ),
-                  Icon(Icons.subdirectory_arrow_left_sharp),
-                  Expanded(
-                      child: ColumnBuilder(
-                        itemCount: model.items[index].outputs.length,
-                        itemBuilder: (c,i){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround  ,
-                            children: [
-                              Text(model.items[index].outputs[i].unitValue.toString()),
-
-                              Text(model.items[index].outputs[i].name),
-
-                            ],
-                          );
-                        },
-                      )
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-
-        }
-    );
+        itemCount: model.items.length,
+        itemBuilder: (c, index) {
+          return GeneralCard(
+            child: Column(
+              children: [
+                Center(
+                  child: Text(model.items[index].name),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                        child: ColumnBuilder(
+                      itemCount: model.items[index].inputs.length,
+                      itemBuilder: (c, i) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(model.items[index].inputs[i].unitValue
+                                .toString()),
+                            Text(model.items[index].inputs[i].name),
+                          ],
+                        );
+                      },
+                    )),
+                    Icon(Icons.subdirectory_arrow_left_sharp),
+                    Expanded(
+                        child: ColumnBuilder(
+                      itemCount: model.items[index].outputs.length,
+                      itemBuilder: (c, i) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(model.items[index].outputs[i].unitValue
+                                .toString()),
+                            Text(model.items[index].outputs[i].name),
+                          ],
+                        );
+                      },
+                    )),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
 
@@ -146,8 +137,8 @@ class AddTransformationPage extends StatefulWidget {
 }
 
 class _AddTransformationPageState extends State<AddTransformationPage> {
-
   List<DropdownMenuItem<Item>> items = [];
+  Transformation transformation = Transformation(inputs: [], outputs: []);
 
   @override
   Widget build(BuildContext context) {
@@ -159,10 +150,15 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
     );
   }
 
-  loadBody() {
+  Widget loadBody() {
     return GetModel<ItemListResponseModel>(
       repositoryCallBack: (data) => ReceiptRepository.getItems(),
-      modelBuilder: (ItemListResponseModel model) => buildBody(),
+      modelBuilder: (ItemListResponseModel model) => Column(
+        children: [
+          Expanded(child: buildBody()),
+          buildCreateButton()
+        ],
+      ),
       onSuccess: (model) {
         model.items.forEach((element) {
           items.add(DropdownMenuItem<Item>(
@@ -173,25 +169,38 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
       },
     );
   }
-  buildBody() {
 
+  Widget buildBody() {
     return Column(
-      mainAxisSize: MainAxisSize.min,
+     // mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
+          flex: 2,
           child: Row(
-            textBaseline: TextBaseline.ideographic,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-            crossAxisAlignment: CrossAxisAlignment.baseline,
+            // textBaseline: TextBaseline.ideographic,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // crossAxisAlignment: CrossAxisAlignment.baseline,
             children: [
-              Expanded(child: GeneralCard(
-                child: Column(
+              Expanded(
+                  child: GeneralCard(child: Column(
                   children: [
+                    Text('الطرف الأول '),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: 5,
-                          itemBuilder: (context, index) => Text('ee'),
+                        itemCount: transformation.inputs.length,
+                        itemBuilder: (context, index) => Row(
+                          children: [
+                            Text(transformation.inputs[index].name),
+                            Spacer(),
+                            Text(transformation.inputs[index].unitValue
+                                    .toString() +
+                                ' ' +
+                                transformation.inputs[index].unit.toString())
+                          ],
+                        ),
                       ),
                     ),
                     ElevatedButton(
@@ -206,13 +215,14 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
                                     child: SingleChildScrollView(
                                       child: Container(
                                           child: SelectItemWidget(
-                                            items: items,
-                                            onDone: (Item item) {
-                                              // if(item!= null)
-                                              //   widget.receipt.items.add(item);
-                                              setState(() {});
-                                            },
-                                          )),
+                                        items: items,
+                                        onDone: (Item item) {
+                                          transformation.inputs.add(item);
+                                          // if(item!= null)
+                                          //   widget.receipt.items.add(item);
+                                          setState(() {});
+                                        },
+                                      )),
                                     ),
                                   );
                                 });
@@ -224,19 +234,73 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
                 ),
               )),
               Icon(Icons.subdirectory_arrow_left_sharp),
-              Expanded(child: GeneralCard(
-                child: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (context, index) => Text('ee'),
+              Expanded(
+                  child: GeneralCard(
+                child: Column(
+                  children: [
+                    Text('الطرف الثاني '),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: transformation.outputs.length,
+                        itemBuilder: (context, index) => Row(
+                          children: [
+                            Text(transformation.outputs[index].name),
+                            Spacer(),
+                            Text(transformation.outputs[index].unitValue
+                                    .toString() +
+                                ' ' +
+                                transformation.outputs[index].unit.toString())
+                          ],
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            showDialog(
+                                context: context,
+                                useRootNavigator: true,
+                                builder: (_) {
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: SingleChildScrollView(
+                                      child: Container(
+                                          child: SelectItemWidget(
+                                        items: items,
+                                        onDone: (Item item) {
+                                          transformation.outputs.add(item);
+                                          // if(item!= null)
+                                          //   widget.receipt.items.add(item);
+                                          setState(() {});
+                                        },
+                                      )),
+                                    ),
+                                  );
+                                });
+                            //  Navigator.of(context).restorablePush(_dialogBuilder);
+                          });
+                        },
+                        child: Text('إضافة مادة أخرى')),
+                  ],
                 ),
               )),
             ],
           ),
         ),
         Expanded(child: Container())
-
       ],
     );
   }
 
+  buildCreateButton() {
+    return ElevatedButton(
+        onPressed: () {
+          Navigation.push(AddTransformationPage());
+        },
+        child: Text('إضافة عملية جديدة')
+    );
+  }
 }

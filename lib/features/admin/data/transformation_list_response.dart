@@ -3,15 +3,15 @@ import 'package:receipts/features/admin/data/item_list_response.dart';
 import '../../../core/API/CoreModels/base_result_model.dart';
 
 class TransformationList extends BaseResultModel{
-  List<Items> items;
+  List<Transformation> items;
 
   TransformationList({this.items});
 
   TransformationList.fromJson(Map<String, dynamic> json) {
     if (json['items'] != null) {
-      items = new List<Items>();
+      items = new List<Transformation>();
       json['items'].forEach((v) {
-        items.add(new Items.fromJson(v));
+        items.add(new Transformation.fromJson(v));
       });
     }
   }
@@ -25,7 +25,7 @@ class TransformationList extends BaseResultModel{
   }
 }
 
-class Items   {
+class Transformation   {
   int id;
   String name;
   String description;
@@ -34,7 +34,7 @@ class Items   {
   List<Item> inputs;
   List<Item> outputs;
 
-  Items(
+  Transformation(
       {this.id,
         this.name,
         this.description,
@@ -43,7 +43,7 @@ class Items   {
         this.inputs,
         this.outputs});
 
-  Items.fromJson(Map<String, dynamic> json) {
+  Transformation.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];

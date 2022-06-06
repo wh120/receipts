@@ -5,6 +5,7 @@ import 'package:receipts/features/receipt/presentation/page/my_approval_receipts
 import '../../../core/constants/AppColors.dart';
 import '../../AboutApp/presentation/pages/AboutAppPage.dart';
 import '../../admin/presentation/pages/admin_page.dart';
+import '../../department/presentation/pages/my_department_page.dart';
 import '../../profile/presentation/page/profile_page.dart';
 import '../../receipt/presentation/page/create_receipt_page.dart';
 import '../../receipt/presentation/page/daily_receeipts_page.dart';
@@ -26,7 +27,7 @@ class _RootAppState extends State<RootApp> {
   List<Widget> pages = [
 
     AppSharedPreferences.isAdmin? AdminPage():AboutAppPage(),
-    DailyReceiptsPage(),
+    MyDepartmentPage(),
     MyApprovalReceiptsPage(),
     ProfilePage(),
 
@@ -85,7 +86,7 @@ class _RootAppState extends State<RootApp> {
   Widget getFooter() {
     List<IconData> iconItems = [
       Ionicons.ios_settings,
-      Ionicons.md_stats,
+      Ionicons.ios_archive,
       Ionicons.md_wallet,
       Ionicons.ios_person,
     ];
