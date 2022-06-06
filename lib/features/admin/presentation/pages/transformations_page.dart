@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
 
+import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/constants/AppColors.dart';
 import '../../../../core/utils/Navigation/Navigation.dart';
 import '../../../../core/widgets/ColumnBuilder.dart';
 import '../../../../core/widgets/cards/GeneralCard.dart';
+import '../../../../core/widgets/forms/RoundedTextField.dart';
 import '../../../receipt/presentation/page/fill_receipt_page.dart';
 import '../../../receipt/repository/ReceiptRepository.dart';
 import '../../data/item_list_response.dart';
@@ -42,7 +46,7 @@ class _TransformationPageState extends State<TransformationPage> {
                   Row(
                     children: [
                       Text(
-                        "إدارة الاقسام",
+                        "إدارة عمليات التحويل",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -139,6 +143,10 @@ class AddTransformationPage extends StatefulWidget {
 class _AddTransformationPageState extends State<AddTransformationPage> {
   List<DropdownMenuItem<Item>> items = [];
   Transformation transformation = Transformation(inputs: [], outputs: []);
+
+  CreateModelCubit cubit;
+
+  TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -290,17 +298,35 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
             ],
           ),
         ),
-        Expanded(child: Container())
+        Expanded(child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              RoundedTextField(
+                controller: nameController,
+                hintText: 'الاسم',
+              )
+            ],
+          ),
+        ))
       ],
     );
   }
 
   buildCreateButton() {
-    return ElevatedButton(
-        onPressed: () {
-          Navigation.push(AddTransformationPage());
-        },
-        child: Text('إضافة عملية جديدة')
+    return CreateModel<EmptyModel>(
+      repositoryCallBack: (data)=>AdminRepository.createTransformation(data),
+      onCubitCreated: (c){cubit=c;},
+      child: ElevatedButton(
+          onPressed: () {
+            transformation.name = nameController.text;
+            cubit.createModel(transformation);
+
+          },
+          child: Text('إضافة عملية جديدة')
+      ),
     );
   }
+
+
 }

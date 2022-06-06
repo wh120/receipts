@@ -74,6 +74,7 @@ class _GetModelState<Model> extends State<CreateModel<Model>> {
       listener: (context, state) {
         if(state is CreateModelSuccessfully) {
 
+          if( widget.onSuccess!= null)
           widget.onSuccess(state.model);
           showSnackBar(state.message );
         }

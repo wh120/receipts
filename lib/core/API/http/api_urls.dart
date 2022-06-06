@@ -26,6 +26,7 @@ class ApiURLs {
    static const String GET_ITEM = BASE_URL +'/api/Item/{id}';
 
    static const String GET_TRANSFORMATIONS = BASE_URL +'/api/Transformation';
+   static const String TRANSFORM = BASE_URL +'/api/Transformation/transform';
 
 
 

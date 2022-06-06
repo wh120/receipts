@@ -85,6 +85,7 @@ class Item extends BaseResultModel{
     data['name'] = this.name;
     data['description'] = this.description;
     data['unit'] = this.unit;
+    data['value'] = this.unitValue;
     data['is_default_unit'] = this.isDefaultUnit;
     data['item_category_id'] = this.itemCategoryId;
     data['created_at'] = this.createdAt;

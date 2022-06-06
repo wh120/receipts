@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import 'package:receipts/core/constants/AppColors.dart';
 import 'package:receipts/core/utils/Navigation/Navigation.dart';
 import 'package:receipts/core/widgets/forms/SelectDropDown.dart';
@@ -10,12 +11,18 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 
+import '../../../../core/API/CoreModels/empty_model.dart';
+import '../../../../core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
+import '../../../../core/widgets/ColumnBuilder.dart';
+import '../../../../core/widgets/cards/GeneralCard.dart';
 import '../../../../core/widgets/forms/RoundedTextField.dart';
 import '../../../RootApp/json/create_budget_json.dart';
 import '../../../admin/data/role_list_response.dart';
+import '../../../admin/data/transformation_list_response.dart';
 import '../../../admin/repository/admin_repository.dart';
 import '../../data/receipt_type_json.dart';
+import '../../repository/ReceiptRepository.dart';
 import 'fill_receipt_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -27,32 +34,34 @@ class CreateReceiptPage extends StatefulWidget {
 class _CreatBudgetPageState extends State<CreateReceiptPage> {
   int selectedReceiptType = 0;
 
+  CreateModelCubit Cubit;
+
    @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       body: getBody(),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ElevatedButton(
-          child: Text('التالي'),
-
-          onPressed: (){
-            if(selectedRole != null && selectedDepartment != null) {
-              selectedRole.department = selectedDepartment;
-              Navigation.push(FillReceiptPage(
-                receipt: Receipt(
-                  items: [],
-                  fromDepartmentId: selectedMyDepartment.id,
-                  toDepartmentId: selectedDepartment.id,
-                  mustApprovedByRole: selectedRole,
-                  receiptTypeId: selectedReceiptType+1,
-                ),
-              ));
-            }
-          },
-        ),
-      ),
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.all(8.0),
+      //   child: ElevatedButton(
+      //     child: Text('التالي'),
+      //
+      //     onPressed: (){
+      //       if(selectedRole != null && selectedDepartment != null) {
+      //         selectedRole.department = selectedDepartment;
+      //         Navigation.push(FillReceiptPage(
+      //           receipt: Receipt(
+      //             items: [],
+      //             fromDepartmentId: selectedMyDepartment.id,
+      //             toDepartmentId: selectedDepartment.id,
+      //             mustApprovedByRole: selectedRole,
+      //             receiptTypeId: selectedReceiptType+1,
+      //           ),
+      //         ));
+      //       }
+      //     },
+      //   ),
+      // ),
         floatingActionButtonLocation:
         FloatingActionButtonLocation.centerDocked
     );
@@ -184,7 +193,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
           SizedBox(
             height: 50,
           ),
-          getDepartmentsAndRoles( ),
+          buildbody( ),
 
           SizedBox(height: 50,),
 
@@ -193,6 +202,10 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
     );
   }
 
+  buildbody(){
+     if(selectedReceiptType == 3) return getTransformations();
+     else return getDepartmentsAndRoles();
+  }
 
   getDepartmentsAndRoles(){
      return GetModel<DepartmentListResponse>(
@@ -355,6 +368,29 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                   hintText: 'ملاحظات',
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: ElevatedButton(
+                    child: Text('التالي'),
+
+                    onPressed: (){
+                      if(selectedRole != null && selectedDepartment != null) {
+                        selectedRole.department = selectedDepartment;
+                        Navigation.push(FillReceiptPage(
+                          receipt: Receipt(
+                            items: [],
+                            fromDepartmentId: selectedMyDepartment.id,
+                            toDepartmentId: selectedDepartment.id,
+                            mustApprovedByRole: selectedRole,
+                            receiptTypeId: selectedReceiptType+1,
+                          ),
+                        ));
+                      }
+                    },
+                  ),
+                ),
+              )
 
 
 
@@ -363,4 +399,127 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
           ),
         );
   }
+
+
+  Widget getTransformations(){
+    return GetModel<TransformationList>(
+      repositoryCallBack: (data) => AdminRepository.getTransformations(),
+      modelBuilder: (model)=>buildTransformations(model)
+
+    );
+  }
+  int selectedTransformationId = 0;
+  buildTransformations(TransformationList model) {
+    return Column(
+      children: [
+        getMyDepartment(),
+        SizedBox(height: 10,),
+        ListView.builder(
+          shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: model.items.length,
+            itemBuilder: (c, index) {
+              return GeneralCard(
+                onTap: (){
+                  selectedTransformationId = model.items[index].id;
+                  setState(() {
+
+                  });
+                },
+                selected: selectedTransformationId==model.items[index].id,
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text(model.items[index].name),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                            child: ColumnBuilder(
+                              itemCount: model.items[index].inputs.length,
+                              itemBuilder: (c, i) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(model.items[index].inputs[i].unitValue
+                                        .toString()),
+                                    Text(model.items[index].inputs[i].name),
+                                  ],
+                                );
+                              },
+                            )),
+                        Icon(Icons.subdirectory_arrow_left_sharp),
+                        Expanded(
+                            child: ColumnBuilder(
+                              itemCount: model.items[index].outputs.length,
+                              itemBuilder: (c, i) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(model.items[index].outputs[i].unitValue
+                                        .toString()),
+                                    Text(model.items[index].outputs[i].name),
+                                  ],
+                                );
+                              },
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }),
+
+
+        CreateModel<EmptyModel>(
+          repositoryCallBack: (data) => ReceiptRepository.transformItems(selectedMyDepartment.id, selectedTransformationId),
+          onCubitCreated: (c){Cubit=c;},
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: ElevatedButton(
+                child: Text('التالي'),
+
+                onPressed: (){
+                  Cubit.createModel(null);
+                },
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+  Widget getMyDepartment(){
+    return GetModel<DepartmentListResponse>(
+      repositoryCallBack: (data) => AdminRepository.getMyDepartments(),
+      modelBuilder: (DepartmentListResponse model) {
+        return  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "من المستودع",
+            ),
+            ObjectDropDown<Department>(
+              selectedValue: selectedMyDepartment,
+              items: model.items,
+              text: 'المستودع',
+              onChanged: (Department department){
+                selectedMyDepartment = department;
+
+                setState(() {
+
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }

@@ -90,5 +90,21 @@ class ReceiptRepository{
 
   }
 
+  static Future<BaseResultModel> transformItems( int department_id , int transformation_id) async {
+    var res = await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        url: ApiURLs.TRANSFORM,
+        data: {
+          "department_id": department_id,
+          "transformation_id": transformation_id
+        }
+    );
+
+    return res;
+
+  }
+
 
 }
