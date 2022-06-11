@@ -30,6 +30,7 @@ class _RootAppState extends State<RootApp> {
     MyDepartmentPage(),
     MyApprovalReceiptsPage(),
     ProfilePage(),
+    CreateReceiptPage()
 
   ];
 

@@ -12,6 +12,7 @@ class AppSharedPreferences {
   static const KEY_PERMISSIONS = "PREF_KEY_PERMISSIONS";
   static const KEY_LOCALIZATION = "PREF_KEY_LOCALIZATION";
   static const KEY_IS_ADMIN= "PREF_KEY_IS_ADMIN";
+  static const KEY_BASE_URL= "PREF_KEY_BASE_URL";
 
   static bool initialized;
   static SharedPreferencesProvider _pref;
@@ -58,4 +59,7 @@ class AppSharedPreferences {
   static  Map<String, dynamic> get localization => _pref.read(KEY_LOCALIZATION);
   static set localization( Map<String, Localization> localization) => _pref.save(KEY_LOCALIZATION, localization);
 
+  //BASE_URL
+  static  String get baseURL => _pref.read(KEY_BASE_URL);
+  static set baseURL( String url) => _pref.save(KEY_BASE_URL, url);
 }

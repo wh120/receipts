@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'core/constants/Keys.dart';
 import 'core/constants/constants.dart';
+import 'core/utils/SharedPreferences/SharedPreferencesHelper.dart';
 
 
 class AppSettings {
 
 
 
-  static const String BASE_URL = kDebugMode? 'http://localhost':'https://alumaracoffe.com/receipts/public';
+  // static const String BASE_URL = kDebugMode? 'http://172.20.10.8:1997':'https://alumaracoffe.com/receipts/public';
+  static  String BASE_URL = AppSharedPreferences.baseURL??'http://172.20.10.8:1997';
   // static const String BASE_URL =  'http://localhost';
 
   static const String APK_URL = 'http://greentreasure.co/clinic.apk';

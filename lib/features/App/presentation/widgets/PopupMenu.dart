@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:receipts/core/widgets/forms/RoundedTextField.dart';
 
+import '../../../../core/API/http/api_urls.dart';
 import '/features/App/domain/cubit/application_cubit.dart';
 import '/features/App/presentation/widgets/ChangeLanguage.dart';
 import '/features/User/domain/cubit/user_cubit.dart';
 import '/features/User/presentation/pages/LoginPage.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as e;
 
 import 'package:flutter_icons/flutter_icons.dart';
 import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
-enum Menu { changeLanguage, logOut, update}
+enum Menu { changeLanguage, logOut, update , changeURL}
 
 class PopupMenu extends StatelessWidget {
   Menu _selection;
@@ -39,6 +41,10 @@ class PopupMenu extends StatelessWidget {
         // AppSettings.upgradeFromUrl();
           //AppSharedPreferences.accessToken = 'ss';
         }
+        else if(result == Menu.changeURL){
+          changeURL(context);
+
+        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
          PopupMenuItem<Menu>(
@@ -52,6 +58,10 @@ class PopupMenu extends StatelessWidget {
         PopupMenuItem<Menu>(
           value: Menu.update,
           child: Text('Update'.tr()),
+        ),
+        PopupMenuItem<Menu>(
+          value: Menu.changeURL,
+          child: Text('change URL' ),
         ),
 
 
@@ -72,6 +82,41 @@ class PopupMenu extends StatelessWidget {
           context, MaterialPageRoute(builder: (BuildContext context) => LoginPage())
       );
     }
+  }
+
+  changeURL(context){
+    showDialog(
+        context: context,
+        builder: (_)=>SingleChildScrollView(
+          child: Align(
+            alignment: Alignment.center,
+            child: Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Container(
+                       //   height:70.h ,
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: RoundedTextField(
+
+
+                              hintText: 'server url',
+
+                              initialValue: AppSharedPreferences.baseURL,
+                              onChanged: (v){
+                                AppSharedPreferences.baseURL=v;
+                                ApiURLs.BASE_URL=v;
+                              },
+
+                            ),
+                          )),
+                    ],
+                  ),
+                ) ),
+          ),
+        ));
   }
 
 

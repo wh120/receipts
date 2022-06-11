@@ -8,6 +8,7 @@ import '../../../../core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import '../../../../core/constants/AppColors.dart';
 import '../../../../core/utils/Navigation/Navigation.dart';
 import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
+import '../../../App/presentation/widgets/PopupMenu.dart';
 import '../../data/LoginRequestModel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // -------------------------------
@@ -47,15 +48,20 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               children: <Widget>[
                 Row(children: <Widget>[
+
+
                   /// ---------------------------------------------------------------------------
                   /// Vertical Text widget that is build with RotatedBox widget  build in flutter
                   /// ---------------------------------------------------------------------------
                   VerticalText(),
 
+
                   /// ---------------------------------------------------------------------------
                   /// TextLogin widget that is build with Container widget  build in flutter
                   /// ---------------------------------------------------------------------------
                   TextLogin(),
+
+                  Expanded(child: PopupMenu())
                 ]),
 
                 /// ---------------------------------------------------------------------------

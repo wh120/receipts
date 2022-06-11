@@ -485,6 +485,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                 child: Text('التالي'),
 
                 onPressed: (){
+                  if(selectedMyDepartment!= null && selectedTransformationId!= null)
                   Cubit.createModel(null);
                 },
               ),
