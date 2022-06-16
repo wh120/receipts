@@ -84,7 +84,7 @@ class _ItemPageState extends State<ItemPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigation.push(CreateDepartmentWidget(
+                  Navigation.push(CreateItemWidget(
                     onCreated: (_){
                       cubit.getModel();
                     },
@@ -157,16 +157,29 @@ class _ItemPageState extends State<ItemPage> {
             for(int i = 0; i < maxUnitCount;i++)
               r.add(Text(model.items[index].units.tryGet(i)?.name??'-'));
 
-            r.add(IconButton(onPressed: (){
-              MyBottomSheet.showConfirmBottomSheet(
-                context: context,
-                text: 'هل تريد الحذف' ,
-                onClicked: (b){
-                  if(b)cubit?.getModel();
-                },repositoryCallBack: (data)=>AdminRepository.deleteItem(model.items[index].id),
+            r.add(Row(
+              children: [
+                IconButton(onPressed: (){
+                  MyBottomSheet.showConfirmBottomSheet(
+                    context: context,
+                    text: 'هل تريد الحذف' ,
+                    onClicked: (b){
+                      if(b)cubit?.getModel();
+                    },repositoryCallBack: (data)=>AdminRepository.deleteItem(model.items[index].id),
 
-              );
-            }, icon: Icon(Icons.delete)));
+                  );
+                }, icon: Icon(Icons.delete)),
+
+                IconButton(onPressed: (){
+
+                  Navigation.push(CreateItemWidget(item:model.items[index] , onCreated: (_){cubit.getModel();},));
+                }, icon: Icon(Icons.edit))
+
+              ],
+            )
+            );
+
+
 
 
             return r;
@@ -183,22 +196,40 @@ class _ItemPageState extends State<ItemPage> {
   }
 }
 
-class CreateDepartmentWidget extends StatefulWidget {
+class CreateItemWidget extends StatefulWidget {
   final ValueChanged onCreated;
+  final Item item;
 
-  const CreateDepartmentWidget({Key key, this.onCreated}) : super(key: key);
+  const CreateItemWidget({Key key, this.onCreated, this.item}) : super(key: key);
   @override
-  _CreateDepartmentWidgetState createState() => _CreateDepartmentWidgetState();
+  _CreateItemWidgetState createState() => _CreateItemWidgetState();
 }
 
-class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
+class _CreateItemWidgetState extends State<CreateItemWidget> {
 
   CreateModelCubit cubit;
   TextEditingController nameController = TextEditingController();
   TextEditingController codeController = TextEditingController();
   TextEditingController unitController = TextEditingController();
 
-  List<Unit> units =[];
+  Item item = new Item(units: []);
+
+
+  @override
+  void initState() {
+
+    if(widget.item != null){
+
+
+      item  = widget.item;
+      selectedMainCategory=item.itemCategory;
+    }
+
+
+    super.initState();
+  }
+
+ // List<Unit> units =[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,45 +244,53 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
               SizedBox(height: 25,),
               RoundedTextField(
                 hintText: "اسم المادة",
-                controller: nameController,
+                // controller: nameController,
+                initialValue:item.name ,
+                onChanged: (v){item.name=v;},
               ),
 
               RoundedTextField(
                 hintText: "الكود",
-                controller: codeController,
+                initialValue: item.code,
+                // controller: codeController,
+                onChanged: (v){item.code=v;},
               ),
 
               getItemMainCategories(),
               SizedBox(height: 25,),
               RoundedTextField(
                 hintText: "الوحدة الرئيسية",
-                controller: unitController,
+                // controller: unitController,
+                initialValue:item.unit ,
+                onChanged: (v){item.unit=v;},
               ),
               ColumnBuilder(
                 // shrinkWrap: true,
                 // physics: NeverScrollableScrollPhysics(),
-                itemCount: units.length,
+                itemCount: item.units.length,
                 itemBuilder: (context, index) {
                   return Row(children: [
                     Expanded(
                       child: RoundedTextField(
+                        initialValue: item.units[index].name,
                         hintText: "الوحدة " +(index+1).toString(),
                         onChanged: (value){
-                          units[index].name=value;
+                          item.units[index].name=value;
                         },
                       ),
                     ),
                     SizedBox(width: 18,),
                     Expanded(
                       child: RoundedNumberField(
+                        initialValue: item.units[index].conversionFactor,
                         hintText: "عامل التحويل "  ,
                         onChanged: (value){
-                          units[index].conversionFactor=int.tryParse(value);
+                          item.units[index].conversionFactor=int.tryParse(value);
                         },
                       ),
                     ),
                     IconButton(onPressed: (){
-                      units.removeAt(index);
+                      item.units.removeAt(index);
                       setState(() {
 
                       });
@@ -263,7 +302,7 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
 
               },),
               IconButton(onPressed: (){
-                units.add(Unit(
+                item.units.add(Unit(
                   name: '',
                   conversionFactor: 0
                 ));
@@ -281,7 +320,7 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CreateModel<Item>(
-                  repositoryCallBack: (data) => AdminRepository.createItem(data),
+                  repositoryCallBack: (data) =>widget.item==null? AdminRepository.createItem(data):AdminRepository.updateItem(widget.item.id,data) ,
                   onCubitCreated: (c){
                     cubit=c;
                   },
@@ -294,20 +333,22 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
                   child: ElevatedButton(
                       onPressed: () {
                         bool validate = true;
-                        units.forEach((element) {
+                        item.units.forEach((element) {
                           if(element.name.isEmpty || element.conversionFactor==null ||element.conversionFactor==0)
                             validate =false;
                         });
-                        if(validate &&cubit!=null && nameController.text.isNotEmpty && unitController.text.isNotEmpty && codeController.text.isNotEmpty&&selectedMainCategory!= null) {
 
-                          var item = Item(
-                              name: nameController.text,
-                              code: codeController.text,
-                              isDefaultUnit: true,
-                              itemCategoryId: selectedMainCategory.id,
-                               unit: unitController.text,
-                              units: units
-                          );
+                        if(validate &&cubit!=null &&
+                            // nameController.text.isNotEmpty &&
+                            // unitController.text.isNotEmpty &&
+                            // codeController.text.isNotEmpty&&
+                            selectedMainCategory!= null) {
+
+
+
+                          item.itemCategoryId =selectedMainCategory.id;
+
+
                           cubit.createModel(item);
                         }
 
@@ -323,6 +364,7 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
       ),
     );
   }
+
   getItemMainCategories(){
     return GetModel<ItemCategoryListResponse>(
       repositoryCallBack: (data) => AdminRepository.getItemCategories(),
@@ -341,6 +383,7 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
           "التصنيف الرئيسي",
         ),
         ObjectDropDown<ItemCategory>(
+
           selectedValue: selectedMainCategory,
           items: model.items,
           text: 'التصنيف الرئيسي',

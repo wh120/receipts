@@ -35,6 +35,16 @@ class AdminRepository{
         url: ApiURLs.GET_ITEMS);
 
   }
+  static Future<BaseResultModel> updateItem(int id ,Item item ) async {
+    return await RemoteDataSource.request<Item>(
+        converter: (json) => Item.fromJson(json),
+        method: HttpMethod.PUT,
+        withAuthentication: true,
+        data: item.toJson(),
+        url: ApiURLs.GET_ITEM.replaceFirst('{id}', id.toString())
+    );
+
+  }
 
   static Future<BaseResultModel> deleteItem(int id) async {
     return await RemoteDataSource.request<EmptyModel>(

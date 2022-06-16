@@ -60,6 +60,7 @@ class ItemCategory extends BaseResultModel{
     }
     return data;
   }
+  bool operator ==(o) => o is ItemCategory  && id == o.id;
 }
 
 

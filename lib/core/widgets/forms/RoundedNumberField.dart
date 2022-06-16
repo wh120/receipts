@@ -9,8 +9,9 @@ class RoundedNumberField extends StatelessWidget {
   final FormFieldValidator<String>  validator;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final int initialValue;
 
-  const RoundedNumberField({Key key, this.hintText, this.validator, this.controller, this.onChanged}) : super(key: key);
+  const RoundedNumberField({Key key, this.hintText, this.validator, this.controller, this.onChanged, this.initialValue}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class RoundedNumberField extends StatelessWidget {
       // },
 
 
+      initialValue: initialValue.toString(),
       onChanged: onChanged,
       controller: controller,
       hintText: hintText,

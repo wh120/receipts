@@ -107,7 +107,7 @@ class PopupMenu extends StatelessWidget {
                               initialValue: AppSharedPreferences.baseURL,
                               onChanged: (v){
                                 AppSharedPreferences.baseURL=v;
-                                ApiURLs.BASE_URL=v;
+
                               },
 
                             ),
