@@ -54,8 +54,8 @@ class _RootAppState extends State<RootApp> {
         bottomNavigationBar: getFooter(),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigation.push(CreateReceiptPage());
-              //selectedTab(4);
+              // Navigation.push(CreateReceiptPage());
+              selectedTab(4);
             },
             child: Icon(
               Ionicons.md_add,

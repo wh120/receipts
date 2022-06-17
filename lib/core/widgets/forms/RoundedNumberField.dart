@@ -29,7 +29,7 @@ class RoundedNumberField extends StatelessWidget {
       // },
 
 
-      initialValue: initialValue.toString(),
+      initialValue:initialValue==null? null :initialValue.toString(),
       onChanged: onChanged,
       controller: controller,
       hintText: hintText,

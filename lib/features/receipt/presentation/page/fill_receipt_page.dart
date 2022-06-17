@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
+import 'package:receipts/core/utils/extensions/extensions.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/receipt/data/create_receipt_request.dart';
@@ -250,9 +251,14 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
           Text(widget.receipt.items[index].unitValue.toString() +
               widget.receipt.items[index].unit),
         ];
-        widget.receipt.items[index].units.forEach((element) {
-          list.add(Text(element.value.toString() + element.name));
-        });
+
+        for(int i = 0; i < maxUnitCount;i++)
+          list.add(Text(widget.receipt.items[index].units.tryGet(i)?.name??'-'));
+
+        // widget.receipt.items[index].units.forEach((element) {
+        //   list.add(Text(element.value.toString() + element.name));
+        // });
+
         if (isNew)
           list.add(IconButton(
               onPressed: () {

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
+import 'package:receipts/core/Boilerplate/GetModel/cubits/get_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
 
 import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/constants/AppColors.dart';
 import '../../../../core/utils/Navigation/Navigation.dart';
+import '../../../../core/widgets/BottomSheet.dart';
 import '../../../../core/widgets/ColumnBuilder.dart';
 import '../../../../core/widgets/cards/GeneralCard.dart';
 import '../../../../core/widgets/forms/RoundedTextField.dart';
@@ -24,6 +26,9 @@ class TransformationPage extends StatefulWidget {
 }
 
 class _TransformationPageState extends State<TransformationPage> {
+  GetModelCubit cubit;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +68,9 @@ class _TransformationPageState extends State<TransformationPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigation.push(AddTransformationPage());
+                  Navigation.push(AddTransformationPage(
+                    onCreated: (_){cubit.getModel();},
+                  ));
                 },
                 child: Text('إضافة عملية جديدة')),
           )
@@ -76,6 +83,7 @@ class _TransformationPageState extends State<TransformationPage> {
     return GetModel<TransformationList>(
       repositoryCallBack: (data) => AdminRepository.getTransformations(),
       modelBuilder: (TransformationList model) => buildBody(model),
+      onCubitCreated: (c){cubit=c;},
     );
   }
 
@@ -83,58 +91,94 @@ class _TransformationPageState extends State<TransformationPage> {
     return ListView.builder(
         itemCount: model.items.length,
         itemBuilder: (c, index) {
-          return GeneralCard(
-            child: Column(
-              children: [
-                Center(
-                  child: Text(model.items[index].name),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                        child: ColumnBuilder(
-                      itemCount: model.items[index].inputs.length,
-                      itemBuilder: (c, i) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(model.items[index].inputs[i].unitValue
-                                .toString()),
-                            Text(model.items[index].inputs[i].name),
-                          ],
-                        );
-                      },
-                    )),
-                    Icon(Icons.subdirectory_arrow_left_sharp),
-                    Expanded(
-                        child: ColumnBuilder(
-                      itemCount: model.items[index].outputs.length,
-                      itemBuilder: (c, i) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(model.items[index].outputs[i].unitValue
-                                .toString()),
-                            Text(model.items[index].outputs[i].name),
-                          ],
-                        );
-                      },
-                    )),
-                  ],
-                ),
-              ],
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GeneralCard(
+              child: Column(
+                children: [
+                  
+                  Center(
+                    child: Text(model.items[index].name),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                          child: GeneralCard(
+                            selected: true,
+                            child: ColumnBuilder(
+                        itemCount: model.items[index].inputs.length,
+                        itemBuilder: (c, i) {
+                            return Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(model.items[index].inputs[i].unitValue
+                                    .toString()),
+                                SizedBox(width: 5,),
+                                Text(model.items[index].inputs[i].unit
+                                    ),
+                                SizedBox(width: 15,),
+                                Text(model.items[index].inputs[i].name),
+                              ],
+                            );
+                        },
+                      ),
+                          )),
+                      Icon(Icons.subdirectory_arrow_left_sharp),
+                      Expanded(
+                          child: GeneralCard(
+                            selected: true,
+                            child: ColumnBuilder(
+                        itemCount: model.items[index].outputs.length,
+                        itemBuilder: (c, i) {
+                            return Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(width: 5,),
+                                Text(model.items[index].outputs[i].unitValue
+                                    .toString()),
+                                SizedBox(width: 5,),
+                                Text(model.items[index].outputs[i].unit),
+                                SizedBox(width: 15,),
+                                Text(model.items[index].outputs[i].name),
+                              ],
+                            );
+                        },
+                      ),
+                          )),
+                    ],
+                  ),
+                  buildDeleteButton(model.items[index])
+                ],
+              ),
             ),
           );
         });
   }
+
+   buildDeleteButton(Transformation transformation) {
+
+    return ElevatedButton(onPressed: (){
+      MyBottomSheet.showConfirmBottomSheet(
+        context: context,
+        text: 'هل تريد الحذف' ,
+        onClicked: (b){
+           if(b)cubit?.getModel();
+        },
+        repositoryCallBack: (data)=>AdminRepository.deleteTransformation(transformation.id),
+
+      );
+
+    }, child: Text('حذف'));
+  }
 }
 
 class AddTransformationPage extends StatefulWidget {
-  const AddTransformationPage({Key key}) : super(key: key);
+  final ValueChanged onCreated;
+  const AddTransformationPage({Key key, this.onCreated}) : super(key: key);
 
   @override
   State<AddTransformationPage> createState() => _AddTransformationPageState();
@@ -317,10 +361,18 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
     return CreateModel<EmptyModel>(
       repositoryCallBack: (data)=>AdminRepository.createTransformation(data),
       onCubitCreated: (c){cubit=c;},
+      onSuccess: (m){
+        widget.onCreated(m);
+        Navigation.pop();
+      },
       child: ElevatedButton(
           onPressed: () {
-            transformation.name = nameController.text;
-            cubit.createModel(transformation);
+            if(nameController.text.isNotEmpty){
+              transformation.name = nameController.text;
+
+              cubit.createModel(transformation);
+            }
+
 
           },
           child: Text('إضافة عملية جديدة')

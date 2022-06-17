@@ -64,6 +64,14 @@ class AdminRepository{
         url: ApiURLs.GET_TRANSFORMATIONS);
 
   }
+  static Future<BaseResultModel> deleteTransformation(int id) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.DELETE,
+        withAuthentication: true,
+        url: ApiURLs.GET_TRANSFORMATION.replaceFirst('{id}', id.toString()));
+
+  }
 
   static Future<BaseResultModel> createTransformation(data ) async {
     return await RemoteDataSource.request<EmptyModel>(

@@ -96,7 +96,7 @@ class _DepartmentDetailsPageState extends State<DepartmentDetailsPage> {
     return ListView.builder(
         itemCount: items.length,
         itemBuilder: (c,index){
-          return ListTile(title: Text(items[index].name), trailing: Text(items[index].unitValue.toString() + ' ' +items[index].unit),);
+          return GeneralCard(child: ListTile(title: Text(items[index].name), trailing: Text(items[index].unitValue.toString() + ' ' +items[index].unit),));
         });
 
   }

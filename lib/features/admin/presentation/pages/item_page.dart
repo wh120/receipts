@@ -4,6 +4,7 @@ import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.
 import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import 'package:receipts/core/Boilerplate/GetModel/cubits/get_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
+import 'package:receipts/core/utils/extensions/extensions.dart';
 import 'package:receipts/core/widgets/BottomSheet.dart';
 import 'package:receipts/core/widgets/ColumnBuilder.dart';
 import 'package:receipts/core/widgets/forms/RoundedNumberField.dart';
@@ -168,7 +169,8 @@ class _ItemPageState extends State<ItemPage> {
                     },repositoryCallBack: (data)=>AdminRepository.deleteItem(model.items[index].id),
 
                   );
-                }, icon: Icon(Icons.delete)),
+                }, icon: Icon(Icons.delete)
+                ),
 
                 IconButton(onPressed: (){
 
@@ -353,7 +355,7 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
                         }
 
                       },
-                      child: Text('إضافة مادة جديدة')
+                      child: Text(widget.item==null?'إضافة مادة جديدة':'تعديل المادة')
                   ),
                 ),
               )
@@ -403,7 +405,3 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
 
 
 
-extension ListGetExtension<T> on List<T> {
-  T tryGet(int index) =>
-      index < 0 || index >= this.length ? null : this[index];
-}
