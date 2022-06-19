@@ -3,6 +3,7 @@ import 'package:receipts/features/profile/data/profile_response.dart';
 
 import '../../admin/data/role_list_response.dart';
 import '../../admin/data/item_list_response.dart';
+import '../../admin/data/user_list_response.dart';
 
 class ReceiptListResponse extends ListResultModel<Receipt>{
   List<Receipt> list;

@@ -7,13 +7,17 @@ import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
 import 'package:receipts/core/widgets/BottomSheet.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
+import 'package:receipts/features/admin/data/user_list_response.dart';
 import 'package:receipts/features/admin/repository/admin_repository.dart';
 import 'package:search_choices/search_choices.dart';
+import 'package:collection/collection.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
+import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/widgets/data_table/widget_data_table.dart';
 import '../../../RootApp/json/department_json.dart';
 import '../../data/item_main_category_list_response.dart';
+import '../../data/role_list_response.dart';
 import '/core/constants/AppColors.dart';
 import '/core/utils/Navigation/Navigation.dart';
 import '/core/widgets/data_table/data_table.dart';
@@ -23,12 +27,12 @@ import '/core/widgets/forms/SelectDropDown.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemMainCategoryPage extends StatefulWidget {
+class UserPage extends StatefulWidget {
   @override
   _DepartmentPageState createState() => _DepartmentPageState();
 }
 
-class _DepartmentPageState extends State<ItemMainCategoryPage> {
+class _DepartmentPageState extends State<UserPage> {
   GetModelCubit cubit;
 
 
@@ -64,7 +68,7 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
 
                     children: [
                       Text(
-                        "إدارة الأصناف الرئيسية",
+                        "إدارة المستخدمين",
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -84,23 +88,25 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (_)=>SingleChildScrollView(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Dialog(
-                              child: Container(
-                                  height:60.h ,
-                                  child: CreateDepartmentWidget(
-                                    onCreated: (_){
-                                      cubit.getModel();
-                                    },
-                                  )) ),
-                        ),
-                      ));
+                  Navigation.push(CreateUserWidget(  onCreated: (_){cubit.getModel();},));
+
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (_)=>SingleChildScrollView(
+                  //       child: Align(
+                  //         alignment: Alignment.center,
+                  //         child: Dialog(
+                  //             child: Container(
+                  //                 height:60.h ,
+                  //                 child: CreateUserWidget(
+                  //                   onCreated: (_){
+                  //                     cubit.getModel();
+                  //                   },
+                  //                 )) ),
+                  //       ),
+                  //     ));
                 },
-                child: Text('إضافة صنف جديد')
+                child: Text('إضافة مستخدم جديد')
             ),
           )
         ],
@@ -109,32 +115,32 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
   }
 
   getBody(){
-    return GetModel<ItemMainCategoryListResponse>(
+    return GetModel< UserListResponse>(
       onCubitCreated: (c) {
         cubit=c;
       },
-      repositoryCallBack: (data) => AdminRepository.getItemMainCategories(),
-      modelBuilder: (ItemMainCategoryListResponse model)=>buildbody(model),
+      repositoryCallBack: (data) => AdminRepository.getUsers(),
+      modelBuilder: (UserListResponse model)=>buildbody(model),
 
     );
   }
-  buildbody(ItemMainCategoryListResponse model) {
+  buildbody(UserListResponse model) {
     return SingleChildScrollView(
       physics: AlwaysScrollableScrollPhysics(),
       child: WidgetDataTable(
         columns: [
           Text("الرقم"),
           Text("الاسم"),
-          Text("الكود"),
-          Text("القسم"),
+          Text("الأيميل"),
+          Text("الدور"),
           Text("الأوامر"),
 
         ],
         rows: List.generate(model.items.length, (index) => [
           Text(model.items[index].id.toString()),
           Text(model.items[index].name) ,
-          Text(model.items[index].code) ,
-          Text(model.items[index].department?.name??'جميع الأقسام') ,
+          Text(model.items[index].email) ,
+          Text(List.generate(model.items[index].roles?.length??0, (i) => model.items[index].roles[i].name).toString()) ,
           Row(
             children: [
               IconButton(onPressed: (){
@@ -150,7 +156,7 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
 
               IconButton(onPressed: (){
 
-                Navigation.push(CreateDepartmentWidget(itemMainCategory:model.items[index] , onCreated: (_){cubit.getModel();},));
+                Navigation.push(CreateUserWidget(user:model.items[index] , onCreated: (_){cubit.getModel();},));
               }, icon: Icon(Icons.edit))
             ],
           )
@@ -167,31 +173,32 @@ class _DepartmentPageState extends State<ItemMainCategoryPage> {
 
 }
 
-class CreateDepartmentWidget extends StatefulWidget {
+class CreateUserWidget extends StatefulWidget {
   final ValueChanged onCreated;
-  final ItemMainCategory itemMainCategory;
+  final User user;
 
-  const CreateDepartmentWidget({Key key, this.onCreated, this.itemMainCategory}) : super(key: key);
+  const CreateUserWidget({Key key, this.onCreated, this.user}) : super(key: key);
   @override
-  _CreateDepartmentWidgetState createState() => _CreateDepartmentWidgetState();
+  _CreateUserWidgetState createState() => _CreateUserWidgetState();
 }
 
-class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
+class _CreateUserWidgetState extends State<CreateUserWidget> {
 
   CreateModelCubit cubit;
   TextEditingController nameController = TextEditingController();
   TextEditingController codeController = TextEditingController();
-  ItemMainCategory itemMainCategory;
+  User user;
 
   void initState() {
 
-    if(widget.itemMainCategory!= null){
-      itemMainCategory=widget.itemMainCategory;
+    if(widget.user!= null){
+      user=widget.user;
     }
     else{
-      itemMainCategory = new ItemMainCategory(
-        name: '',
-        code: ''
+      user = new User(
+          name: '',
+          email: '',
+        roles: []
       );
     }
 
@@ -201,7 +208,7 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("إضافة صنف"),),
+      appBar: AppBar(title: Text("إضافة مستخدم"),),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -210,15 +217,21 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
 
             SizedBox(height: 25,),
             RoundedTextField(
-              hintText: "اسم الصنف",
-              onChanged: (v){itemMainCategory.name = v;},
-              initialValue: itemMainCategory.name,
+              hintText: "الاسم",
+              onChanged: (v){user.name = v;},
+              initialValue: user.name,
               // controller: nameController,
             ),
             RoundedTextField(
-              hintText: "الكود",
-              onChanged: (v){itemMainCategory.code = v;},
-              initialValue: itemMainCategory.code,
+              hintText: "الأيميل",
+              onChanged: (v){user.email = v;},
+              initialValue: user.email,
+              // controller: codeController,
+            ),
+            RoundedTextField(
+              hintText: "كلمة السر",
+              onChanged: (v){user.password = v;},
+              initialValue: user.password,
               // controller: codeController,
             ),
             getDepartmentsAndRoles(),
@@ -227,8 +240,8 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CreateModel<ItemMainCategory>(
-                repositoryCallBack: (data) =>widget.itemMainCategory==null? AdminRepository.createItemMainCategory(data):AdminRepository.updateItemMainCategory(data),
+              child: CreateModel<EmptyModel>(
+                repositoryCallBack: (data) => AdminRepository.createUser(data),
                 onCubitCreated: (c){
                   cubit=c;
                 },
@@ -240,14 +253,14 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
                 },
                 child: ElevatedButton(
                     onPressed: () {
-                      if(cubit!=null && itemMainCategory.name.isNotEmpty && itemMainCategory.code.isNotEmpty) {
-                        print(itemMainCategory.department);
-                        itemMainCategory.departmentId = itemMainCategory.department.id;
-                        cubit.createModel(itemMainCategory);
+                      if(cubit!=null && user.name.isNotEmpty && user.email.isNotEmpty) {
+
+
+                        cubit.createModel(user);
                       }
 
                     },
-                    child: Text('إضافة صنف جديد')
+                    child: Text('إضافة مستخدم جديد')
                 ),
               ),
             )
@@ -260,33 +273,31 @@ class _CreateDepartmentWidgetState extends State<CreateDepartmentWidget> {
   Department selectedDepartment;
 
   getDepartmentsAndRoles(){
-    return GetModel<DepartmentListResponse>(
-      repositoryCallBack: (data) => AdminRepository.getDepartments(),
-      modelBuilder: (DepartmentListResponse model) {
+    return GetModel<RoleListResponse>(
+      repositoryCallBack: (data) => AdminRepository.getRoles(),
+      modelBuilder: (RoleListResponse model) {
 
-        List<Department> items = [];
-        items.addAll(model.items);
-        items.insert(0, Department(name: "جميع الأقسام" ,id: null ));
-        return buildDepartments(items);
+
+        return buildDepartments(model.items);
       },
 
     );
   }
-  buildDepartments(List<Department> items) {
+  buildDepartments(List<Role> items) {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          "القسم",
+          "الدور",
         ),
-        ObjectDropDown<Department>(
-          selectedValue: itemMainCategory.department,
+        ObjectDropDown<Role>(
+          selectedValue: user.roles.firstOrNull,
           items:  items,
           text: 'المستودع',
-          onChanged: (Department department){
-           // selectedDepartment = department;
-            itemMainCategory.department = department;
+          onChanged: (Role role){
+            user.roles = [role];
+            // selectedDepartment = department;
 
 
             setState(() {

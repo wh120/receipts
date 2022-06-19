@@ -7,6 +7,7 @@ import '../data/item_list_response.dart';
 import '../data/item_main_category_list_response.dart';
 import '../data/role_list_response.dart';
 import '../data/transformation_list_response.dart';
+import '../data/user_list_response.dart';
 import '/core/API/CoreModels/base_result_model.dart';
 import '/core/API/data_source/remote_data_source.dart';
 import '/core/API/http/api_urls.dart';
@@ -16,6 +17,25 @@ import '/features/Homepage/data/SliderListModel.dart';
 
 class AdminRepository{
 
+
+  static Future<BaseResultModel> getUsers( ) async {
+    return await RemoteDataSource.request<UserListResponse>(
+        converter: (json) => UserListResponse.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        url: ApiURLs.GET_Users);
+
+  }
+
+  static Future<BaseResultModel> createUser(data ) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        data: data.toJson(),
+        url: ApiURLs.GET_Users);
+
+  }
 
   static Future<BaseResultModel> getItems( ) async {
     return await RemoteDataSource.request<ItemListResponseModel>(
@@ -130,13 +150,25 @@ class AdminRepository{
         url: ApiURLs.GET_ITEM_MAIN_CATEGORIES);
 
   }
+  static Future<BaseResultModel> updateItemMainCategory(ItemMainCategory category ) async {
+    return await RemoteDataSource.request<ItemMainCategory>(
+        converter: (json) => ItemMainCategory.fromJson(json),
+        method: HttpMethod.PUT,
+        withAuthentication: true,
+        data: category.toJson(),
+
+        url: ApiURLs.GET_ITEM_MAIN_CATEGORY.replaceFirst('{id}', category.id.toString())
+    );
+
+  }
 
   static Future<BaseResultModel> deleteItemMainCategory(int id) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.DELETE,
         withAuthentication: true,
-        url: ApiURLs.GET_ITEM_MAIN_CATEGORY.replaceFirst('{id}', id.toString()));
+        url: ApiURLs.GET_ITEM_MAIN_CATEGORY.replaceFirst('{id}', id.toString())
+    );
 
   }
 

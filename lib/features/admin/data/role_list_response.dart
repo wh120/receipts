@@ -69,6 +69,7 @@ class Role extends BaseResultModel{
     }
     return data;
   }
+  bool operator ==(o) => o is Role  && id == o.id;
 }
 
 

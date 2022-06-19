@@ -5,6 +5,7 @@ import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
 
 import '../../../../core/constants/AppColors.dart';
 import '../../../App/presentation/widgets/PopupMenu.dart';
+import '../../../admin/data/user_list_response.dart';
 import '../../data/profile_response.dart';
 import '../../repository/profile_repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';

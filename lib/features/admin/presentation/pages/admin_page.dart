@@ -4,6 +4,7 @@ import 'package:receipts/core/utils/Navigation/Navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:receipts/features/admin/presentation/pages/transformations_page.dart';
+import 'package:receipts/features/admin/presentation/pages/users_page.dart';
 import 'package:receipts/features/receipt/presentation/page/receipts_list_page.dart';
 
 import '../../../../core/constants/AppColors.dart';
@@ -117,6 +118,17 @@ class _AdminPageState extends State<AdminPage> {
               },
               leading: Icon(Icons.settings),
               title: Text("الأدوار"),),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: ListTile(
+              tileColor: Colors.white,
+              onTap: (){
+                Navigation.push(UserPage());
+              },
+              leading: Icon(Icons.settings),
+              title: Text("المستخدمين"),),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
