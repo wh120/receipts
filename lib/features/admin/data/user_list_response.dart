@@ -49,7 +49,7 @@ class User extends BaseResultModel{
     id = json['id'];
     name = json['name'];
     email = json['email'];
-    password = json['password'];
+    password =  json['password'];
     emailVerifiedAt = json['email_verified_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -66,7 +66,9 @@ class User extends BaseResultModel{
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
-    data['password'] = this.password;
+    if(this.password != null)
+      data['password'] = this.password;
+
     data['email_verified_at'] = this.emailVerifiedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

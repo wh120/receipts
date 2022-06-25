@@ -8,6 +8,7 @@ class ApiURLs {
    static  String LOGIN = BASE_URL +'/api/auth/login';
    static  String GET_PROFILE = BASE_URL +'/api/User/profile';
    static  String GET_Users = BASE_URL +'/api/User';
+   static  String GET_User = BASE_URL +'/api/User/{id}';
 
 
    static  String GET_DEPARTMENTS = BASE_URL +'/api/Department';

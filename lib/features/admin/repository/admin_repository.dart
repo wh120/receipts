@@ -37,6 +37,27 @@ class AdminRepository{
 
   }
 
+  static Future<BaseResultModel> updateUser(int id ,data ) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.PUT,
+        withAuthentication: true,
+        data: data.toJson(),
+        url: ApiURLs.GET_User.replaceFirst('{id}', id.toString())
+    );
+
+  }
+
+  static Future<BaseResultModel> deleteUser(int id) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.DELETE,
+        withAuthentication: true,
+        url: ApiURLs.GET_User.replaceFirst('{id}', id.toString())
+    );
+
+  }
+
   static Future<BaseResultModel> getItems( ) async {
     return await RemoteDataSource.request<ItemListResponseModel>(
         converter: (json) => ItemListResponseModel.fromJson(json),

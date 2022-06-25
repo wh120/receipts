@@ -5,6 +5,7 @@ import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import 'package:receipts/core/Boilerplate/GetModel/cubits/get_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
 import 'package:receipts/core/widgets/BottomSheet.dart';
+import 'package:receipts/core/widgets/ColumnBuilder.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/admin/data/user_list_response.dart';
@@ -149,7 +150,7 @@ class _DepartmentPageState extends State<UserPage> {
                   text: 'هل تريد الحذف' ,
                   onClicked: (b){
                     if(b)cubit?.getModel();
-                  },repositoryCallBack: (data)=>AdminRepository.deleteItemMainCategory(model.items[index].id),
+                  },repositoryCallBack: (data)=>AdminRepository.deleteUser(model.items[index].id),
 
                 );
               }, icon: Icon(Icons.delete)),
@@ -198,7 +199,7 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
       user = new User(
           name: '',
           email: '',
-        roles: []
+        roles: [null]
       );
     }
 
@@ -208,7 +209,7 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("إضافة مستخدم"),),
+      appBar: AppBar(title: Text(widget.user == null ?'إضافة مستخدم جديد':'تعديل المسنخدم'),),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -241,7 +242,7 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: CreateModel<EmptyModel>(
-                repositoryCallBack: (data) => AdminRepository.createUser(data),
+                repositoryCallBack: (data) => widget.user!=null?AdminRepository.updateUser(user.id,data):AdminRepository.createUser(data),
                 onCubitCreated: (c){
                   cubit=c;
                 },
@@ -254,13 +255,12 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
                 child: ElevatedButton(
                     onPressed: () {
                       if(cubit!=null && user.name.isNotEmpty && user.email.isNotEmpty) {
-
-
-                        cubit.createModel(user);
+                        if(user.roles.where((element) => element==null).length ==0)
+                          cubit.createModel(user);
                       }
 
                     },
-                    child: Text('إضافة مستخدم جديد')
+                    child: Text(widget.user == null ?'إضافة مستخدم جديد':'تعديل المسنخدم')
                 ),
               ),
             )
@@ -289,22 +289,49 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          "الدور",
+          "الأدوار",
         ),
-        ObjectDropDown<Role>(
-          selectedValue: user.roles.firstOrNull,
-          items:  items,
-          text: 'المستودع',
-          onChanged: (Role role){
-            user.roles = [role];
-            // selectedDepartment = department;
+        Column(
+          children: [
+            ColumnBuilder(
+              itemCount: user.roles.length,
+              itemBuilder: (c,index){
+                return Row(
+                  children: [
 
+                    
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ObjectDropDown<Role>(
+                        selectedValue: user.roles[index],
+                        items:  items,
+                        text: 'الدور',
+                        onChanged: (Role role){
+                          user.roles[index] = role;
+                          // selectedDepartment = department;
+                          setState(() {
 
-            setState(() {
+                          });
+                        },
+                      ),
+                    ),
 
-            });
-          },
-        ),
+                    IconButton(onPressed: (){
+                      user.roles.removeAt(index);
+                      setState(() {
+                      });
+                    }, icon: Icon(Icons.remove)),
+                  ],
+                );
+              },
+                ),
+            IconButton(onPressed: (){
+              user.roles.add(null);
+              setState(() {
+              });
+            }, icon: Icon(Icons.add))
+          ],
+        )
       ],
     );
   }
