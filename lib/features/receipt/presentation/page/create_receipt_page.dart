@@ -36,6 +36,8 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
 
   CreateModelCubit Cubit;
 
+  TextEditingController descriptionController = TextEditingController();
+
    @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,7 +217,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
          modelBuilder: (DepartmentListResponse model) {
            departmentsModel.myDepartment = [];
            departmentsModel.myDepartment.addAll(model.items);
-           departmentsModel.myDepartment.insert(0, Department(name: 'غير محدد'));
+          // departmentsModel.myDepartment.insert(0, Department(name: 'غير محدد'));
            return buildDepartmentsAndRoles(departmentsModel);
          },
        ),
@@ -224,8 +226,8 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
   }
 
 
-  Department selectedDepartment;
-  Department selectedMyDepartment;
+  Department selectedToDepartment;
+  Department selectedFromDepartment;
   Role selectedRole;
    buildDepartmentsAndRoles(DepartmentListResponse model ) {
 
@@ -251,14 +253,14 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              "من المستودع",
+                              "من القسم",
                             ),
                             ObjectDropDown<Department>(
-                              selectedValue: selectedMyDepartment,
+                              selectedValue: selectedFromDepartment,
                               items: model.myDepartment,
-                              text: 'المستودع',
+                              text: 'القسم',
                               onChanged: (Department department){
-                                selectedMyDepartment = department;
+                                selectedFromDepartment = department;
 
                                 setState(() {
 
@@ -292,14 +294,14 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              "إلى المستودع",
+                              "إلى القسم",
                             ),
                             ObjectDropDown<Department>(
-                              selectedValue: selectedDepartment,
+                              selectedValue: selectedToDepartment,
                               items: model.items,
-                              text: 'المستودع',
+                              text: 'القسم',
                               onChanged: (Department department){
-                                selectedDepartment = department;
+                                selectedToDepartment = department;
                                 selectedRole =null;
                                 setState(() {
 
@@ -338,7 +340,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                             ),
                             ObjectDropDown<Role>(
                               selectedValue: selectedRole,
-                              items: selectedDepartment?.roles??[],
+                              items: selectedToDepartment?.roles??[],
                               onChanged: (role){
                                 selectedRole = role;
                                 setState(() {
@@ -364,6 +366,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
               Container(
 
                 child: RoundedTextField(
+                  controller: descriptionController,
                   maxLines: 2,
                   hintText: 'ملاحظات',
                 ),
@@ -375,15 +378,16 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                     child: Text('التالي'),
 
                     onPressed: (){
-                      if(selectedRole != null && selectedDepartment != null) {
-                        selectedRole.department = selectedDepartment;
+                      if(selectedFromDepartment!=null && selectedToDepartment != null) {
+
                         Navigation.push(FillReceiptPage(
                           receipt: Receipt(
                             items: [],
-                            fromDepartmentId: selectedMyDepartment.id,
-                            toDepartmentId: selectedDepartment.id,
+                            fromDepartmentId: selectedFromDepartment.id,
+                            toDepartmentId: selectedToDepartment.id,
                             mustApprovedByRole: selectedRole,
                             receiptTypeId: selectedReceiptType+1,
+                            description: descriptionController.text
                           ),
                         ));
                       }
@@ -476,7 +480,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
 
 
         CreateModel<EmptyModel>(
-          repositoryCallBack: (data) => ReceiptRepository.transformItems(selectedMyDepartment.id, selectedTransformationId),
+          repositoryCallBack: (data) => ReceiptRepository.transformItems(selectedFromDepartment.id, selectedTransformationId),
           onCubitCreated: (c){Cubit=c;},
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -485,7 +489,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                 child: Text('التالي'),
 
                 onPressed: (){
-                  if(selectedMyDepartment!= null && selectedTransformationId!= null)
+                  if(selectedFromDepartment!= null && selectedTransformationId!= null)
                   Cubit.createModel(null);
                 },
               ),
@@ -506,11 +510,11 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
               "من المستودع",
             ),
             ObjectDropDown<Department>(
-              selectedValue: selectedMyDepartment,
+              selectedValue: selectedFromDepartment,
               items: model.items,
               text: 'المستودع',
               onChanged: (Department department){
-                selectedMyDepartment = department;
+                selectedFromDepartment = department;
 
                 setState(() {
 

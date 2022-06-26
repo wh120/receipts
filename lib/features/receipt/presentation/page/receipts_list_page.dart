@@ -219,7 +219,7 @@ class _BudgetPageState extends State<ReceiptsListPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: Text(
-                        receipt.mustApprovedByRole.department?.name??'',
+                        receipt.toDepartment?.name??'',
                      // MyConverter.timeToTimeAgo(receipt.createdAt),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,

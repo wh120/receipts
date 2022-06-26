@@ -177,6 +177,7 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                         width: 8,
                       ),
 
+
                     ],
                   ),
 
@@ -224,7 +225,7 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: Text(
-                      receipt.mustApprovedByRole?.department?.name??'',
+                      receipt.toDepartment?.name??'',
                       // MyConverter.timeToTimeAgo(receipt.createdAt),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -304,122 +305,122 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
     );
   }
 
-   GeneralCard buildReceiptCard1(Receipt receipt, int index) {
-     return GeneralCard(
-       onTap: (){
-         Navigation.push(FillReceiptPage(receipt: receipt,)).then((value) {
-           cubit?.getList();
-         });
-
-       },
-       child: Container(
-         width: double.infinity,
-
-         child: Padding(
-           padding: EdgeInsets.only(
-               left: 25, right: 25, bottom: 25, top: 25),
-           child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Text(
-                 "عملية "+receipt_type[receipt.receiptTypeId-1]["name"],
-                 style: TextStyle(
-                     fontWeight: FontWeight.w500,
-                     fontSize: 13,
-                     color: Color(0xff67727d).withOpacity(0.6)),
-               ),
-               SizedBox(
-                 height: 10,
-               ),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   Row(
-                     children: [
-                       Text(
-                         "من: ",
-                         style: TextStyle(
-                           fontWeight: FontWeight.bold,
-                           fontSize: 15,
-                         ),
-                       ),
-                       Text(
-                         receipt.createdByUser.name,
-                         style: TextStyle(
-                           fontWeight: FontWeight.bold,
-                           fontSize: 15,
-                         ),
-                       ),
-                       SizedBox(
-                         width: 8,
-                       ),
-
-                     ],
-                   ),
-
-                   Padding(
-                     padding: const EdgeInsets.only(top: 3),
-                     child: Text(
-                       receipt.mustApprovedByRole.department?.name??'',
-                       style: TextStyle(
-                           fontWeight: FontWeight.w500,
-                           fontSize: 13,
-                           color: Color(0xff67727d).withOpacity(0.6)),
-                     ),
-                   ),
-                 ],
-               ),
-               SizedBox(
-                 height: 10,
-               ),
-               Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   Row(
-                     children: [
-                       Text(
-                         "إلى: ",
-                         style: TextStyle(
-                           fontWeight: FontWeight.bold,
-                           fontSize: 15,
-                         ),
-                       ),
-                       Text(
-                         receipt.mustApprovedByRole.name,
-                         style: TextStyle(
-                           fontWeight: FontWeight.bold,
-                           fontSize: 15,
-                         ),
-                       ),
-                       SizedBox(
-                         width: 8,
-                       ),
-
-                     ],
-                   ),
-
-                   Padding(
-                     padding: const EdgeInsets.only(top: 3),
-                     child: Text(
-                       MyConverter.timeToTimeAgo(receipt.createdAt),
-                       style: TextStyle(
-                           fontWeight: FontWeight.w500,
-                           fontSize: 13,
-                           color: Color(0xff67727d).withOpacity(0.6)),
-                     ),
-                   ),
-                 ],
-               ),
-
-
-               SizedBox(
-                 height: 15,
-               ),
-
-             ],
-           ),
-         ),
-       ),
-     );
-   }
+   // GeneralCard buildReceiptCard1(Receipt receipt, int index) {
+   //   return GeneralCard(
+   //     onTap: (){
+   //       Navigation.push(FillReceiptPage(receipt: receipt,)).then((value) {
+   //         cubit?.getList();
+   //       });
+   //
+   //     },
+   //     child: Container(
+   //       width: double.infinity,
+   //
+   //       child: Padding(
+   //         padding: EdgeInsets.only(
+   //             left: 25, right: 25, bottom: 25, top: 25),
+   //         child: Column(
+   //           crossAxisAlignment: CrossAxisAlignment.start,
+   //           children: [
+   //             Text(
+   //               "عملية "+receipt_type[receipt.receiptTypeId-1]["name"],
+   //               style: TextStyle(
+   //                   fontWeight: FontWeight.w500,
+   //                   fontSize: 13,
+   //                   color: Color(0xff67727d).withOpacity(0.6)),
+   //             ),
+   //             SizedBox(
+   //               height: 10,
+   //             ),
+   //             Row(
+   //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+   //               children: [
+   //                 Row(
+   //                   children: [
+   //                     Text(
+   //                       "من: ",
+   //                       style: TextStyle(
+   //                         fontWeight: FontWeight.bold,
+   //                         fontSize: 15,
+   //                       ),
+   //                     ),
+   //                     Text(
+   //                       receipt.createdByUser.name,
+   //                       style: TextStyle(
+   //                         fontWeight: FontWeight.bold,
+   //                         fontSize: 15,
+   //                       ),
+   //                     ),
+   //                     SizedBox(
+   //                       width: 8,
+   //                     ),
+   //
+   //                   ],
+   //                 ),
+   //
+   //                 Padding(
+   //                   padding: const EdgeInsets.only(top: 3),
+   //                   child: Text(
+   //                     receipt.mustApprovedByRole.department?.name??'',
+   //                     style: TextStyle(
+   //                         fontWeight: FontWeight.w500,
+   //                         fontSize: 13,
+   //                         color: Color(0xff67727d).withOpacity(0.6)),
+   //                   ),
+   //                 ),
+   //               ],
+   //             ),
+   //             SizedBox(
+   //               height: 10,
+   //             ),
+   //             Row(
+   //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+   //               children: [
+   //                 Row(
+   //                   children: [
+   //                     Text(
+   //                       "إلى: ",
+   //                       style: TextStyle(
+   //                         fontWeight: FontWeight.bold,
+   //                         fontSize: 15,
+   //                       ),
+   //                     ),
+   //                     Text(
+   //                       receipt.mustApprovedByRole.name,
+   //                       style: TextStyle(
+   //                         fontWeight: FontWeight.bold,
+   //                         fontSize: 15,
+   //                       ),
+   //                     ),
+   //                     SizedBox(
+   //                       width: 8,
+   //                     ),
+   //
+   //                   ],
+   //                 ),
+   //
+   //                 Padding(
+   //                   padding: const EdgeInsets.only(top: 3),
+   //                   child: Text(
+   //                     MyConverter.timeToTimeAgo(receipt.createdAt),
+   //                     style: TextStyle(
+   //                         fontWeight: FontWeight.w500,
+   //                         fontSize: 13,
+   //                         color: Color(0xff67727d).withOpacity(0.6)),
+   //                   ),
+   //                 ),
+   //               ],
+   //             ),
+   //
+   //
+   //             SizedBox(
+   //               height: 15,
+   //             ),
+   //
+   //           ],
+   //         ),
+   //       ),
+   //     ),
+   //   );
+   // }
 }

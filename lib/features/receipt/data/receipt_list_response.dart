@@ -1,6 +1,7 @@
 import 'package:receipts/core/API/CoreModels/base_result_model.dart';
 import 'package:receipts/features/profile/data/profile_response.dart';
 
+import '../../admin/data/department_list_response.dart';
 import '../../admin/data/role_list_response.dart';
 import '../../admin/data/item_list_response.dart';
 import '../../admin/data/user_list_response.dart';
@@ -45,6 +46,8 @@ class Receipt {
   Role mustApprovedByRole;
   User createdByUser;
   User acceptedByUser;
+  Department fromDepartment;
+  Department toDepartment;
 
   Receipt(
       {this.id,
@@ -62,7 +65,10 @@ class Receipt {
         this.items ,
         this.mustApprovedByRole,
         this.acceptedByUser,
-        this.createdByUser});
+        this.createdByUser,
+        this.fromDepartment,
+        this.toDepartment
+      });
 
   Receipt.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -93,6 +99,13 @@ class Receipt {
     acceptedByUser = json['accepted_by_user'] != null
         ? new User.fromJson(json['accepted_by_user'])
         : null;
+
+    fromDepartment = json['from_department'] != null
+        ? new Department.fromJson(json['from_department'])
+        : null;
+    toDepartment = json['to_department'] != null
+        ? new Department.fromJson(json['to_department'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -122,6 +135,14 @@ class Receipt {
     if (this.acceptedByUser != null) {
       data['accepted_by_user'] = this.createdByUser.toJson();
     }
+
+    if (this.fromDepartment != null) {
+      data['from_department'] = this.fromDepartment.toJson();
+    }
+    if (this.toDepartment != null) {
+      data['to_department'] = this.toDepartment.toJson();
+    }
+
     return data;
   }
 }
