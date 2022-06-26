@@ -6,6 +6,7 @@ class ApiURLs {
    static  String BASE_URL = AppSettings.BASE_URL;
 
    static  String LOGIN = BASE_URL +'/api/auth/login';
+   static  String CHANGE_PASSWORD = BASE_URL +'/api/auth/changePassword';
    static  String GET_PROFILE = BASE_URL +'/api/User/profile';
    static  String GET_Users = BASE_URL +'/api/User';
    static  String GET_User = BASE_URL +'/api/User/{id}';

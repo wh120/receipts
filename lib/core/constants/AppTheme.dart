@@ -65,8 +65,14 @@ class AppTheme
   );
   }
 
-  static const AppBarTheme appBarTheme = AppBarTheme(
-      color: AppColors.primary,
+  static  AppBarTheme appBarTheme = AppBarTheme(
+    iconTheme:  IconThemeData(color: AppColors.secondary[700],size: 5.0.r),
+      color: AppColors.transparent,
+     elevation: 0,
+      titleTextStyle: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.black)
   //    brightness: Brightness.light,
 
   );

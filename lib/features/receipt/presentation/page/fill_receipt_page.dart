@@ -81,6 +81,26 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+
+                      Text(
+                        'من :',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.black),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        widget.receipt?.fromDepartment?.name??'-',
+                        style: TextStyle(fontSize: 15, color: AppColors.black),
+                      ),
+
+                      SizedBox(
+                        width: 10,
+                      ),
+
                       Text(
                         'إلى :',
                         style: TextStyle(
@@ -92,7 +112,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                         width: 5,
                       ),
                       Text(
-                        widget.receipt?.toDepartment?.name??'',
+                        widget.receipt?.toDepartment?.name??'-',
                         style: TextStyle(fontSize: 15, color: AppColors.black),
                       ),
                       SizedBox(

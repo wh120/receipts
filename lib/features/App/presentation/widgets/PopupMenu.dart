@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:receipts/core/widgets/forms/RoundedTextField.dart';
 
 import '../../../../core/API/http/api_urls.dart';
+import '../../../../core/utils/Navigation/Navigation.dart';
+import '../pages/ChangePassword.dart';
 import '/features/App/domain/cubit/application_cubit.dart';
 import '/features/App/presentation/widgets/ChangeLanguage.dart';
 import '/features/User/domain/cubit/user_cubit.dart';
@@ -11,7 +13,7 @@ import 'package:easy_localization/easy_localization.dart' as e;
 
 import 'package:flutter_icons/flutter_icons.dart';
 import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
-enum Menu { changeLanguage, logOut, update , changeURL}
+enum Menu { changeLanguage, changePassword , logOut, update , changeURL}
 
 class PopupMenu extends StatelessWidget {
   Menu _selection;
@@ -37,6 +39,12 @@ class PopupMenu extends StatelessWidget {
         {
           await logOut(context);
         }
+        else if(result == Menu.changePassword){
+          Navigation.push(ChangePasswordPage());
+
+          // AppSettings.upgradeFromUrl();
+          //AppSharedPreferences.accessToken = 'ss';
+        }
         else if(result == Menu.update){
         // AppSettings.upgradeFromUrl();
           //AppSharedPreferences.accessToken = 'ss';
@@ -47,9 +55,17 @@ class PopupMenu extends StatelessWidget {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+
+
+
          PopupMenuItem<Menu>(
           value: Menu.changeLanguage,
           child: Text("Change Language".tr()),
+        ),
+
+        PopupMenuItem<Menu>(
+          value: Menu.changePassword,
+          child: Text("تغيير كلمة السر".tr()),
         ),
           PopupMenuItem<Menu>(
           value: Menu.logOut,

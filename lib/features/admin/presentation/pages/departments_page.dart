@@ -42,6 +42,10 @@ class _DepartmentPageState extends State<DepartmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text(
+        "إدارة الاقسام",
+
+      ),),
       // backgroundColor: Colors.grey[100],
       body: Column(
         children: [

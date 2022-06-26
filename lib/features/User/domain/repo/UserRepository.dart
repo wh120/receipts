@@ -26,6 +26,19 @@ class UserRepository {
         withAuthentication: true,
         url: ApiURLs.GET_PERMISSIONS);
   }
+  static Future<BaseResultModel> changePassword(String oldPassword , String newPassword ) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        data: {
+          "old_password": oldPassword,
+          "new_password": newPassword
+        },
+        url: ApiURLs.CHANGE_PASSWORD
+    );
+  }
+
 
   static Future<BaseResultModel> changeLanguage(String lang ) async {
     return await RemoteDataSource.request<EmptyModel>(

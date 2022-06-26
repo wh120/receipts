@@ -383,8 +383,12 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                         Navigation.push(FillReceiptPage(
                           receipt: Receipt(
                             items: [],
+
                             fromDepartmentId: selectedFromDepartment.id,
+                            fromDepartment:selectedFromDepartment ,
+
                             toDepartmentId: selectedToDepartment.id,
+                            toDepartment: selectedToDepartment,
                             mustApprovedByRole: selectedRole,
                             receiptTypeId: selectedReceiptType+1,
                             description: descriptionController.text

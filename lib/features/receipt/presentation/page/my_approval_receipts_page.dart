@@ -107,12 +107,12 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
       itemBuilder: (context, index) {
         
 
-       return buildReceiptCard(list[index], index);
+       return buildReceiptCard(list[index]);
     },
     );
   }
 
-  GeneralCard buildReceiptCard(Receipt receipt, int index) {
+  GeneralCard buildReceiptCard(Receipt receipt ) {
     return GeneralCard(
       onTap: (){
         Navigation.push(FillReceiptPage(receipt: receipt,)).then((value) {
@@ -160,7 +160,7 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                   Row(
                     children: [
                       Text(
-                        "من: ",
+                        "أنشئت من قِبل: ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -202,6 +202,48 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                   Row(
                     children: [
                       Text(
+                        "من: ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        receipt.fromDepartment?.name??'',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+
+
+                    ],
+                  ),
+
+                  // Padding(
+                  //   padding: const EdgeInsets.only(top: 3),
+                  //   child: Text(
+                  //     receipt.createdByUser.roles.first?.name??'',
+                  //     style: TextStyle(
+                  //         fontWeight: FontWeight.w500,
+                  //         fontSize: 13,
+                  //         color: Color(0xff67727d).withOpacity(0.6)),
+                  //   ),
+                  // ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
                         "إلى: ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -209,7 +251,7 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                         ),
                       ),
                       Text(
-                        receipt.mustApprovedByRole?.name??'',
+                        receipt.toDepartment?.name??'',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 15,
@@ -225,7 +267,8 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: Text(
-                      receipt.toDepartment?.name??'',
+                      receipt.mustApprovedByRole?.name??''
+                      ,
                       // MyConverter.timeToTimeAgo(receipt.createdAt),
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
