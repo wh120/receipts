@@ -42,6 +42,12 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          (isNew ? "إنشاء إيصال :" : "تعديل إيصال :") + '  '+ receipt_type[widget.receipt.receiptTypeId-1]["name"],
+
+        ),
+      ),
       // backgroundColor: Colors.grey[100],
       body: Column(
         children: [
@@ -56,28 +62,11 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
             ]),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 60, right: 20, left: 20, bottom: 25),
+                  top: 30, right: 20, left: 20, bottom: 25),
               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        isNew ? "إنشاء إيصال :" : "تعديل إيصال :",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        receipt_type[widget.receipt.receiptTypeId-1]["name"],
-                        style: TextStyle(fontSize: 20, color: AppColors.black),
-                      ),
-                    ],
-                  ),
+
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -118,11 +107,12 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        widget.receipt.mustApprovedByRole?.name??'',
-                        style: TextStyle(fontSize: 15, color: AppColors.black),
-                      ),
+
                     ],
+                  ),
+                  Text(
+                    widget.receipt.mustApprovedByRole?.name??'',
+                    style: TextStyle(fontSize: 15, color: AppColors.black),
                   ),
                 ],
               ),

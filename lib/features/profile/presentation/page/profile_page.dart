@@ -23,6 +23,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "الملف الشخصي",
+        ),
+        actions: [PopupMenu()],
+      ),
 
       body: Container(
         decoration: BoxDecoration(color: AppColors.white, boxShadow: [
@@ -38,20 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
               top: 60, right: 20, left: 20, bottom: 25),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "الملف الشخصي",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.black),
-                  ),
 
-                  PopupMenu()
-                ],
-              ),
               getBody()
             ],
           ),

@@ -41,29 +41,14 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
    @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "إنشاء إيصال",
+          ),
+        ),
 
       body: getBody(),
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: ElevatedButton(
-      //     child: Text('التالي'),
-      //
-      //     onPressed: (){
-      //       if(selectedRole != null && selectedDepartment != null) {
-      //         selectedRole.department = selectedDepartment;
-      //         Navigation.push(FillReceiptPage(
-      //           receipt: Receipt(
-      //             items: [],
-      //             fromDepartmentId: selectedMyDepartment.id,
-      //             toDepartmentId: selectedDepartment.id,
-      //             mustApprovedByRole: selectedRole,
-      //             receiptTypeId: selectedReceiptType+1,
-      //           ),
-      //         ));
-      //       }
-      //     },
-      //   ),
-      // ),
+
         floatingActionButtonLocation:
         FloatingActionButtonLocation.centerDocked
     );
@@ -75,39 +60,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(color: AppColors.white, boxShadow: [
-              BoxShadow(
-                color: AppColors.grey.withOpacity(0.01),
-                spreadRadius: 10,
-                blurRadius: 3,
-                // changes position of shadow
-              ),
-            ]),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 60, right: 20, left: 20, bottom: 25),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "إنشاء إيصال",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black),
-                      ),
-                      Row(
-                        children: [Icon(AntDesign.search1)],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
             child: Text(

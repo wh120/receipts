@@ -27,6 +27,11 @@ class _BudgetPageState extends State<ReceiptsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
+      appBar: AppBar(
+        title: Text(
+          "جميع الإيصالات",
+        ),
+      ),
       body: buildBody(),
     );
   }
@@ -35,49 +40,7 @@ class _BudgetPageState extends State<ReceiptsListPage> {
 
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(color: AppColors.white, boxShadow: [
-            BoxShadow(
-              color: AppColors.grey.withOpacity(0.01),
-              spreadRadius: 10,
-              blurRadius: 3,
-              // changes position of shadow
-            ),
-          ]),
-          child: Padding(
-            padding: const EdgeInsets.only(
-                top: 60, right: 20, left: 20, bottom: 25),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "جميع الإيصالات",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.black),
-                    ),
-                    Row(
-                      children: [
 
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Icon(AntDesign.search1)
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-
-              ],
-            ),
-          ),
-        ),
         SizedBox(
           height: 20,
         ),

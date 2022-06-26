@@ -25,47 +25,20 @@ class _MyDepartmentPageState extends State<MyDepartmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return getBody();
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "الأقسام الخاصة بي",
+          ),
+        ),
+
+        body: getBody()
+    );
   }
   Widget getBody() {
      return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(color: AppColors.white, boxShadow: [
-            BoxShadow(
-              color: AppColors.grey.withOpacity(0.01),
-              spreadRadius: 10,
-              blurRadius: 3,
-              // changes position of shadow
-            ),
-          ]),
-          child: Padding(
-            padding: const EdgeInsets.only(
-                top: 60, right: 20, left: 20, bottom: 25),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "الأقسام الخاصة بي",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.black),
-                    ),
-                    Icon(AntDesign.search1)
-                  ],
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
+         SizedBox(
           height: 30,
         ),
         Expanded(

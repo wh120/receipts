@@ -43,39 +43,16 @@ class _DepartmentPageState extends State<RolePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "إدارة الأدوار",
+        ),
+      ),
       // backgroundColor: Colors.grey[100],
       body: Column(
         children: [
           Container(
-            decoration: BoxDecoration(color: AppColors.white, boxShadow: [
-              BoxShadow(
-                color: AppColors.grey.withOpacity(0.01),
-                spreadRadius: 10,
-                blurRadius: 3,
-                // changes position of shadow
-              ),
-            ]),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 60, right: 20, left: 20, bottom: 25),
-              child: Column(
-                children: [
-                  Row(
 
-                    children: [
-                      Text(
-                        "إدارة الأدوار",
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black),
-                      ),
-
-                    ],
-                  ),
-                ],
-              ),
-            ),
           ),
 
 

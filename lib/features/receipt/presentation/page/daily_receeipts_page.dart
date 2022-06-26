@@ -23,6 +23,11 @@ class _DailyPageState extends State<DailyReceiptsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "الإحصائيات اليومية",
+        ),
+      ),
 
       body: getBody(),
     );
@@ -43,22 +48,10 @@ class _DailyPageState extends State<DailyReceiptsPage> {
           ]),
           child: Padding(
             padding: const EdgeInsets.only(
-                top: 60, right: 20, left: 20, bottom: 25),
+                 right: 20, left: 20, bottom: 25),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "الإحصائيات اليومية",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.black),
-                    ),
-                    Icon(AntDesign.search1)
-                  ],
-                ),
+
                 SizedBox(
                   height: 25,
                 ),

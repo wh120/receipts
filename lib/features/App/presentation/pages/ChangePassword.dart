@@ -26,6 +26,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "تغيير كلمة المرور",
+        ),
+      ),
       body: getBody(),
     );
   }
@@ -38,55 +43,20 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(color: AppColors.white, boxShadow: [
-                BoxShadow(
-                  color: AppColors.grey.withOpacity(0.01),
-                  spreadRadius: 10,
-                  blurRadius: 3,
-                  // changes position of shadow
-                ),
-              ]),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 60, right: 20, left: 20, bottom: 25),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "تغيير كلمة السر",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.black),
-                        ),
 
-                      ],
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-
-
-                  ],
-                ),
-              ),
-            ),
             SizedBox(
-              height: 20,
+              height: 40,
             ),
             RoundedTextField(
-              hintText: 'كلمة السر القديمة',
+              hintText: 'كلمة المرور القديمة',
               controller: oldPassword,
             ),
             RoundedTextField(
-              hintText: 'كلمة السر الجديدة',
+              hintText: 'كلمة المرور الجديدة',
               controller: newPassword,
             ),
             RoundedTextField(
-              hintText: 'تأكيد كلمة السر الجديدة',
+              hintText: 'تأكيد كلمة المرور الجديدة',
               controller: confirmedPassword,
             ),
             CreateModel<EmptyModel>(
