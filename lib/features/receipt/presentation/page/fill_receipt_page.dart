@@ -133,6 +133,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                   ElevatedButton(
                       onPressed: () {
                         setState(() {
+                          if(items.length==0)return;
                           showDialog(
                               context: context,
                               useRootNavigator: true,
@@ -145,6 +146,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                                       items: items,
                                       onDone: (Item item) {
                                         if(item!= null)
+                                          if(!widget.receipt.items.contains(item))
                                            widget.receipt.items.add(item);
                                         setState(() {});
                                       },
@@ -178,7 +180,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
           onPressed: () {
             if (cubit != null) {
               cubit.createModel(CreateReceiptRequest(
-                  mustApprovedByRoleId: widget.receipt.mustApprovedByRole.id,
+                  mustApprovedByRoleId: widget.receipt.mustApprovedByRole?.id,
                   receiptTypeId: widget.receipt.receiptTypeId,
                   fromDepartmentId: widget.receipt.fromDepartmentId,
                   toDepartmentId: widget.receipt.toDepartmentId,
@@ -243,8 +245,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
         maxUnitCount = element.units.length;
       }
       element.units.forEach((u) {
-        u.value =
-            (element.unitValue  / u.conversionFactor).toDouble().roundToDouble();
+        u.value = (element.unitValue  / u.conversionFactor).toDouble();
       });
     });
     for (int i = 0; i < maxUnitCount; i++) {
@@ -258,12 +259,17 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
         List<Widget> list = [
           Text((index + 1).toString()),
           Text(widget.receipt.items[index].name),
-          Text(widget.receipt.items[index].unitValue.toString() +
+          Text(widget.receipt.items[index].unitValue.toString() +' '+
               widget.receipt.items[index].unit),
         ];
 
-        for(int i = 0; i < maxUnitCount;i++)
-          list.add(Text(widget.receipt.items[index].units.tryGet(i)?.name??'-'));
+        //todo
+        for(int i = 0; i < maxUnitCount;i++) {
+          String s = '-';
+          if(widget.receipt.items[index].units.tryGet(i) != null)
+             s =widget.receipt.items[index].units.tryGet(i).value.toString() + ' ' + widget.receipt.items[index].units.tryGet(i).name;
+          list.add(Text(s));
+        }
 
         // widget.receipt.items[index].units.forEach((element) {
         //   list.add(Text(element.value.toString() + element.name));
@@ -309,7 +315,15 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 onChanged: (value) {
                   setState(() {
                     item = value;
-                  });
+                    // item = Item(
+                    //   name: value.name,
+                    //   unit: value.unit,
+                    //   id: value.id,
+                    //   code: value.code,
+                    //     units: List.generate(value.units.length,
+                    //             (index) => Unit(id: value.units[index].id,conversionFactor: value.units[index].conversionFactor , name: value.units[index].name , ))
+                    // );
+                   });
                 },
                 isExpanded: true,
                 searchFn: searchForItem),
@@ -320,7 +334,7 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 //     text: item.unitValue == 0 ? '' : item.unitValue.toString()),
                 onChanged: (value) {
 
-                  item.unitValue = int.tryParse(value) ?? 0;
+                  item.unitValue = double.tryParse(value) ?? 0;
 
 
                   item.units.forEach((element) {
@@ -345,8 +359,7 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                     //         .toString()),
                     onChanged: (value) {
                       item.units[i].value = double.tryParse(value) ?? 0.0;
-                      item.unitValue = item.units[i].value.toInt() *
-                          item.units[i].conversionFactor;
+                      item.unitValue = item.units[i].value * item.units[i].conversionFactor;
                       item.controller.text = item.unitValue == 0?'':item.unitValue.toString();
                       item.units.forEach((element) {
                         print(item.units[i].id !=element.id);

@@ -21,6 +21,7 @@ import '../errors/socket_error.dart';
 import '../errors/timeout_error.dart';
 import '../errors/conflict_error.dart';
 import '../errors/forbidden_error.dart';
+import 'http_method.dart';
 
  class ApiProvider {
 
@@ -72,7 +73,7 @@ import '../errors/forbidden_error.dart';
   //    dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
 
       var options;
-      if(Platform.operatingSystem != 'windows'){
+      if(Platform.operatingSystem != 'windows' && method == HttpMethod.GET){
         dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
 
         options=buildCacheOptions(Duration(days: 7),maxStale: Duration(days: 14),options: requestOptions,forceRefresh: true);

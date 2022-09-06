@@ -32,7 +32,7 @@ class Item extends BaseResultModel{
   String name;
   String description;
   String unit;
-  int unitValue;
+  double unitValue;
   TextEditingController controller = TextEditingController();
   bool isDefaultUnit;
   int itemCategoryId;
@@ -149,14 +149,14 @@ class Unit {
 class Value {
   int receiptId;
   int itemId;
-  int value;
+  double value;
 
   Value({this.receiptId, this.itemId, this.value});
 
   Value.fromJson(Map<String, dynamic> json) {
     receiptId = json['receipt_id'];
     itemId = json['item_id'];
-    value = json['value'];
+    value = json['value'].toDouble();
   }
 
   Map<String, dynamic> toJson() {

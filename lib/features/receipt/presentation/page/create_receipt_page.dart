@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/cubits/create_model_cubit.dart';
 import 'package:receipts/core/constants/AppColors.dart';
 import 'package:receipts/core/utils/Navigation/Navigation.dart';
+import 'package:receipts/core/widgets/forms/RoundedNumberField.dart';
 import 'package:receipts/core/widgets/forms/SelectDropDown.dart';
 import 'package:receipts/features/RootApp/json/department_json.dart';
 import 'package:receipts/features/RootApp/json/role_json.dart';
@@ -14,6 +15,7 @@ import 'package:receipts/features/receipt/data/receipt_list_response.dart';
 import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
+import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/ColumnBuilder.dart';
 import '../../../../core/widgets/cards/GeneralCard.dart';
 import '../../../../core/widgets/forms/RoundedTextField.dart';
@@ -33,6 +35,7 @@ class CreateReceiptPage extends StatefulWidget {
 
 class _CreatBudgetPageState extends State<CreateReceiptPage> {
   int selectedReceiptType = 0;
+  int count = 1;
 
   CreateModelCubit Cubit;
 
@@ -158,7 +161,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
   }
 
   buildbody(){
-     if(selectedReceiptType == 3) return getTransformations();
+     if(selectedReceiptType == 2) return getTransformations();
      else return getDepartmentsAndRoles();
   }
 
@@ -373,7 +376,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
   buildTransformations(TransformationList model) {
     return Column(
       children: [
-        getMyDepartment(),
+
         SizedBox(height: 10,),
         ListView.builder(
           shrinkWrap: true,
@@ -396,6 +399,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                     SizedBox(
                       height: 20,
                     ),
+                    if(AppSharedPreferences.isAdmin)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -434,10 +438,21 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                 ),
               );
             }),
+        getMyDepartment(),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 30),
+          child: RoundedNumberField(
+            onChanged: (v){
+              count = int.tryParse(v)??1;
+            },
+            initialValue: 1,
+            hintText: 'عدد المرات',
+          ),
+        ),
 
 
         CreateModel<EmptyModel>(
-          repositoryCallBack: (data) => ReceiptRepository.transformItems(selectedFromDepartment.id, selectedTransformationId),
+          repositoryCallBack: (data) => ReceiptRepository.transformItems(selectedFromDepartment.id, selectedTransformationId,count),
           onCubitCreated: (c){Cubit=c;},
           child: Padding(
             padding: const EdgeInsets.all(8.0),

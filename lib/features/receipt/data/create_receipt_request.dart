@@ -48,7 +48,7 @@ class CreateReceiptRequest {
 
 class ReceiptItem {
   int id;
-  int value;
+  double value;
 
   ReceiptItem({this.id, this.value});
 
