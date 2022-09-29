@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:receipts/core/API/CoreModels/base_result_model.dart';
+import 'package:receipts/core/utils/extensions/extensions.dart';
 
+import '../../../core/utils/Converters/Converters.dart';
 import 'item_category_list_response.dart';
 
 class ItemListResponseModel extends BaseResultModel{
@@ -33,6 +37,12 @@ class Item extends BaseResultModel{
   String description;
   String unit;
   double unitValue;
+  bool isConst;
+
+  String defaultUnit;
+  double defaultUnitValue;
+
+  List<double> values;
   TextEditingController controller = TextEditingController();
   bool isDefaultUnit;
   int itemCategoryId;
@@ -61,18 +71,40 @@ class Item extends BaseResultModel{
     name = json['name'];
     description = json['description'];
     unit = json['unit'];
+    defaultUnit = json['unit'];
     unitValue = 0;
-    //isDefaultUnit = json['is_default_unit'];
+    isDefaultUnit = json['is_default_unit'];
     itemCategoryId = json['item_category_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+
     unitValue = json['value'] != null ? new Value.fromJson(json['value']).value : 0;
+    defaultUnitValue = unitValue;
+
     if (json['units'] != null) {
       units = new List<Unit>();
       json['units'].forEach((v) {
         units.add(new Unit.fromJson(v));
       });
     }
+
+
+    if(json['value']!= null) {
+      values = Value.fromJson(json['value']).values;
+
+
+      for(int i = 0 ; i < units.length ; i++){
+        if(units[i].conversionFactor == 0)
+          units[i].value =values.tryGet(i);
+        else units[i].value / unitValue;
+
+        if(units[i].isDefault){
+          defaultUnit = units[i].name;
+          defaultUnitValue = units[i].value;
+        }
+      }
+    }
+
     itemCategory = json['item_category'] != null
         ? new ItemCategory.fromJson(json['item_category'])
         : null;
@@ -90,6 +122,7 @@ class Item extends BaseResultModel{
     data['item_category_id'] = this.itemCategoryId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['values'] = this.values;
     if (this.units != null) {
       data['units'] = this.units.map((v) => v.toJson()).toList();
     }
@@ -108,10 +141,12 @@ class Unit {
   double value;
   TextEditingController controller = TextEditingController();
   int conversionFactor;
-  int isDefault;
+  bool isDefault;
   int itemId;
   String createdAt;
   String updatedAt;
+
+  bool isConst;
 
   Unit(
       {this.id,
@@ -131,6 +166,7 @@ class Unit {
     itemId = json['item_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    isConst = MyConverter.toBoolean(json['is_const'].toString());
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +186,7 @@ class Value {
   int receiptId;
   int itemId;
   double value;
+  List<double> values;
 
   Value({this.receiptId, this.itemId, this.value});
 
@@ -157,6 +194,14 @@ class Value {
     receiptId = json['receipt_id'];
     itemId = json['item_id'];
     value = json['value'].toDouble();
+    values=[];
+    if(json['values'] != null){
+      var list = jsonDecode(json['values']) as List<dynamic>;
+      list.forEach((element) {
+        values.add(double.parse(element.toString()));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {

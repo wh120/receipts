@@ -302,6 +302,12 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
                                           child: SelectItemWidget(
                                         items: items,
                                         onDone: (Item item) {
+                                       //   List<double> values = [];
+                                          // item.units.forEach((element) {
+                                          //   values.add(element.value);
+                                          // });
+                                          // item.values = values;
+
                                           transformation.outputs.add(item);
                                           // if(item!= null)
                                           //   widget.receipt.items.add(item);

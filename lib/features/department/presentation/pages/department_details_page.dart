@@ -93,10 +93,14 @@ class _DepartmentDetailsPageState extends State<DepartmentDetailsPage> {
     List<Item> items = widget.department.items;
     if(items.length == 0)return NoDataWidget();
 
+
     return ListView.builder(
         itemCount: items.length,
         itemBuilder: (c,index){
-          return GeneralCard(child: ListTile(title: Text(items[index].name), trailing: Text(items[index].unitValue.toString() + ' ' +items[index].unit),));
+          return GeneralCard(child:
+          ListTile(title: Text(items[index].name),
+            trailing: Text(items[index].defaultUnitValue.toString() + ' ' +items[index].defaultUnit.toString()),)
+          );
         });
 
   }

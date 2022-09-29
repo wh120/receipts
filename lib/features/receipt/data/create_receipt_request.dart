@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class CreateReceiptRequest {
   String receiptNumber;
   int fromDepartmentId;
@@ -49,18 +51,21 @@ class CreateReceiptRequest {
 class ReceiptItem {
   int id;
   double value;
+  List<double> values;
 
-  ReceiptItem({this.id, this.value});
+  ReceiptItem({this.id, this.value , this.values});
 
   ReceiptItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     value = json['value'];
+    values = jsonEncode(json['values']) as List<double>;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['value'] = this.value;
+    data['values'] = jsonEncode(this.values);
     return data;
   }
 }

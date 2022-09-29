@@ -142,7 +142,7 @@ class _BudgetPageState extends State<ReceiptsListPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 3),
                     child: Text(
-                      receipt.createdByUser.roles.first?.name??'',
+                      receipt.createdByUser.roles.length==0 ?'': receipt.createdByUser.roles.first?.name??'',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 13,

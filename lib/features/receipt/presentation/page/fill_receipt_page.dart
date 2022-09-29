@@ -186,6 +186,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
                   toDepartmentId: widget.receipt.toDepartmentId,
                   items: List.generate(widget.receipt.items.length, (index) {
                     return ReceiptItem(
+                        values:widget.receipt.items[index].values ,
                         id: widget.receipt.items[index].id,
                         value: widget.receipt.items[index].unitValue);
                   })));
@@ -244,9 +245,19 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
       if (element.units.length > maxUnitCount) {
         maxUnitCount = element.units.length;
       }
-      element.units.forEach((u) {
-        u.value = (element.unitValue  / u.conversionFactor).toDouble();
-      });
+
+      for(int i= 0 ; i < element.units.length ; i++){
+        var u = element.units[i];
+        if(u.isConst)
+          u.value = (element.unitValue  / u.conversionFactor).toDouble();
+        else u.value = element.values.tryGet(i);
+
+      }
+      // element.units.forEach((u) {
+      //   if(u.isConst)
+      //   u.value = (element.unitValue  / u.conversionFactor).toDouble();
+      //   else u.value = element.values[2];
+      // });
     });
     for (int i = 0; i < maxUnitCount; i++) {
       col.add(Text('الكمية ${i + 2}'));
@@ -333,13 +344,14 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 // controller: TextEditingController(
                 //     text: item.unitValue == 0 ? '' : item.unitValue.toString()),
                 onChanged: (value) {
-
                   item.unitValue = double.tryParse(value) ?? 0;
-
-
                   item.units.forEach((element) {
-                    element.value = item.unitValue / element.conversionFactor;
-                    element.controller.text = element.value==0?'':element.value.toString();
+                    if(element.isConst){
+                      element.value = item.unitValue / element.conversionFactor;
+                      element.controller.text = element.value==0?'':element.value.toString();
+
+                    }
+
 
                   });
                   setState(() {});
@@ -359,16 +371,19 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                     //         .toString()),
                     onChanged: (value) {
                       item.units[i].value = double.tryParse(value) ?? 0.0;
-                      item.unitValue = item.units[i].value * item.units[i].conversionFactor;
-                      item.controller.text = item.unitValue == 0?'':item.unitValue.toString();
-                      item.units.forEach((element) {
-                        print(item.units[i].id !=element.id);
-                        if(item.units[i].id !=element.id) {
-                          var r = (item.unitValue / element.conversionFactor).roundToDouble();
+                     if(item.units[i].isConst){
+                       item.unitValue = item.units[i].value * item.units[i].conversionFactor;
+                       item.controller.text = item.unitValue == 0?'':item.unitValue.toString();
+                       item.units.forEach((element) {
+                         print(item.units[i].id !=element.id);
+                         if(item.units[i].id !=element.id) {
+                           var r = (item.unitValue / element.conversionFactor).roundToDouble();
 
-                          element.controller.text = r==0?'':r.toString();
-                        }
-                      });
+                           element.controller.text = r==0?'':r.toString();
+                         }
+                       });
+                     }
+
                       setState(() {});
                     },
                     hintText: item.units[i].name,
@@ -384,6 +399,11 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                       onPressed: () {
                         if(item!= null &&item.unitValue>0){
                           Navigation.pop();
+                          List<double> list = [];
+                          item.units.forEach((element) {
+                            list.add(element.value);
+                          });
+                          item.values = list;
                           widget.onDone(item);
                         }
 
@@ -411,10 +431,14 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
         items.forEach((item) {
           if (!ret.contains(i) &&
               k.isNotEmpty &&
-              (item.value.name
+              (
+                  item.value.name
                   .toString()
                   .toLowerCase()
-                  .contains(k.toLowerCase()))) {
+                  .contains(k.toLowerCase())
+                  ||  item.value.id.toString().contains(k.toLowerCase())
+              )
+          ) {
             ret.add(i);
           }
           i++;

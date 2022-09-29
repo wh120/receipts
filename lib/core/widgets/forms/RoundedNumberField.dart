@@ -36,7 +36,7 @@ class RoundedNumberField extends StatelessWidget {
       validator: validator,
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        FilteringTextInputFormatter.allow(RegExp(r'(^\d*\.?\d*)')),
       ],
     );
   }
