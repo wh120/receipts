@@ -35,6 +35,7 @@ import 'http_method.dart';
     Map<String,String> files,
     CancelToken cancelToken,
     bool isLongTime = false,
+    bool withCache = false,
   }) async {
     assert(method != null);
     assert(url != null);
@@ -73,10 +74,10 @@ import 'http_method.dart';
   //    dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
 
       var options;
-      if(Platform.operatingSystem != 'windows' && method == HttpMethod.GET){
-        // dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
-        //
-        // options=buildCacheOptions(Duration(days: 7),maxStale: Duration(days: 14),options: requestOptions,forceRefresh: true);
+      if(Platform.operatingSystem != 'windows' && withCache){
+        dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
+
+        options=buildCacheOptions(Duration(days: 7),maxStale: Duration(days: 14),options: requestOptions,forceRefresh: true);
 
       }
       else options = requestOptions;
