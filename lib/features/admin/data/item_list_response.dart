@@ -97,7 +97,7 @@ class Item extends BaseResultModel{
         if(units[i].conversionFactor == 0)
           units[i].value =values.tryGet(i);
         else
-          units[i].value = unitValue;
+          units[i].value =( unitValue /  units[i].conversionFactor).roundToDouble();
 
         if(units[i].isDefault){
           defaultUnit = units[i].name;
