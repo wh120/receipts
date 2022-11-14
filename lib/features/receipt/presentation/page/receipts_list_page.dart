@@ -297,7 +297,29 @@ class _BudgetPageState extends State<ReceiptsListPage> {
                   Text('#'+receipt.id.toString())
 
                 ],
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      "ملاحظة: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      receipt.description??'',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff67727d),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
 
             ],
           ),

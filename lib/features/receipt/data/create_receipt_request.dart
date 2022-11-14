@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class CreateReceiptRequest {
-  String receiptNumber;
+
   int fromDepartmentId;
   int toDepartmentId;
   int mustApprovedByRoleId;
@@ -10,7 +10,7 @@ class CreateReceiptRequest {
   List<ReceiptItem> items;
 
   CreateReceiptRequest(
-      {this.receiptNumber,
+      {
         this.fromDepartmentId,
         this.toDepartmentId,
         this.mustApprovedByRoleId,
@@ -19,7 +19,7 @@ class CreateReceiptRequest {
         this.items});
 
   CreateReceiptRequest.fromJson(Map<String, dynamic> json) {
-    receiptNumber = json['receipt_number'];
+
     fromDepartmentId = json['from_department_id'];
     toDepartmentId = json['to_department_id'];
     mustApprovedByRoleId = json['must_approved_by_role_id'];
@@ -35,7 +35,7 @@ class CreateReceiptRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['receipt_number'] = this.receiptNumber;
+
     data['from_department_id'] = this.fromDepartmentId;
     data['to_department_id'] = this.toDepartmentId;
     data['must_approved_by_role_id'] = this.mustApprovedByRoleId;
@@ -50,22 +50,29 @@ class CreateReceiptRequest {
 
 class ReceiptItem {
   int id;
-  double value;
-  List<double> values;
+  double value0;
+  double value1;
+  double value2;
 
-  ReceiptItem({this.id, this.value , this.values});
+
+
+  ReceiptItem({this.id, this.value0 , this.value1, this.value2});
 
   ReceiptItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    value = json['value'];
-    values = jsonEncode(json['values']) as List<double>;
+    value0 = json['value0'];
+    value1 = json['value1'];
+    value2 = json['value2'];
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['value'] = this.value;
-    data['values'] = jsonEncode(this.values);
+    data['value0'] = this.value0??0;
+    data['value1'] = this.value1??0;
+    data['value2'] = this.value2??0;
+
     return data;
   }
 }

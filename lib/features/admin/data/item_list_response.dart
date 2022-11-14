@@ -37,12 +37,11 @@ class Item extends BaseResultModel{
   String description;
   String unit;
   double unitValue;
+  double value1;
+  double value2;
   bool isConst;
-
   String defaultUnit;
   double defaultUnitValue;
-
-  List<double> values;
   TextEditingController controller = TextEditingController();
   bool isDefaultUnit;
   int itemCategoryId;
@@ -50,6 +49,7 @@ class Item extends BaseResultModel{
   String updatedAt;
   List<Unit> units;
   ItemCategory itemCategory;
+
 
 
   Item(
@@ -77,8 +77,9 @@ class Item extends BaseResultModel{
     itemCategoryId = json['item_category_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    Value val = json['value'] != null ? new Value.fromJson(json['value']) : null;
 
-    unitValue = json['value'] != null ? new Value.fromJson(json['value']).value : 0;
+    unitValue = val != null ? val.value0 : 0;
     defaultUnitValue = unitValue;
 
     if (json['units'] != null) {
@@ -89,15 +90,29 @@ class Item extends BaseResultModel{
     }
 
 
-    if(json['value']!= null) {
-      values = Value.fromJson(json['value']).values;
-
+    if(val!= null) {
 
       for(int i = 0 ; i < units.length ; i++){
-        if(units[i].conversionFactor == 0)
-          units[i].value =values.tryGet(i);
-        else
-          units[i].value =( unitValue /  units[i].conversionFactor).roundToDouble();
+
+        switch(i){
+          case 0:
+            units[i].value = val.value1;
+            value1 = val.value1;
+            break;
+          case 1:
+            units[i].value = val.value2;
+            value2 = val.value2;
+            break;
+          // case 2:
+          //   units[i].value = val.value3;
+          //   value3 = val.value3;
+          //   break;
+
+        }
+        // if(units[i].conversionFactor == 0)
+        //
+        // else
+        //   units[i].value =( unitValue /  units[i].conversionFactor).roundToDouble();
 
         if(units[i].isDefault){
           defaultUnit = units[i].name;
@@ -118,12 +133,14 @@ class Item extends BaseResultModel{
     data['name'] = this.name;
     data['description'] = this.description;
     data['unit'] = this.unit;
-    data['value'] = this.unitValue;
+    data['value0'] = this.unitValue;
+    data['value1'] = this.value1??0;
+    data['value2'] = this.value2??0;
     data['is_default_unit'] = this.isDefaultUnit;
     data['item_category_id'] = this.itemCategoryId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['values'] = this.values;
+
     if (this.units != null) {
       data['units'] = this.units.map((v) => v.toJson()).toList();
     }
@@ -186,22 +203,22 @@ class Unit {
 class Value {
   int receiptId;
   int itemId;
-  double value;
-  List<double> values;
+  double value0;
+  double value1;
+  double value2;
+  double value3;
 
-  Value({this.receiptId, this.itemId, this.value});
+
+  Value({this.receiptId, this.itemId, this.value0 , this.value1, this.value2 , this.value3});
 
   Value.fromJson(Map<String, dynamic> json) {
     receiptId = json['receipt_id'];
     itemId = json['item_id'];
-    value = json['value'].toDouble();
-    values=[];
-    if(json['values'] != null){
-      var list = jsonDecode(json['values']) as List<dynamic>;
-      list.forEach((element) {
-        values.add(double.parse(element.toString()));
-      });
-    }
+    value0 = json['value0'].toDouble();
+    value1 = json['value1'].toDouble();
+    value2 = json['value2'].toDouble();
+
+
 
   }
 
@@ -209,7 +226,10 @@ class Value {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['receipt_id'] = this.receiptId;
     data['item_id'] = this.itemId;
-    data['value'] = this.value;
+    data['value0'] = this.value0;
+    data['value1'] = this.value1;
+    data['value2'] = this.value2;
+    data['value3'] = this.value3;
     return data;
   }
 }

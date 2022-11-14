@@ -183,21 +183,9 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                       SizedBox(
                         width: 8,
                       ),
-
-
                     ],
                   ),
 
-                  // Padding(
-                  //   padding: const EdgeInsets.only(top: 3),
-                  //   child: Text(
-                  //     receipt.createdByUser.roles.first?.name??'',
-                  //     style: TextStyle(
-                  //         fontWeight: FontWeight.w500,
-                  //         fontSize: 13,
-                  //         color: Color(0xff67727d).withOpacity(0.6)),
-                  //   ),
-                  // ),
                 ],
               ),
               SizedBox(
@@ -244,6 +232,27 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                 ],
               ),
 
+              SizedBox(
+                height: 15,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "ملاحظة: ",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    receipt.description??'',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xff67727d),
+                    ),
+                  ),
+                ],
+              ),
 
               SizedBox(
                 height: 15,
@@ -304,7 +313,8 @@ class _BudgetPageState extends State<MyApprovalReceiptsPage> {
                   Text('#'+receipt.id.toString())
 
                 ],
-              )
+              ),
+
 
             ],
           ),

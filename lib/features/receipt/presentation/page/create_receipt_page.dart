@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
 import 'package:receipts/features/receipt/data/receipt_list_response.dart';
+import 'package:receipts/features/receipt/presentation/page/transform_receipt_page.dart';
 
 import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/Boilerplate/CreateModel/widgets/CreateModel.dart';
@@ -161,8 +162,25 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
   }
 
   buildbody(){
-     if(selectedReceiptType == 2) return getTransformations();
+    if(selectedReceiptType == 2) return buildTransformations();
+
      else return getDepartmentsAndRoles();
+  }
+
+  getDepartment(){
+    return GetModel<DepartmentListResponse>(
+      repositoryCallBack: (data) => AdminRepository.getDepartments(),
+      modelBuilder: (DepartmentListResponse departmentsModel)=>GetModel<DepartmentListResponse>(
+        repositoryCallBack: (data) => AdminRepository.getMyDepartments(),
+        modelBuilder: (DepartmentListResponse model) {
+          departmentsModel.myDepartment = [];
+          departmentsModel.myDepartment.addAll(model.items);
+          // departmentsModel.myDepartment.insert(0, Department(name: 'غير محدد'));
+          return buildDepartmentsAndRoles(departmentsModel);
+        },
+      ),
+
+    );
   }
 
   getDepartmentsAndRoles(){
@@ -180,6 +198,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
 
      );
   }
+
 
 
   Department selectedToDepartment;
@@ -205,6 +224,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if(selectedReceiptType != 3)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -334,14 +354,14 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                     child: Text('التالي'),
 
                     onPressed: (){
-                      if(selectedFromDepartment!=null && selectedToDepartment != null) {
+                      if(selectedToDepartment!=null && selectedToDepartment != null) {
 
                         Navigation.push(FillReceiptPage(
                           receipt: Receipt(
                             items: [],
 
-                            fromDepartmentId: selectedFromDepartment.id,
-                            fromDepartment:selectedFromDepartment ,
+                            fromDepartmentId: selectedFromDepartment?.id,
+                            fromDepartment: selectedFromDepartment ,
 
                             toDepartmentId: selectedToDepartment.id,
                             toDepartment: selectedToDepartment,
@@ -365,79 +385,12 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
   }
 
 
-  Widget getTransformations(){
-    return GetModel<TransformationList>(
-      repositoryCallBack: (data) => AdminRepository.getTransformations(),
-      modelBuilder: (model)=>buildTransformations(model)
 
-    );
-  }
   int selectedTransformationId = 0;
-  buildTransformations(TransformationList model) {
+  buildTransformations( ) {
     return Column(
       children: [
 
-        SizedBox(height: 10,),
-        ListView.builder(
-          shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: model.items.length,
-            itemBuilder: (c, index) {
-              return GeneralCard(
-                onTap: (){
-                  selectedTransformationId = model.items[index].id;
-                  setState(() {
-
-                  });
-                },
-                selected: selectedTransformationId==model.items[index].id,
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text(model.items[index].name),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    if(AppSharedPreferences.isAdmin)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Expanded(
-                            child: ColumnBuilder(
-                              itemCount: model.items[index].inputs.length,
-                              itemBuilder: (c, i) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(model.items[index].inputs[i].unitValue
-                                        .toString()),
-                                    Text(model.items[index].inputs[i].name),
-                                  ],
-                                );
-                              },
-                            )),
-                        Icon(Icons.subdirectory_arrow_left_sharp),
-                        Expanded(
-                            child: ColumnBuilder(
-                              itemCount: model.items[index].outputs.length,
-                              itemBuilder: (c, i) {
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(model.items[index].outputs[i].unitValue
-                                        .toString()),
-                                    Text(model.items[index].outputs[i].name),
-                                  ],
-                                );
-                              },
-                            )),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }),
         getMyDepartment(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 30),
@@ -451,20 +404,20 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
         ),
 
 
-        CreateModel<EmptyModel>(
-          repositoryCallBack: (data) => ReceiptRepository.transformItems(selectedFromDepartment.id, selectedTransformationId,count),
-          onCubitCreated: (c){Cubit=c;},
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: ElevatedButton(
-                child: Text('التالي'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: ElevatedButton(
+              child: Text('التالي'),
 
-                onPressed: (){
-                  if(selectedFromDepartment!= null && selectedTransformationId!= null)
-                  Cubit.createModel(null);
-                },
-              ),
+              onPressed: (){
+                if(selectedFromDepartment != null)
+                Navigation.push(TransformationReceiptPage(
+                  count: count,
+                  department: selectedFromDepartment,
+                ));
+
+              },
             ),
           ),
         )

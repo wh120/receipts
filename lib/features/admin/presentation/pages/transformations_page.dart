@@ -91,17 +91,18 @@ class _TransformationPageState extends State<TransformationPage> {
                             child: ColumnBuilder(
                         itemCount: model.items[index].inputs.length,
                         itemBuilder: (c, i) {
-                            return Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(model.items[index].inputs[i].unitValue
-                                    .toString()),
-                                SizedBox(width: 5,),
-                                Text(model.items[index].inputs[i].unit
-                                    ),
-                                SizedBox(width: 15,),
-                                Text(model.items[index].inputs[i].name),
-                              ],
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Wrap(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(model.items[index].inputs[i].defaultUnitValue.toString() ),
+                                  SizedBox(width: 5,),
+                                  Text(model.items[index].inputs[i].defaultUnit),
+                                  SizedBox(width: 8,),
+                                  Text(model.items[index].inputs[i].name  ),
+                                ],
+                              ),
                             );
                         },
                       ),
@@ -113,17 +114,20 @@ class _TransformationPageState extends State<TransformationPage> {
                             child: ColumnBuilder(
                         itemCount: model.items[index].outputs.length,
                         itemBuilder: (c, i) {
-                            return Row(
-                              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(width: 5,),
-                                Text(model.items[index].outputs[i].unitValue
-                                    .toString()),
-                                SizedBox(width: 5,),
-                                Text(model.items[index].outputs[i].unit),
-                                SizedBox(width: 15,),
-                                Text(model.items[index].outputs[i].name),
-                              ],
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10.0),
+                              child: Wrap(
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(width: 5,),
+                                  Text(model.items[index].outputs[i].defaultUnitValue
+                                      .toString()),
+                                  SizedBox(width: 5,),
+                                  Text(model.items[index].outputs[i].defaultUnit),
+                                  SizedBox(width: 8,),
+                                  Text(model.items[index].outputs[i].name),
+                                ],
+                              ),
                             );
                         },
                       ),

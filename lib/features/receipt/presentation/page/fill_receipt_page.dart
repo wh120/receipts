@@ -180,15 +180,19 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
           onPressed: () {
             if (cubit != null) {
               cubit.createModel(CreateReceiptRequest(
+                description: widget.receipt.description ,
                   mustApprovedByRoleId: widget.receipt.mustApprovedByRole?.id,
                   receiptTypeId: widget.receipt.receiptTypeId,
                   fromDepartmentId: widget.receipt.fromDepartmentId,
                   toDepartmentId: widget.receipt.toDepartmentId,
                   items: List.generate(widget.receipt.items.length, (index) {
                     return ReceiptItem(
-                        values:widget.receipt.items[index].values ,
+
                         id: widget.receipt.items[index].id,
-                        value: widget.receipt.items[index].unitValue);
+                        value0: widget.receipt.items[index].unitValue,
+                        value1: widget.receipt.items[index].value1,
+                        value2: widget.receipt.items[index].value2,
+                    );
                   })));
             }
           },
@@ -216,6 +220,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
   }
 
   loadTable() {
+
     return GetModel<ItemListResponseModel>(
       repositoryCallBack: (data) => ReceiptRepository.getItems(),
       modelBuilder: (ItemListResponseModel model) => buildTable(),
@@ -239,29 +244,31 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
         "الاسم",
       ),
       Text("الكمية 1"),
+      Text("الكمية 2"),
+      Text("الكمية 3"),
     ];
-    int maxUnitCount = 0;
-    widget.receipt.items.forEach((element) {
-      if (element.units.length > maxUnitCount) {
-        maxUnitCount = element.units.length;
-      }
+    // int maxUnitCount = 0;
+    // widget.receipt.items.forEach((element) {
+    //   if (element.units.length > maxUnitCount) {
+    //     maxUnitCount = element.units.length;
+    //   }
 
-      for(int i= 0 ; i < element.units.length ; i++){
-        var u = element.units[i];
-        if(u.isConst)
-          u.value = (element.unitValue  / u.conversionFactor).toDouble();
-        else u.value = element.values.tryGet(i);
-
-      }
+      // for(int i= 0 ; i < element.units.length ; i++){
+      //   var u = element.units[i];
+      //   if(u.isConst)
+      //     u.value = (element.unitValue  / u.conversionFactor).toDouble();
+      //   else u.value = element.values.tryGet(i);
+      //
+      // }
       // element.units.forEach((u) {
       //   if(u.isConst)
       //   u.value = (element.unitValue  / u.conversionFactor).toDouble();
       //   else u.value = element.values[2];
       // });
-    });
-    for (int i = 0; i < maxUnitCount; i++) {
-      col.add(Text('الكمية ${i + 2}'));
-    }
+    // });
+    // for (int i = 0; i < maxUnitCount; i++) {
+    //   col.add(Text('الكمية ${i + 2}'));
+    // }
     col.add(Text('الأوامر'));
 
     return WidgetDataTable(
@@ -272,10 +279,12 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
           Text(widget.receipt.items[index].name),
           Text(widget.receipt.items[index].unitValue.toString() +' '+
               widget.receipt.items[index].unit),
+
+
         ];
 
         //todo
-        for(int i = 0; i < maxUnitCount;i++) {
+        for(int i = 0; i < 3;i++) {
           String s = '-';
           if(widget.receipt.items[index].units.tryGet(i) != null)
              s =widget.receipt.items[index].units.tryGet(i).value.toString() + ' ' + widget.receipt.items[index].units.tryGet(i).name;
@@ -375,10 +384,10 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                        item.unitValue = item.units[i].value * item.units[i].conversionFactor;
                        item.controller.text = item.unitValue == 0?'':item.unitValue.toString();
                        item.units.forEach((element) {
-                         print(item.units[i].id !=element.id);
+
                          if(item.units[i].id !=element.id) {
                            var r = (item.unitValue / element.conversionFactor).roundToDouble();
-
+                           element.value=r;
                            element.controller.text = r==0?'':r.toString();
                          }
                        });
@@ -399,11 +408,18 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                       onPressed: () {
                         if(item!= null &&item.unitValue>0){
                           Navigation.pop();
-                          List<double> list = [];
-                          item.units.forEach((element) {
-                            list.add(element.value);
-                          });
-                          item.values = list;
+                          for(int i = 0 ; i < item.units.length ; i++){
+                            switch(i){
+                              case 0:
+                                item.value1= item.units[i].value;
+                                break;
+                              case 1:
+                                item.value2= item.units[i].value;
+                                break;
+                            }
+                          }
+
+
                           widget.onDone(item);
                         }
 
