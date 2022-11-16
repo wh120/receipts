@@ -192,7 +192,7 @@ class Unit {
     data['id'] = this.id;
     data['name'] = this.name;
     data['conversion_factor'] = this.conversionFactor;
-    data['is_default'] = this.isDefault;
+    data['is_default'] = this.isDefault??false;
     data['item_id'] = this.itemId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

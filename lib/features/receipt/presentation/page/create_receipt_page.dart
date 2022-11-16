@@ -299,6 +299,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                 height: 20,
               ),
 
+              if(selectedReceiptType != 3)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

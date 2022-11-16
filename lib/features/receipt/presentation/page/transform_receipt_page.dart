@@ -115,7 +115,7 @@ class _CreateReceiptPageState extends State<TransformationReceiptPage> {
 
     );
   }
-  int selectedTransformationId = 0;
+  int selectedTransformationId;
   int count = 1;
   CreateModelCubit Cubit;
   buildTransformations(TransformationList model) {
@@ -148,11 +148,17 @@ class _CreateReceiptPageState extends State<TransformationReceiptPage> {
                           child: ColumnBuilder(
                             itemCount: model.items[index].inputs.length,
                             itemBuilder: (c, i) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              return Wrap(
+                              //  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text(model.items[index].inputs[i].unitValue
+                                  Text(model.items[index].inputs[i].defaultUnitValue
                                       .toString()),
+                                  SizedBox(width: 4,),
+
+                                  Text(model.items[index].inputs[i].defaultUnit
+                                      .toString()),
+                                  SizedBox(width: 4,),
+
                                   Text(model.items[index].inputs[i].name),
                                 ],
                               );
@@ -163,11 +169,15 @@ class _CreateReceiptPageState extends State<TransformationReceiptPage> {
                           child: ColumnBuilder(
                             itemCount: model.items[index].outputs.length,
                             itemBuilder: (c, i) {
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              return Wrap(
+                               // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text(model.items[index].outputs[i].unitValue
+                                  Text(model.items[index].outputs[i].defaultUnitValue
                                       .toString()),
+                                  SizedBox(width: 4,),
+                                  Text(model.items[index].inputs[i].defaultUnit
+                                      .toString()),
+                                  SizedBox(width: 4,),
                                   Text(model.items[index].outputs[i].name),
                                 ],
                               );
