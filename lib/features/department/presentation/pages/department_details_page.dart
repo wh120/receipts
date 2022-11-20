@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:receipts/core/Boilerplate/GetModel/cubits/get_model_cubit.dart';
 import 'package:receipts/core/Boilerplate/GetModel/widgets/GetModel.dart';
+import 'package:receipts/core/utils/extensions/extensions.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 
 import '../../../../core/constants/AppColors.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_icons/flutter_icons.dart';
 
 import '../../../../core/constants/AppTheme.dart';
 import '../../../../core/utils/Navigation/Navigation.dart';
+import '../../../../core/widgets/data_table/widget_data_table.dart';
 import '../../../../core/widgets/errors/NoDataWidget.dart';
 import '../../../admin/data/department_list_response.dart';
 import '../../../admin/data/item_list_response.dart';
@@ -48,7 +50,7 @@ class _DepartmentDetailsPageState extends State<DepartmentDetailsPage> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
-            child: buildbody( ),
+            child: buildTable( ),
           ),
         ),
 
@@ -76,5 +78,46 @@ class _DepartmentDetailsPageState extends State<DepartmentDetailsPage> {
           );
         });
 
+  }
+  buildTable(){
+    List<Item> items = widget.department.items;
+
+    return WidgetDataTable(
+      columns: [
+        Text(
+          "الرقم",
+        ),
+        Text(
+          "الاسم",
+        ),
+        Text("الكمية 1"),
+        Text("الكمية 2"),
+        Text("الكمية 3"),
+        Text('الأوامر')
+      ],
+      rows: List.generate(items.length, (index) {
+        List<Widget> list = [
+          Text((index + 1).toString()),
+          Text(items[index].name),
+          Text(items[index].unitValue.toString() +' '+ items[index].unit),
+        ];
+
+        //todo
+        for(int i = 0; i < 3;i++) {
+          String s = '-';
+          if(items[index].units.tryGet(i) != null)
+            s =items[index].units.tryGet(i).value.toString() + ' ' + items[index].units.tryGet(i).name;
+          list.add(Text(s));
+        }
+
+
+          list.add(IconButton(
+              onPressed: () {
+
+              },
+              icon: Icon(Icons.delete)));
+        return list;
+      }),
+    );
   }
 }

@@ -236,51 +236,28 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
   }
 
   buildTable() {
-    List<Widget> col = [
-      Text(
-        "الرقم",
-      ),
-      Text(
-        "الاسم",
-      ),
-      Text("الكمية 1"),
-      Text("الكمية 2"),
-      Text("الكمية 3"),
-    ];
-    // int maxUnitCount = 0;
-    // widget.receipt.items.forEach((element) {
-    //   if (element.units.length > maxUnitCount) {
-    //     maxUnitCount = element.units.length;
-    //   }
 
-      // for(int i= 0 ; i < element.units.length ; i++){
-      //   var u = element.units[i];
-      //   if(u.isConst)
-      //     u.value = (element.unitValue  / u.conversionFactor).toDouble();
-      //   else u.value = element.values.tryGet(i);
-      //
-      // }
-      // element.units.forEach((u) {
-      //   if(u.isConst)
-      //   u.value = (element.unitValue  / u.conversionFactor).toDouble();
-      //   else u.value = element.values[2];
-      // });
-    // });
-    // for (int i = 0; i < maxUnitCount; i++) {
-    //   col.add(Text('الكمية ${i + 2}'));
-    // }
-    col.add(Text('الأوامر'));
+
+
 
     return WidgetDataTable(
-      columns: col,
+      columns: [
+        Text(
+          "الرقم",
+        ),
+        Text(
+          "الاسم",
+        ),
+        Text("الكمية 1"),
+        Text("الكمية 2"),
+        Text("الكمية 3"),
+        Text('الأوامر')
+      ],
       rows: List.generate(widget.receipt.items.length, (index) {
         List<Widget> list = [
           Text((index + 1).toString()),
           Text(widget.receipt.items[index].name),
-          Text(widget.receipt.items[index].unitValue.toString() +' '+
-              widget.receipt.items[index].unit),
-
-
+          Text(widget.receipt.items[index].unitValue.toString() +' '+ widget.receipt.items[index].unit),
         ];
 
         //todo
@@ -290,10 +267,6 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
              s =widget.receipt.items[index].units.tryGet(i).value.toString() + ' ' + widget.receipt.items[index].units.tryGet(i).name;
           list.add(Text(s));
         }
-
-        // widget.receipt.items[index].units.forEach((element) {
-        //   list.add(Text(element.value.toString() + element.name));
-        // });
 
         if (isNew)
           list.add(IconButton(
@@ -372,12 +345,7 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 children: List.generate(item.units.length, (i) {
                   return RoundedNumberField(
                     controller: item.units[i].controller,
-                    // controller: TextEditingController(
-                    //     text: (item.unitValue == 0
-                    //             ? ''
-                    //             : item.unitValue ~/
-                    //                 item.units[i].conversionFactor)
-                    //         .toString()),
+
                     onChanged: (value) {
                       item.units[i].value = double.tryParse(value) ?? 0.0;
                      if(item.units[i].isConst){
