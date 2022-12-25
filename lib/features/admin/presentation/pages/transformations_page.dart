@@ -11,6 +11,7 @@ import '../../../../core/widgets/BottomSheet.dart';
 import '../../../../core/widgets/ColumnBuilder.dart';
 import '../../../../core/widgets/cards/GeneralCard.dart';
 import '../../../../core/widgets/forms/RoundedTextField.dart';
+import '../../../../core/widgets/tab_bar/default_tab_bar.dart';
 import '../../../receipt/presentation/page/fill_receipt_page.dart';
 import '../../../receipt/repository/ReceiptRepository.dart';
 import '../../data/item_list_response.dart';
@@ -42,7 +43,7 @@ class _TransformationPageState extends State<TransformationPage> {
           Container(
 
           ),
-          Expanded(child: getBody()),
+          Expanded(child: buildPage()),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -58,9 +59,17 @@ class _TransformationPageState extends State<TransformationPage> {
     );
   }
 
-  getBody() {
+  buildPage(){
+    return DefaultTabBar(
+      tabs: {
+        'الفعالة':getBody(true),
+        'المؤرشفة':getBody(false)
+      },
+    );
+  }
+  getBody(bool isActive) {
     return GetModel<TransformationList>(
-      repositoryCallBack: (data) => AdminRepository.getTransformations(),
+      repositoryCallBack: (data) => AdminRepository.getTransformations(isActive: isActive),
       modelBuilder: (TransformationList model) => buildBody(model),
       onCubitCreated: (c){cubit=c;},
     );
@@ -134,7 +143,14 @@ class _TransformationPageState extends State<TransformationPage> {
                           )),
                     ],
                   ),
-                  buildDeleteButton(model.items[index])
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      buildDeleteButton(model.items[index]),
+                      buildSwitchActiveButton(model.items[index])
+                    ],
+                  ),
+
                 ],
               ),
             ),
@@ -157,6 +173,24 @@ class _TransformationPageState extends State<TransformationPage> {
 
     }, child: Text('حذف'));
   }
+
+  buildSwitchActiveButton(Transformation transformation) {
+
+    return ElevatedButton(onPressed: (){
+      MyBottomSheet.showConfirmBottomSheet(
+        context: context,
+        text: 'هل تريد إلغاء التفعيل؟' ,
+        onClicked: (b){
+          if(b)cubit?.getModel();
+        },
+        repositoryCallBack: (data)=>AdminRepository.switchActiveTransformation(transformation.id),
+
+      );
+
+    }, child: Text(
+        transformation.isActive? 'إلغاء التفعيل':'تفعيل'));
+  }
+
 }
 
 class AddTransformationPage extends StatefulWidget {

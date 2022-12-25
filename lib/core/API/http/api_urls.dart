@@ -29,7 +29,9 @@ class ApiURLs {
    static  String GET_ITEM = BASE_URL +'/api/Item/{id}';
 
    static  String GET_TRANSFORMATIONS = BASE_URL +'/api/Transformation';
+   static  String GET_INACTIVE_TRANSFORMATIONS = BASE_URL +'/api/Transformation/inactive';
    static  String GET_TRANSFORMATION = BASE_URL +'/api/Transformation/{id}';
+   static  String SWITCH_ACTIVE_TRANSFORMATION = BASE_URL +'/api/Transformation/{id}/switchActivation';
    static  String TRANSFORM = BASE_URL +'/api/Transformation/transform';
 
 

@@ -97,12 +97,12 @@ class AdminRepository{
   }
 
 
-  static Future<BaseResultModel> getTransformations( ) async {
+  static Future<BaseResultModel> getTransformations({bool isActive = true}) async {
     return await RemoteDataSource.request<TransformationList>(
         converter: (json) => TransformationList.fromJson(json),
         method: HttpMethod.GET,
         withAuthentication: true,
-        url: ApiURLs.GET_TRANSFORMATIONS);
+        url: isActive? ApiURLs.GET_TRANSFORMATIONS:ApiURLs.GET_INACTIVE_TRANSFORMATIONS );
 
   }
   static Future<BaseResultModel> deleteTransformation(int id) async {
@@ -111,6 +111,15 @@ class AdminRepository{
         method: HttpMethod.DELETE,
         withAuthentication: true,
         url: ApiURLs.GET_TRANSFORMATION.replaceFirst('{id}', id.toString()));
+
+  }
+
+  static Future<BaseResultModel> switchActiveTransformation(int id) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        withAuthentication: true,
+        url: ApiURLs.SWITCH_ACTIVE_TRANSFORMATION.replaceFirst('{id}', id.toString()));
 
   }
 

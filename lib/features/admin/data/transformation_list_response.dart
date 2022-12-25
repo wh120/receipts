@@ -29,6 +29,7 @@ class Transformation   {
   int id;
   String name;
   String description;
+  bool isActive;
   String createdAt;
   String updatedAt;
   List<Item> inputs;
@@ -38,6 +39,7 @@ class Transformation   {
       {this.id,
         this.name,
         this.description,
+        this.isActive,
         this.createdAt,
         this.updatedAt,
         this.inputs,
@@ -47,6 +49,7 @@ class Transformation   {
     id = json['id'];
     name = json['name'];
     description = json['description'];
+    isActive = json['is_active'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     if (json['inputs'] != null) {
