@@ -38,6 +38,7 @@ class Receipt {
   int fromDepartmentId;
   int toDepartmentId;
   int receiptTypeId;
+  int transformationCount;
   String description;
   DateTime acceptedAt;
   DateTime createdAt;
@@ -58,6 +59,7 @@ class Receipt {
         this.fromDepartmentId,
         this.toDepartmentId,
         this.receiptTypeId,
+        this.transformationCount,
         this.description,
         this.acceptedAt,
         this.createdAt,
@@ -79,6 +81,7 @@ class Receipt {
     fromDepartmentId = json['from_department_id'];
     toDepartmentId = json['to_department_id'];
     receiptTypeId = json['receipt_type_id'];
+    transformationCount = json['transformation_count'];
     description = json['description'];
     acceptedAt = DateTime.tryParse(json['accepted_at']??'');
     createdAt = DateTime.parse(json['created_at']);

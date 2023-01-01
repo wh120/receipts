@@ -120,8 +120,8 @@ class _CreateReceiptPageState extends State<TransformationReceiptPage> {
   CreateModelCubit Cubit;
   buildTransformations(TransformationList model) {
     return ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        // physics: NeverScrollableScrollPhysics(),
         itemCount: model.items.length,
         itemBuilder: (c, index) {
           return GeneralCard(
@@ -175,7 +175,7 @@ class _CreateReceiptPageState extends State<TransformationReceiptPage> {
                                   Text(model.items[index].outputs[i].defaultUnitValue
                                       .toString()),
                                   SizedBox(width: 4,),
-                                  Text(model.items[index].inputs[i].defaultUnit
+                                  Text(model.items[index].outputs[i].defaultUnit
                                       .toString()),
                                   SizedBox(width: 4,),
                                   Text(model.items[index].outputs[i].name),
