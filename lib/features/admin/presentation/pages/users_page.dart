@@ -212,9 +212,9 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
               initialValue: user.password,
               // controller: codeController,
             ),
-            getDepartmentsAndRoles(),
 
-            Expanded(child: Container()),
+
+            Expanded(child: getDepartmentsAndRoles()),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -268,46 +268,48 @@ class _CreateUserWidgetState extends State<CreateUserWidget> {
         Text(
           "الأدوار",
         ),
-        Column(
-          children: [
-            ColumnBuilder(
-              itemCount: user.roles.length,
-              itemBuilder: (c,index){
-                return Row(
-                  children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              ColumnBuilder(
+                itemCount: user.roles.length,
+                itemBuilder: (c,index){
+                  return Row(
+                    children: [
 
-                    
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ObjectDropDown<Role>(
-                        selectedValue: user.roles[index],
-                        items:  items,
-                        text: 'الدور',
-                        onChanged: (Role role){
-                          user.roles[index] = role;
-                          // selectedDepartment = department;
-                          setState(() {
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ObjectDropDown<Role>(
+                          selectedValue: user.roles[index],
+                          items:  items,
+                          text: 'الدور',
+                          onChanged: (Role role){
+                            user.roles[index] = role;
+                            // selectedDepartment = department;
+                            setState(() {
 
-                          });
-                        },
+                            });
+                          },
+                        ),
                       ),
-                    ),
 
-                    IconButton(onPressed: (){
-                      user.roles.removeAt(index);
-                      setState(() {
-                      });
-                    }, icon: Icon(Icons.remove)),
-                  ],
-                );
-              },
-                ),
-            IconButton(onPressed: (){
-              user.roles.add(null);
-              setState(() {
-              });
-            }, icon: Icon(Icons.add))
-          ],
+                      IconButton(onPressed: (){
+                        user.roles.removeAt(index);
+                        setState(() {
+                        });
+                      }, icon: Icon(Icons.remove)),
+                    ],
+                  );
+                },
+                  ),
+              IconButton(onPressed: (){
+                user.roles.add(null);
+                setState(() {
+                });
+              }, icon: Icon(Icons.add))
+            ],
+          ),
         )
       ],
     );
