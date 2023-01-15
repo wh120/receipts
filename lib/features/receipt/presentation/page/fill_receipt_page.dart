@@ -292,7 +292,7 @@ class SelectItemWidget extends StatefulWidget {
 
 class _SelectItemWidgetState extends State<SelectItemWidget> {
   Item item;
-
+  bool isConst = true;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -328,7 +328,7 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 onChanged: (value) {
                   item.unitValue = double.tryParse(value) ?? 0;
                   item.units.forEach((element) {
-                    if(element.isConst){
+                    if(element.isConst && isConst){
                       element.value = item.unitValue / element.conversionFactor;
                       element.controller.text = element.value==0?'':element.value.toString();
 
@@ -348,7 +348,7 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
 
                     onChanged: (value) {
                       item.units[i].value = double.tryParse(value) ?? 0.0;
-                     if(item.units[i].isConst){
+                     if(item.units[i].isConst && isConst){
                        item.unitValue = item.units[i].value * item.units[i].conversionFactor;
                        item.controller.text = item.unitValue == 0?'':item.unitValue.toString();
                        item.units.forEach((element) {
@@ -367,6 +367,16 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                   );
                 }),
               ),
+            if (item != null)
+            Row(
+              children: [
+                Text('التحويل التلقائي '),
+                Switch(value: isConst, onChanged: (v){
+                  isConst= v;
+                  setState(() {});
+                })
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -374,7 +384,7 @@ class _SelectItemWidgetState extends State<SelectItemWidget> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        if(item!= null &&item.unitValue>0){
+                        if(item!= null ){
                           Navigation.pop();
                           for(int i = 0 ; i < item.units.length ; i++){
                             switch(i){
