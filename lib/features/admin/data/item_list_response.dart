@@ -158,7 +158,7 @@ class Unit {
   String name;
   double value;
   TextEditingController controller = TextEditingController();
-  int conversionFactor;
+  double conversionFactor;
   bool isDefault;
   int itemId;
   String createdAt;
@@ -179,7 +179,7 @@ class Unit {
     id = json['id'];
     name = json['name'];
     value=0;
-    conversionFactor = json['conversion_factor']??1;
+    conversionFactor = json['conversion_factor'].toDouble()??1.0;
     isDefault = json['is_default'];
     itemId = json['item_id'];
     createdAt = json['created_at'];

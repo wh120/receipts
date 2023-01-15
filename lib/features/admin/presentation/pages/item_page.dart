@@ -261,10 +261,10 @@ class _CreateItemWidgetState extends State<CreateItemWidget> {
                     SizedBox(width: 18,),
                     Expanded(
                       child: RoundedNumberField(
-                        initialValue: item.units[index].conversionFactor,
+                        initialValue: item.units[index].conversionFactor.toDouble(),
                         hintText: "عامل التحويل "  ,
                         onChanged: (value){
-                          item.units[index].conversionFactor=int.tryParse(value);
+                          item.units[index].conversionFactor=double.tryParse(value);
                         },
                       ),
                     ),
