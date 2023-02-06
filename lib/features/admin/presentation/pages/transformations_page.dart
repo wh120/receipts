@@ -146,8 +146,16 @@ class _TransformationPageState extends State<TransformationPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      ElevatedButton(onPressed: (){
+                        Navigation.push(AddTransformationPage(
+                          onCreated: (_){cubit.getModel();},
+                          transformation: model.items[index],
+                        )).then((value) => cubit.getModel());
+
+                      }, child: Text('تعديل')),
                       buildDeleteButton(model.items[index]),
-                      buildSwitchActiveButton(model.items[index])
+                      buildSwitchActiveButton(model.items[index]),
+
                     ],
                   ),
 
@@ -195,7 +203,8 @@ class _TransformationPageState extends State<TransformationPage> {
 
 class AddTransformationPage extends StatefulWidget {
   final ValueChanged onCreated;
-  const AddTransformationPage({Key key, this.onCreated}) : super(key: key);
+  final Transformation transformation;
+  const AddTransformationPage({Key key, this.onCreated, this.transformation}) : super(key: key);
 
   @override
   State<AddTransformationPage> createState() => _AddTransformationPageState();
@@ -206,18 +215,35 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
   Transformation transformation = Transformation(inputs: [], outputs: []);
 
   CreateModelCubit cubit;
+  bool isUpdate = false;
 
   TextEditingController nameController = TextEditingController();
 
   @override
+  void initState() {
+
+    if(widget.transformation != null) {
+      isUpdate = true;
+      transformation = widget.transformation;
+      nameController.text = transformation.name;
+    }
+
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('إضافة عملية جديدة'),
+        title: Text(
+            isUpdate?
+                'تعديل العملية':
+            'إضافة عملية جديدة'
+        ),
       ),
       body: loadBody(),
     );
   }
+
 
   Widget loadBody() {
     return GetModel<ItemListResponseModel>(
@@ -258,18 +284,12 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
                       height: 10,
                     ),
                     Expanded(
-                      child: ListView.builder(
+                      child: ListView.separated(
                         itemCount: transformation.inputs.length,
-                        itemBuilder: (context, index) => Row(
-                          children: [
-                            Text(transformation.inputs[index].name),
-                            Spacer(),
-                            Text(transformation.inputs[index].unitValue
-                                    .toString() +
-                                ' ' +
-                                transformation.inputs[index].unit.toString())
-                          ],
-                        ),
+                        itemBuilder: (context, index) => buildItem(transformation.inputs,index),
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider();
+                      },
                       ),
                     ),
                     ElevatedButton(
@@ -314,16 +334,7 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
                     Expanded(
                       child: ListView.builder(
                         itemCount: transformation.outputs.length,
-                        itemBuilder: (context, index) => Row(
-                          children: [
-                            Text(transformation.outputs[index].name),
-                            Spacer(),
-                            Text(transformation.outputs[index].unitValue
-                                    .toString() +
-                                ' ' +
-                                transformation.outputs[index].unit.toString())
-                          ],
-                        ),
+                        itemBuilder: (context, index) => buildItem(transformation.outputs,index),
                       ),
                     ),
                     ElevatedButton(
@@ -358,7 +369,9 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
                             //  Navigator.of(context).restorablePush(_dialogBuilder);
                           });
                         },
-                        child: Text('إضافة مادة أخرى')),
+                        child: Text(
+
+                            'إضافة مادة أخرى')),
                   ],
                 ),
               )),
@@ -380,9 +393,43 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
     );
   }
 
+   buildItem( List<Item> items,int index) {
+    return ListTile(
+      leading: IconButton(
+        icon: Icon(Icons.close),
+        onPressed: (){
+          items.removeAt(index);
+          setState(() {});
+        },
+      ),
+      title: Text(items[index].name),
+      subtitle: Text(items[index].unitValue
+          .toString() +
+          ' ' +
+          items[index].unit.toString()),
+    );
+    return Wrap(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: (){
+                              items.removeAt(index);
+                              setState(() {});
+                            },
+                          ),
+                          Text(items[index].name),
+                          Spacer(),
+                          Text(items[index].unitValue
+                                  .toString() +
+                              ' ' +
+                              items[index].unit.toString())
+                        ],
+                      );
+  }
+
   buildCreateButton() {
     return CreateModel<EmptyModel>(
-      repositoryCallBack: (data)=>AdminRepository.createTransformation(data),
+      repositoryCallBack: (data)=>isUpdate?AdminRepository.updateTransformation(transformation.id,data):AdminRepository.createTransformation(data),
       onCubitCreated: (c){cubit=c;},
       onSuccess: (m){
         widget.onCreated(m);
@@ -392,13 +439,13 @@ class _AddTransformationPageState extends State<AddTransformationPage> {
           onPressed: () {
             if(nameController.text.isNotEmpty){
               transformation.name = nameController.text;
-
               cubit.createModel(transformation);
             }
-
-
           },
-          child: Text('إضافة عملية جديدة')
+          child: Text(
+              isUpdate?
+              'تعديل المادة':
+              'إضافة عملية جديدة')
       ),
     );
   }

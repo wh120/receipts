@@ -133,6 +133,16 @@ class AdminRepository{
 
   }
 
+  static Future<BaseResultModel> updateTransformation(int id ,data ) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.PUT,
+        withAuthentication: true,
+        data: data.toJson(),
+        url: ApiURLs.GET_TRANSFORMATION.replaceFirst('{id}', id.toString()));
+
+  }
+
   static Future<BaseResultModel> getItemCategories( ) async {
     return await RemoteDataSource.request<ItemCategoryListResponse>(
         converter: (json) => ItemCategoryListResponse.fromJson(json),
