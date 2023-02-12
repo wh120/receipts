@@ -41,7 +41,10 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
     super.initState();
   }
   Future<bool> _willPopCallback() async {
-    ServiceLocator.getCubitsStore().receipt = widget.receipt;
+    if(widget.receipt != null && widget.receipt.items != null && widget.receipt.items.isNotEmpty)
+       ServiceLocator.getCubitsStore().receipt = widget.receipt;
+    else
+      ServiceLocator.getCubitsStore().receipt = null;
     // await showDialog or Show add banners or whatever
     // then
     return true; // return true if the route to be popped
@@ -273,7 +276,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
         ];
 
         //todo
-        for(int i = 0; i < 3;i++) {
+        for(int i = 0; i < 2  ;i++) {
           String s = '-';
           if(widget.receipt.items[index].units.tryGet(i) != null)
              s =widget.receipt.items[index].units.tryGet(i).value.toString() + ' ' + widget.receipt.items[index].units.tryGet(i).name;
