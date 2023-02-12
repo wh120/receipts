@@ -16,7 +16,9 @@ import 'package:receipts/features/receipt/presentation/page/transform_receipt_pa
 import '../../../../core/API/CoreModels/empty_model.dart';
 import '../../../../core/Boilerplate/CreateModel/widgets/CreateModel.dart';
 import '../../../../core/Boilerplate/GetModel/widgets/GetModel.dart';
+import '../../../../core/utils/ServiceLocator/ServiceLocator.dart';
 import '../../../../core/utils/SharedPreferences/SharedPreferencesHelper.dart';
+import '../../../../core/widgets/BottomSheet.dart';
 import '../../../../core/widgets/ColumnBuilder.dart';
 import '../../../../core/widgets/cards/GeneralCard.dart';
 import '../../../../core/widgets/forms/RoundedTextField.dart';
@@ -357,8 +359,7 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                     onPressed: (){
                       if(selectedToDepartment!=null && selectedToDepartment != null) {
 
-                        Navigation.push(FillReceiptPage(
-                          receipt: Receipt(
+                        var receipt = Receipt(
                             items: [],
 
                             fromDepartmentId: selectedFromDepartment?.id,
@@ -369,8 +370,31 @@ class _CreatBudgetPageState extends State<CreateReceiptPage> {
                             mustApprovedByRole: selectedRole,
                             receiptTypeId: selectedReceiptType+1,
                             description: descriptionController.text
-                          ),
-                        ));
+                        );
+                        if(ServiceLocator.getCubitsStore().receipt == null){
+                          ServiceLocator.getCubitsStore().receipt = receipt;
+                          Navigation.push(FillReceiptPage(
+                            receipt: receipt ,
+                          ));
+                        }
+                        else{
+                          MyBottomSheet.showConfirmBottomSheet(
+                            context: context,
+                            text: 'هل تريد متابعة عملية قديمة ؟' ,
+                            onClicked: (b){
+                              if(b){
+                                receipt.items = ServiceLocator.getCubitsStore().receipt.items;
+
+                              }
+                              Navigation.push(FillReceiptPage(
+                                receipt: receipt ,
+                              ));
+                            },
+
+
+                          );
+                        }
+
                       }
                     },
                   ),

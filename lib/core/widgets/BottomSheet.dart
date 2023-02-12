@@ -40,10 +40,15 @@ class MyBottomSheet{
                     children: <Widget>[
                       CreateModel<EmptyModel>(
 
-
                         child: CustomButton(
                           text: 'تأكيد' ,
                           onPressed: () {
+                            if(repositoryCallBack == null){
+                              Navigator.pop(context);
+                              onClicked(true);
+
+                            }
+                            else
                             cubit.createModel(requestData);
                             // onClicked(true);
                             // Navigator.pop(context);
@@ -56,12 +61,14 @@ class MyBottomSheet{
                           cubit=c;
                         },
                         onSuccess: (m){
-                          onClicked(true);
+
                           Navigator.pop(context);
+                          onClicked(true);
                         },
                         onError: (){
-                          onClicked(false);
+
                           Navigator.pop(context);
+                          onClicked(false);
                         },
                       ),
                       CustomButton(

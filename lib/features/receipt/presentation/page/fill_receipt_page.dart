@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:receipts/core/Boilerplate/CreateModel/widgets/CreateModel.dart';
+import 'package:receipts/core/utils/ServiceLocator/ServiceLocator.dart';
 import 'package:receipts/core/utils/extensions/extensions.dart';
 import 'package:receipts/core/widgets/cards/GeneralCard.dart';
 import 'package:receipts/features/admin/data/department_list_response.dart';
@@ -23,9 +24,9 @@ import '/core/widgets/forms/RoundedNumberField.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FillReceiptPage extends StatefulWidget {
-  final Receipt receipt;
+   Receipt receipt;
 
-  const FillReceiptPage({Key key, this.receipt}) : super(key: key);
+   FillReceiptPage({Key key, this.receipt}) : super(key: key);
   @override
   _CreateReceiptPageState createState() => _CreateReceiptPageState();
 }
@@ -36,132 +37,142 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
   @override
   void initState() {
     isNew = widget.receipt.id == null;
+
     super.initState();
+  }
+  Future<bool> _willPopCallback() async {
+    ServiceLocator.getCubitsStore().receipt = widget.receipt;
+    // await showDialog or Show add banners or whatever
+    // then
+    return true; // return true if the route to be popped
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          (isNew ? "إنشاء إيصال :" : "تعديل إيصال :") + '  '+ receipt_type[widget.receipt.receiptTypeId-1]["name"],
+    return WillPopScope(
+        onWillPop: _willPopCallback,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            (isNew ? "إنشاء إيصال :" : "تعديل إيصال :") + '  '+ receipt_type[widget.receipt.receiptTypeId-1]["name"],
 
+          ),
         ),
-      ),
-      // backgroundColor: Colors.grey[100],
-      body: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(color: AppColors.white, boxShadow: [
-              BoxShadow(
-                color: AppColors.grey.withOpacity(0.01),
-                spreadRadius: 10,
-                blurRadius: 3,
-                // changes position of shadow
+        // backgroundColor: Colors.grey[100],
+        body: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(color: AppColors.white, boxShadow: [
+                BoxShadow(
+                  color: AppColors.grey.withOpacity(0.01),
+                  spreadRadius: 10,
+                  blurRadius: 3,
+                  // changes position of shadow
+                ),
+              ]),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 30, right: 20, left: 20, bottom: 25),
+                child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+
+                        Text(
+                          'من :',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          widget.receipt?.fromDepartment?.name??'-',
+                          style: TextStyle(fontSize: 15, color: AppColors.black),
+                        ),
+
+                        SizedBox(
+                          width: 10,
+                        ),
+
+                        Text(
+                          'إلى :',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          widget.receipt?.toDepartment?.name??'-',
+                          style: TextStyle(fontSize: 15, color: AppColors.black),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+
+                      ],
+                    ),
+                    Text(
+                      widget.receipt.mustApprovedByRole?.name??'',
+                      style: TextStyle(fontSize: 15, color: AppColors.black),
+                    ),
+                  ],
+                ),
               ),
-            ]),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 30, right: 20, left: 20, bottom: 25),
-              child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            Expanded(
+                child: Padding(
+              child: loadTable(),
+              padding: const EdgeInsets.all(8.0),
+            )),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-
-                      Text(
-                        'من :',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        widget.receipt?.fromDepartment?.name??'-',
-                        style: TextStyle(fontSize: 15, color: AppColors.black),
-                      ),
-
-                      SizedBox(
-                        width: 10,
-                      ),
-
-                      Text(
-                        'إلى :',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.black),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        widget.receipt?.toDepartment?.name??'-',
-                        style: TextStyle(fontSize: 15, color: AppColors.black),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-
-                    ],
-                  ),
-                  Text(
-                    widget.receipt.mustApprovedByRole?.name??'',
-                    style: TextStyle(fontSize: 15, color: AppColors.black),
-                  ),
+                  isNew ? buildCreateButton() : buildApproveButton(),
+                  if (isNew)
+                    ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            if(items.length==0)return;
+                            showDialog(
+                                context: context,
+                                useRootNavigator: true,
+                                builder: (_) {
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: SingleChildScrollView(
+                                      child: Container(
+                                          child: SelectItemWidget(
+                                        items: items,
+                                        onDone: (Item item) {
+                                          if(item!= null)
+                                            if(!widget.receipt.items.contains(item))
+                                             widget.receipt.items.add(item);
+                                          setState(() {});
+                                        },
+                                      )),
+                                    ),
+                                  );
+                                });
+                            //  Navigator.of(context).restorablePush(_dialogBuilder);
+                          });
+                        },
+                        child: Text('إضافة مادة أخرى')),
                 ],
               ),
-            ),
-          ),
-          Expanded(
-              child: Padding(
-            child: loadTable(),
-            padding: const EdgeInsets.all(8.0),
-          )),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                isNew ? buildCreateButton() : buildApproveButton(),
-                if (isNew)
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          if(items.length==0)return;
-                          showDialog(
-                              context: context,
-                              useRootNavigator: true,
-                              builder: (_) {
-                                return Align(
-                                  alignment: Alignment.center,
-                                  child: SingleChildScrollView(
-                                    child: Container(
-                                        child: SelectItemWidget(
-                                      items: items,
-                                      onDone: (Item item) {
-                                        if(item!= null)
-                                          if(!widget.receipt.items.contains(item))
-                                           widget.receipt.items.add(item);
-                                        setState(() {});
-                                      },
-                                    )),
-                                  ),
-                                );
-                              });
-                          //  Navigator.of(context).restorablePush(_dialogBuilder);
-                        });
-                      },
-                      child: Text('إضافة مادة أخرى')),
-              ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -171,6 +182,7 @@ class _CreateReceiptPageState extends State<FillReceiptPage> {
     return CreateModel<EmptyModel>(
       repositoryCallBack: (data) => ReceiptRepository.createReceipt(data),
       onSuccess: (model) {
+        ServiceLocator.getCubitsStore().receipt = null;
         Navigation.pop();
       },
       onCubitCreated: (c) {
